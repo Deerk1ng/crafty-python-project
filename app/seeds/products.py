@@ -3,7 +3,7 @@ from sqlalchemy.sql import text
 
 def seed_products():
     chainmail = Product(
-        ownclearerId='2' ,name='chainmail' , price='100.00' , description='This shirt made of interlocked metal rings is perfect for any medieval reinactment outfit you are looking for. Perfect for renfaires' , category='shirts' )
+        ownerId='2' ,name='chainmail' , price='100.00' , description='This shirt made of interlocked metal rings is perfect for any medieval reinactment outfit you are looking for. Perfect for renfaires' , category='shirts' )
 
     db.session.add(chainmail)
     db.session.commit()
