@@ -1,1 +1,37 @@
 /* TODO: Add sitewide styles */
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');;
+
+* {
+    font-size: 12pt;
+    font-weight: normal;
+    font-family: "Montserrat", sans-serif;
+    font-style: normal;
+}
+
+h1 {
+    font-size: 24pt;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+h2 {
+    font-size: 18pt;
+    font-weight: bold;
+    margin: 5px 0px
+}
+
+button {
+    font-size: normal;
+    text-align: center;
+    cursor: pointer;
+    background-color: white;
+    border-color: #cccccc;
+    color: #000000;
+    border-radius: 25px;
+    box-shadow: none;
+}
+
+ul {
+    list-style-type: none;
+}
