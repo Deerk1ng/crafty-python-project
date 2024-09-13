@@ -3,7 +3,7 @@ from .db import db, environment, SCHEMA
 
 
 class ShoppingCart(db.Model):
-    __tablename__ = 'shoppingCart'
+    __tablename__ = 'shoppingCarts'
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
