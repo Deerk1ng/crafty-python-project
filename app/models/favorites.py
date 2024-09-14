@@ -2,7 +2,7 @@ from datetime import datetime
 from .db import db, environment, SCHEMA
 
 
-class Favorites(db.Model):
+class Favorite(db.Model):
     __tablename__ = 'favorites'
 
     if environment == "production":

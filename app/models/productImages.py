@@ -2,7 +2,7 @@ from datetime import datetime
 from .db import db, environment, SCHEMA
 
 
-class ProductImages(db.Model):
+class ProductImage(db.Model):
     __tablename__= 'productImages'
 
     if environment == "production":
