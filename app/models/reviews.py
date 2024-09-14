@@ -14,8 +14,8 @@ class Review(db.Model):
     itemRating = db.Column(db.Integer, nullable=False)
     shippingRating = db.Column(db.Integer, nullable=False)
     description = db.Column(db.Text)
-    createdAt = db.Column(db.Datetime, default=datetime.utcnow, nullable=False)
-    updatedAt = db.Column(db.Datetime, default=datetime.utcnow, nullable=False)
+    createdAt = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
+    updatedAt = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
 
     user = db.relationship('Users', back_populates='reviews')
     product = db.relationship('Product', back_populates='reviews')

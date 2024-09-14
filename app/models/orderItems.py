@@ -12,8 +12,8 @@ class OrderItem(db.Model):
     orderId = db.Column(db.Integer, db.ForeignKey("orders.id"), nullable=False)
     productId = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
-    createdAt = db.Column(db.Datetime, default=datetime.utcnow, nullable=False)
-    updatedAt = db.Column(db.Datetime, default=datetime.utcnow, nullable=False)
+    createdAt = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
+    updatedAt = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
 
     order = db.relationship('Order', back_populates='orderItems')
     product = db.relationship('Product', back_populates='cartItems')
