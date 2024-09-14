@@ -1,7 +1,7 @@
 """empty message
 
 Revision ID: 44150366419e
-Revises: 
+Revises:
 Create Date: 2024-09-13 22:09:05.149244
 
 """
@@ -109,7 +109,6 @@ def upgrade():
     op.create_table('reviews',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('userId', sa.Integer(), nullable=False),
-    sa.Column('productOwnerId', sa.Integer(), nullable=False),
     sa.Column('productId', sa.Integer(), nullable=False),
     sa.Column('itemRating', sa.Integer(), nullable=False),
     sa.Column('shippingRating', sa.Integer(), nullable=False),
@@ -117,7 +116,6 @@ def upgrade():
     sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['productId'], ['products.id'], ),
-    sa.ForeignKeyConstraint(['productOwnerId'], ['users.id'], ),
     sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
