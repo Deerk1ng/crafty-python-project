@@ -14,7 +14,7 @@ class Favorite(db.Model):
     createdAt = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
     updatedAt = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
 
-    owner = db.relationship('User', back_populates='favorites')
+    user = db.relationship('User', back_populates='favorites')
     product = db.relationship('Product', back_populates='favorites')
 
     def to_dict(self):
