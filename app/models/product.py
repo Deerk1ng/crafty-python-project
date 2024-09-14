@@ -1,3 +1,4 @@
+from datetime import datetime
 from .db import db, environment, SCHEMA
 
 
@@ -13,6 +14,8 @@ class Product(db.Model):
     price = db.Column(db.Float, nullable=False)
     description = db.Column(db.Text)
     category = db.Column(db.String, nullable=False)
+    createdAt = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
+    updatedAt = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
 
     owner = db.relationship("User", back_populates="products")
 
