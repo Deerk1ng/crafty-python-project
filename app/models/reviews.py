@@ -9,7 +9,6 @@ class Review(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     userId = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    productOwnerId = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     productId = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
     itemRating = db.Column(db.Integer, nullable=False)
     shippingRating = db.Column(db.Integer, nullable=False)
@@ -24,7 +23,6 @@ class Review(db.Model):
         return {
             'id': self.id,
             'userId': self.userId,
-            'productOwnerId': self.productOwnerId,
             'productId': self.productId,
             'itemRating': self.itemRating,
             'shippingRating': self.shippingRating,

@@ -15,6 +15,7 @@ class Order(db.Model):
     updatedAt = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
 
     user = db.relationship('User', back_populates='orders')
+    orderItems = db.relationship('OrderItem', back_populates='order')
 
     def to_dict(self):
         return {

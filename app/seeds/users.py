@@ -14,12 +14,15 @@ def seed_users():
         username='johnny', email="johnny@aa.io", password='password', first_name='Johnny', last_name='Johnson', shop_name="John's jeans", address="Conneticut")
     jane = User(
         username='jane', email="jane@aa.io", password='password',first_name='Jane', last_name='Bert', shop_name="Jane's Cardboard Weapons", address="Illinois")
+    sarah = User(
+        username='sarah', email="sarah@aa.io", password='password',first_name='Sarah', last_name='Hertz', shop_name="Sarah's Bows and Strings", address="Texas")
 
     db.session.add(demo)
     db.session.add(marnie)
     db.session.add(bobbie)
     db.session.add(johnny)
     db.session.add(jane)
+    db.session.add(sarah)
     db.session.commit()
 
 
