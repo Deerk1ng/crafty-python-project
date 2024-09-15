@@ -1,29 +1,33 @@
 from datetime import datetime
 from .db import db, environment, SCHEMA
 
-
-class OrderItem(db.Model):
-    __tablename__ = 'orderItems'
+class Review(db.Model):
+    __tablename__= 'reviews'
 
     if environment == 'production':
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    orderId = db.Column(db.Integer, db.ForeignKey("orders.id"), nullable=False)
+    userId = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     productId = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
+    itemRating = db.Column(db.Integer, nullable=False)
+    shippingRating = db.Column(db.Integer, nullable=False)
+    description = db.Column(db.Text)
     createdAt = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
     updatedAt = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
 
-    order = db.relationship('Order', back_populates='orderItems')
-    product = db.relationship('Product', back_populates='cartItems') ## shouldn't this also be orderItems?
+    user = db.relationship('User', back_populates='reviews')
+    product = db.relationship('Product', back_populates='reviews')
+    reviewImage = db.relationship('ReviewImage', back_populates='review')
 
     def to_dict(self):
         return {
             'id': self.id,
-            'orderId': self.orderId,
+            'userId': self.userId,
             'productId': self.productId,
-            'quantity': self.quantity,
+            'itemRating': self.itemRating,
+            'shippingRating': self.shippingRating,
+            'description': self.description,
             'createdAt': self.createdAt,
             'updatedAt': self.updatedAt
         }

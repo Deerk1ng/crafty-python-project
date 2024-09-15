@@ -9,7 +9,7 @@ def seed_reviews():
     prod1_review3 = Review(
         userId=4, productId=1, itemRating=2, shippingRating=3, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
     prod1_review4 = Review(
-        userId=5, productId=1, itemRating=5, shippingRating=3, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        userId=6, productId=1, itemRating=5, shippingRating=3, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
 
     prod2_review1 = Review(
         userId=2, productId=2, itemRating=4, shippingRating=3, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
@@ -18,7 +18,7 @@ def seed_reviews():
     prod2_review3 = Review(
         userId=4, productId=2, itemRating=5, shippingRating=2, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
     prod2_review4 = Review(
-        userId=5, productId=2, itemRating=3, shippingRating=5, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        userId=6, productId=2, itemRating=3, shippingRating=5, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
 
     prod3_review1 = Review(
         userId=2, productId=3, itemRating=1, shippingRating=4, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
@@ -27,7 +27,7 @@ def seed_reviews():
     prod3_review3 = Review(
         userId=4, productId=3, itemRating=4, shippingRating=3, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
     prod3_review4 = Review(
-        userId=5, productId=3, itemRating=3, shippingRating=5, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        userId=6, productId=3, itemRating=3, shippingRating=5, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
 
     prod4_review1 = Review(
         userId=2, productId=4, itemRating=2, shippingRating=2, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
@@ -36,7 +36,7 @@ def seed_reviews():
     prod4_review3 = Review(
         userId=4, productId=4, itemRating=1, shippingRating=3, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
     prod4_review4 = Review(
-        userId=5, productId=4, itemRating=3, shippingRating=5, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        userId=6, productId=4, itemRating=3, shippingRating=5, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
 
     prod5_review1 = Review(
         userId=2, productId=5, itemRating=5, shippingRating=2, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
@@ -45,7 +45,7 @@ def seed_reviews():
     prod5_review3 = Review(
         userId=4, productId=5, itemRating=5, shippingRating=4, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
     prod5_review4 = Review(
-        userId=5, productId=5, itemRating=4, shippingRating=5, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        userId=6, productId=5, itemRating=4, shippingRating=5, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
 
     prod6_review1 = Review(
         userId=2, productId=6, itemRating=5, shippingRating=2, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
@@ -54,7 +54,7 @@ def seed_reviews():
     prod6_review3 = Review(
         userId=4, productId=6, itemRating=5, shippingRating=4, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
     prod6_review4 = Review(
-        userId=5, productId=6, itemRating=4, shippingRating=5, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        userId=6, productId=6, itemRating=4, shippingRating=5, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
 
     prod7_review1 = Review(
         userId=2, productId=7, itemRating=2, shippingRating=2, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
@@ -63,7 +63,7 @@ def seed_reviews():
     prod7_review3 = Review(
         userId=4, productId=7, itemRating=1, shippingRating=3, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
     prod7_review4 = Review(
-        userId=5, productId=7, itemRating=3, shippingRating=5, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        userId=6, productId=7, itemRating=3, shippingRating=5, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
 
     prod8_review1 = Review(
         userId=2, productId=8, itemRating=5, shippingRating=2, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
@@ -72,7 +72,7 @@ def seed_reviews():
     prod8_review3 = Review(
         userId=4, productId=8, itemRating=5, shippingRating=4, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
     prod8_review4 = Review(
-        userId=5, productId=8, itemRating=4, shippingRating=5, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        userId=6, productId=8, itemRating=4, shippingRating=5, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
 
     prod9_review1 = Review(
         userId=2, productId=9, itemRating=5, shippingRating=2, description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')

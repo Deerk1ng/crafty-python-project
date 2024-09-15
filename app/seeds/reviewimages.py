@@ -3,35 +3,35 @@ from sqlalchemy.sql import text
 
 def seed_reviewImages():
     rev1_pic1 = ReviewImage(
-        url='/review/image/1' ,preview=False , reviewId=1 , description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        url='/review/image/1' ,preview=False , reviewId=1)
     rev6_pic1 = ReviewImage(
-        url='/review/image/2' ,preview=False , reviewId=6 , description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        url='/review/image/2' ,preview=False , reviewId=6)
     rev11_pic1 = ReviewImage(
-        url='/review/image/3' ,preview=False , reviewId=11 , description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        url='/review/image/3' ,preview=False , reviewId=11)
     rev16_pic1 = ReviewImage(
-        url='/review/image/4' ,preview=False , reviewId=16 , description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        url='/review/image/4' ,preview=False , reviewId=16)
     rev17_pic1 = ReviewImage(
-        url='/review/image/5' ,preview=False , reviewId=17 , description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        url='/review/image/5' ,preview=False , reviewId=17)
     rev21_pic1 = ReviewImage(
-        url='/review/image/6' ,preview=False , reviewId=21 , description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        url='/review/image/6' ,preview=False , reviewId=21)
     rev26_pic1 = ReviewImage(
-        url='/review/image/7' ,preview=False , reviewId=26 , description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        url='/review/image/7' ,preview=False , reviewId=26)
     rev31_pic1 = ReviewImage(
-        url='/review/image/8' ,preview=False , reviewId=31 , description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        url='/review/image/8' ,preview=False , reviewId=31)
     rev36_pic1 = ReviewImage(
-        url='/review/image/9' ,preview=False , reviewId=36 , description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        url='/review/image/9' ,preview=False , reviewId=36)
     rev37_pic1 = ReviewImage(
-        url='/review/image/10' ,preview=False , reviewId=37 , description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        url='/review/image/10' ,preview=False , reviewId=37)
     rev41_pic1 = ReviewImage(
-        url='/review/image/11' ,preview=False , reviewId=41 , description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        url='/review/image/11' ,preview=False , reviewId=41)
     rev46_pic1 = ReviewImage(
-        url='/review/image/12' ,preview=False , reviewId=46 , description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        url='/review/image/12' ,preview=False , reviewId=46)
     rev51_pic1 = ReviewImage(
-        url='/review/image/13' ,preview=False , reviewId=51 , description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        url='/review/image/13' ,preview=False , reviewId=51)
     rev56_pic1 = ReviewImage(
-        url='/review/image/14' ,preview=False , reviewId=56 , description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        url='/review/image/14' ,preview=False , reviewId=56)
     rev57_pic1 = ReviewImage(
-        url='/review/image/15' ,preview=False , reviewId=57 , description='Lorem ipsum odor amet, consectetuer adipiscing elit. Vestibulum conubia odio tempor nisl vestibulum molestie. Ac neque bibendum condimentum interdum a fames euismod nam.')
+        url='/review/image/15' ,preview=False , reviewId=57)
 
     db.session.add(rev1_pic1)
     db.session.add(rev6_pic1)

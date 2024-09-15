@@ -15,6 +15,7 @@ class ShoppingCart(db.Model):
     updatedAt = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
 
     user = db.relationship('User', back_populates='shoppingCart')
+    cartItems = db.relationship('CartItem', back_populates='shoppingCart')
 
     def to_dict(self):
         return {

@@ -24,7 +24,9 @@ class User(db.Model, UserMixin):
     products = db.relationship("Product", back_populates="owner")
     # need favorites relationship
     favorites = db.relationship("Favorite", back_populates="user")
-
+    orders = db.relationship("Order", back_populates="user")
+    reviews = db.relationship("Review", back_populates="user")
+    shoppingCart = db.relationship("ShoppingCart", back_populates="user")
 
     @property
     def password(self):
