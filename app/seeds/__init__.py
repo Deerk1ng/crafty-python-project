@@ -5,6 +5,7 @@ from .reviews import seed_reviews, undo_reviews
 from .reviewimages import seed_reviewImages, undo_reviewImages
 from .orders import seed_orders, undo_orders
 from .orderitems import seed_orderItems, undo_orderItems
+from .productImages import seed_product_images, undo_productImages
 
 
 from app.models.db import db, environment, SCHEMA
@@ -24,14 +25,16 @@ def seed():
         # Make sure to add all your other model's undo functions below
         undo_users()
         undo_products()
-
         undo_reviews()
         undo_reviewImages()
         undo_orders()
         undo_orderItems()
+        undo_productImages()
+
     seed_users()
     # Add other seed functions here
     seed_products()
+    seed_product_images()
 
     seed_reviews()
     seed_reviewImages()
@@ -50,3 +53,6 @@ def undo():
     undo_reviewImages()
     undo_orders()
     undo_orderItems()
+    
+    undo_productImages()
+

@@ -18,6 +18,8 @@ class Product(db.Model):
     updatedAt = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
 
     owner = db.relationship("User", back_populates="products")
+    favorites = db.relationship("Favorite", back_populates="products")
+
 
     def to_dict(self):
         return {

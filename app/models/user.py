@@ -22,6 +22,9 @@ class User(db.Model, UserMixin):
     updatedAt = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
 
     products = db.relationship("Product", back_populates="owner")
+    # need favorites relationship
+    favorites = db.relationship("Favorite", back_populates="user")
+
 
     @property
     def password(self):
