@@ -1,3 +1,4 @@
+from datetime import datetime
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -17,8 +18,15 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(40), nullable=False, unique=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
+    createdAt = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
+    updatedAt = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
 
     products = db.relationship("Product", back_populates="owner")
+    # need favorites relationship
+    favorites = db.relationship("Favorite", back_populates="user")
+    orders = db.relationship("Order", back_populates="user")
+    reviews = db.relationship("Review", back_populates="user")
+    shoppingCart = db.relationship("ShoppingCart", back_populates="user")
 
     @property
     def password(self):
