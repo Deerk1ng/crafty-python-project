@@ -30,8 +30,8 @@ def upgrade():
     sa.Column('username', sa.String(length=40), nullable=False),
     sa.Column('email', sa.String(length=255), nullable=False),
     sa.Column('hashed_password', sa.String(length=255), nullable=False),
-    sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('shop_name'),
@@ -41,129 +41,129 @@ def upgrade():
         op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
     op.create_table('orders',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('userId', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('total', sa.Float(), nullable=False),
-    sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
-    sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     if environment == "production":
         op.execute(f"ALTER TABLE orders SET SCHEMA {SCHEMA};")
     op.create_table('products',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('ownerId', sa.Integer(), nullable=False),
+    sa.Column('owner_id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=40), nullable=True),
     sa.Column('price', sa.Float(), nullable=False),
     sa.Column('description', sa.Text(), nullable=True),
     sa.Column('category', sa.String(), nullable=False),
-    sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
-    sa.ForeignKeyConstraint(['ownerId'], ['users.id'], ),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
+    sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     if environment == "production":
         op.execute(f"ALTER TABLE products SET SCHEMA {SCHEMA};")
-    op.create_table('shoppingCarts',
+    op.create_table('shopping_carts',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('userId', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('total', sa.Float(), nullable=False),
-    sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
-    sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     if environment == "production":
-        op.execute(f"ALTER TABLE shoppingCarts SET SCHEMA {SCHEMA};")
-    op.create_table('cartItems',
+        op.execute(f"ALTER TABLE shopping_carts SET SCHEMA {SCHEMA};")
+    op.create_table('cart_items',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('cartId', sa.Integer(), nullable=False),
-    sa.Column('productId', sa.Integer(), nullable=False),
+    sa.Column('cart_id', sa.Integer(), nullable=False),
+    sa.Column('product_id', sa.Integer(), nullable=False),
     sa.Column('quantity', sa.Integer(), nullable=False),
-    sa.Column('createdAt', sa.DateTime(), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(), nullable=False),
-    sa.ForeignKeyConstraint(['cartId'], ['shoppingCarts.id'], ),
-    sa.ForeignKeyConstraint(['productId'], ['products.id'], ),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('updated_at', sa.DateTime(), nullable=False),
+    sa.ForeignKeyConstraint(['cart_id'], ['shopping_carts.id'], ),
+    sa.ForeignKeyConstraint(['product_id'], ['products.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     if environment == "production":
-        op.execute(f"ALTER TABLE cartItems SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE cart_items SET SCHEMA {SCHEMA};")
     op.create_table('favorites',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('userId', sa.Integer(), nullable=False),
-    sa.Column('productId', sa.Integer(), nullable=False),
-    sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
-    sa.ForeignKeyConstraint(['productId'], ['products.id'], ),
-    sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('product_id', sa.Integer(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
+    sa.ForeignKeyConstraint(['product_id'], ['products.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     if environment == "production":
         op.execute(f"ALTER TABLE favorites SET SCHEMA {SCHEMA};")
-    op.create_table('orderItems',
+    op.create_table('order_items',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('orderId', sa.Integer(), nullable=False),
-    sa.Column('productId', sa.Integer(), nullable=False),
+    sa.Column('order_id', sa.Integer(), nullable=False),
+    sa.Column('product_id', sa.Integer(), nullable=False),
     sa.Column('quantity', sa.Integer(), nullable=False),
-    sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
-    sa.ForeignKeyConstraint(['orderId'], ['orders.id'], ),
-    sa.ForeignKeyConstraint(['productId'], ['products.id'], ),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
+    sa.ForeignKeyConstraint(['order_id'], ['orders.id'], ),
+    sa.ForeignKeyConstraint(['product_id'], ['products.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     if environment == "production":
-        op.execute(f"ALTER TABLE orderItems SET SCHEMA {SCHEMA};")
-    op.create_table('productImages',
+        op.execute(f"ALTER TABLE order_items SET SCHEMA {SCHEMA};")
+    op.create_table('product_images',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('url', sa.String(length=255), nullable=False),
     sa.Column('preview', sa.Boolean(), nullable=True),
-    sa.Column('productId', sa.Integer(), nullable=False),
-    sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
-    sa.ForeignKeyConstraint(['productId'], ['products.id'], ),
+    sa.Column('product_id', sa.Integer(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
+    sa.ForeignKeyConstraint(['product_id'], ['products.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     if environment == "production":
-        op.execute(f"ALTER TABLE productImages SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE product_images SET SCHEMA {SCHEMA};")
     op.create_table('reviews',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('userId', sa.Integer(), nullable=False),
-    sa.Column('productId', sa.Integer(), nullable=False),
-    sa.Column('itemRating', sa.Integer(), nullable=False),
-    sa.Column('shippingRating', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('product_id', sa.Integer(), nullable=False),
+    sa.Column('item_rating', sa.Integer(), nullable=False),
+    sa.Column('shipping_rating', sa.Integer(), nullable=False),
     sa.Column('description', sa.Text(), nullable=True),
-    sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
-    sa.ForeignKeyConstraint(['productId'], ['products.id'], ),
-    sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
+    sa.ForeignKeyConstraint(['product_id'], ['products.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     if environment == "production":
         op.execute(f"ALTER TABLE reviews SET SCHEMA {SCHEMA};")
-    op.create_table('reviewImages',
+    op.create_table('review_images',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('url', sa.String(), nullable=False),
     sa.Column('preview', sa.Boolean(), nullable=False),
-    sa.Column('reviewId', sa.Integer(), nullable=False),
-    sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
-    sa.ForeignKeyConstraint(['reviewId'], ['reviews.id'], ),
+    sa.Column('review_id', sa.Integer(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
+    sa.ForeignKeyConstraint(['review_id'], ['reviews.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     if environment == "production":
-        op.execute(f"ALTER TABLE reviewImages SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE review_images SET SCHEMA {SCHEMA};")
     # ### end Alembic commands ###
 
 
 def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
-    op.drop_table('reviewImages')
+    op.drop_table('review_images')
     op.drop_table('reviews')
-    op.drop_table('productImages')
-    op.drop_table('orderItems')
+    op.drop_table('product_images')
+    op.drop_table('order_items')
     op.drop_table('favorites')
-    op.drop_table('cartItems')
-    op.drop_table('shoppingCarts')
+    op.drop_table('cart_items')
+    op.drop_table('shopping_carts')
     op.drop_table('products')
     op.drop_table('orders')
     op.drop_table('users')
