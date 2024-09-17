@@ -2,10 +2,10 @@ from flask.cli import AppGroup
 from .users import seed_users, undo_users
 from .products import seed_products, undo_products
 from .reviews import seed_reviews, undo_reviews
-from .review_images import seed_review_images, undo_review_images
+from .reviewimages import seed_review_images, undo_review_images
 from .orders import seed_orders, undo_orders
-from .order_items import seed_order_items, undo_order_items
-from .product_images import seed_product_images, undo_product_images
+from .orderitems import seed_order_items, undo_order_items
+from .productimages import seed_product_images, undo_product_images
 
 
 from app.models.db import db, environment, SCHEMA
