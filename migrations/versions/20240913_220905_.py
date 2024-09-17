@@ -64,94 +64,94 @@ def upgrade():
     )
     if environment == "production":
         op.execute(f"ALTER TABLE products SET SCHEMA {SCHEMA};")
-    op.create_table('shoppingCarts',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('userId', sa.Integer(), nullable=False),
-    sa.Column('total', sa.Float(), nullable=False),
-    sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
-    sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
-    if environment == "production":
-        op.execute(f"ALTER TABLE shoppingCarts SET SCHEMA {SCHEMA};")
-    op.create_table('cartItems',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('cartId', sa.Integer(), nullable=False),
-    sa.Column('productId', sa.Integer(), nullable=False),
-    sa.Column('quantity', sa.Integer(), nullable=False),
-    sa.Column('createdAt', sa.DateTime(), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(), nullable=False),
-    sa.ForeignKeyConstraint(['cartId'], ['shoppingCarts.id'], ),
-    sa.ForeignKeyConstraint(['productId'], ['products.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
-    if environment == "production":
-        op.execute(f"ALTER TABLE cartItems SET SCHEMA {SCHEMA};")
-    op.create_table('favorites',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('userId', sa.Integer(), nullable=False),
-    sa.Column('productId', sa.Integer(), nullable=False),
-    sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
-    sa.ForeignKeyConstraint(['productId'], ['products.id'], ),
-    sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
-    if environment == "production":
-        op.execute(f"ALTER TABLE favorites SET SCHEMA {SCHEMA};")
-    op.create_table('orderItems',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('orderId', sa.Integer(), nullable=False),
-    sa.Column('productId', sa.Integer(), nullable=False),
-    sa.Column('quantity', sa.Integer(), nullable=False),
-    sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
-    sa.ForeignKeyConstraint(['orderId'], ['orders.id'], ),
-    sa.ForeignKeyConstraint(['productId'], ['products.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
-    if environment == "production":
-        op.execute(f"ALTER TABLE orderItems SET SCHEMA {SCHEMA};")
-    op.create_table('productImages',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('url', sa.String(length=255), nullable=False),
-    sa.Column('preview', sa.Boolean(), nullable=True),
-    sa.Column('productId', sa.Integer(), nullable=False),
-    sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
-    sa.ForeignKeyConstraint(['productId'], ['products.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
-    if environment == "production":
-        op.execute(f"ALTER TABLE productImages SET SCHEMA {SCHEMA};")
-    op.create_table('reviews',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('userId', sa.Integer(), nullable=False),
-    sa.Column('productId', sa.Integer(), nullable=False),
-    sa.Column('itemRating', sa.Integer(), nullable=False),
-    sa.Column('shippingRating', sa.Integer(), nullable=False),
-    sa.Column('description', sa.Text(), nullable=True),
-    sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
-    sa.ForeignKeyConstraint(['productId'], ['products.id'], ),
-    sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
-    if environment == "production":
-        op.execute(f"ALTER TABLE reviews SET SCHEMA {SCHEMA};")
-    op.create_table('reviewImages',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('url', sa.String(), nullable=False),
-    sa.Column('preview', sa.Boolean(), nullable=False),
-    sa.Column('reviewId', sa.Integer(), nullable=False),
-    sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
-    sa.ForeignKeyConstraint(['reviewId'], ['reviews.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
-    if environment == "production":
-        op.execute(f"ALTER TABLE reviewImages SET SCHEMA {SCHEMA};")
+    # op.create_table('shoppingCarts',
+    # sa.Column('id', sa.Integer(), nullable=False),
+    # sa.Column('userId', sa.Integer(), nullable=False),
+    # sa.Column('total', sa.Float(), nullable=False),
+    # sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
+    # sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
+    # sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
+    # sa.PrimaryKeyConstraint('id')
+    # )
+    # if environment == "production":
+    #     op.execute(f"ALTER TABLE shoppingCarts SET SCHEMA {SCHEMA};")
+    # op.create_table('cartItems',
+    # sa.Column('id', sa.Integer(), nullable=False),
+    # sa.Column('cartId', sa.Integer(), nullable=False),
+    # sa.Column('productId', sa.Integer(), nullable=False),
+    # sa.Column('quantity', sa.Integer(), nullable=False),
+    # sa.Column('createdAt', sa.DateTime(), nullable=False),
+    # sa.Column('updatedAt', sa.DateTime(), nullable=False),
+    # sa.ForeignKeyConstraint(['cartId'], ['shoppingCarts.id'], ),
+    # sa.ForeignKeyConstraint(['productId'], ['products.id'], ),
+    # sa.PrimaryKeyConstraint('id')
+    # )
+    # if environment == "production":
+    #     op.execute(f"ALTER TABLE cartItems SET SCHEMA {SCHEMA};")
+    # op.create_table('favorites',
+    # sa.Column('id', sa.Integer(), nullable=False),
+    # sa.Column('userId', sa.Integer(), nullable=False),
+    # sa.Column('productId', sa.Integer(), nullable=False),
+    # sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
+    # sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
+    # sa.ForeignKeyConstraint(['productId'], ['products.id'], ),
+    # sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
+    # sa.PrimaryKeyConstraint('id')
+    # )
+    # if environment == "production":
+    #     op.execute(f"ALTER TABLE favorites SET SCHEMA {SCHEMA};")
+    # op.create_table('orderItems',
+    # sa.Column('id', sa.Integer(), nullable=False),
+    # sa.Column('orderId', sa.Integer(), nullable=False),
+    # sa.Column('productId', sa.Integer(), nullable=False),
+    # sa.Column('quantity', sa.Integer(), nullable=False),
+    # sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
+    # sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
+    # sa.ForeignKeyConstraint(['orderId'], ['orders.id'], ),
+    # sa.ForeignKeyConstraint(['productId'], ['products.id'], ),
+    # sa.PrimaryKeyConstraint('id')
+    # )
+    # if environment == "production":
+    #     op.execute(f"ALTER TABLE orderItems SET SCHEMA {SCHEMA};")
+    # op.create_table('productImages',
+    # sa.Column('id', sa.Integer(), nullable=False),
+    # sa.Column('url', sa.String(length=255), nullable=False),
+    # sa.Column('preview', sa.Boolean(), nullable=True),
+    # sa.Column('productId', sa.Integer(), nullable=False),
+    # sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
+    # sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
+    # sa.ForeignKeyConstraint(['productId'], ['products.id'], ),
+    # sa.PrimaryKeyConstraint('id')
+    # )
+    # if environment == "production":
+    #     op.execute(f"ALTER TABLE productImages SET SCHEMA {SCHEMA};")
+    # op.create_table('reviews',
+    # sa.Column('id', sa.Integer(), nullable=False),
+    # sa.Column('userId', sa.Integer(), nullable=False),
+    # sa.Column('productId', sa.Integer(), nullable=False),
+    # sa.Column('itemRating', sa.Integer(), nullable=False),
+    # sa.Column('shippingRating', sa.Integer(), nullable=False),
+    # sa.Column('description', sa.Text(), nullable=True),
+    # sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
+    # sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
+    # sa.ForeignKeyConstraint(['productId'], ['products.id'], ),
+    # sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
+    # sa.PrimaryKeyConstraint('id')
+    # )
+    # if environment == "production":
+    #     op.execute(f"ALTER TABLE reviews SET SCHEMA {SCHEMA};")
+    # op.create_table('reviewImages',
+    # sa.Column('id', sa.Integer(), nullable=False),
+    # sa.Column('url', sa.String(), nullable=False),
+    # sa.Column('preview', sa.Boolean(), nullable=False),
+    # sa.Column('reviewId', sa.Integer(), nullable=False),
+    # sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
+    # sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
+    # sa.ForeignKeyConstraint(['reviewId'], ['reviews.id'], ),
+    # sa.PrimaryKeyConstraint('id')
+    # )
+    # if environment == "production":
+    #     op.execute(f"ALTER TABLE reviewImages SET SCHEMA {SCHEMA};")
     # ### end Alembic commands ###
 
 
