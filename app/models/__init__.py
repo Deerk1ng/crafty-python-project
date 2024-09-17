@@ -7,6 +7,6 @@ from .order import Order
 from .productImage import ProductImage
 from .reviewImage import ReviewImage
 from .review import Review
-from .shopping_cart import shoppingCart
+from .shoppingCart import ShoppingCart
 from .cartItem import CartItem
 from .db import environment, SCHEMA
