@@ -15,9 +15,9 @@ class CartItem(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
-    cart = db.relationship('shopping_cart', back_populates='cart_items')
+    cart = db.relationship('ShoppingCart', back_populates='cart_items')
     product = db.relationship("Product", back_populates="cart_items")
-    shopping_cart = db.relationship("shopping_cart", back_populates="cart_items")
+    shopping_cart = db.relationship("ShoppingCart", back_populates="cart_items")
 
     def to_dict(self):
         return {
