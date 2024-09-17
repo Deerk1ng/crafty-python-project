@@ -1,5 +1,5 @@
 from datetime import datetime
-from .db import db, environment, SCHEMA
+from .db import db, environment, SCHEMA, add_prefix_for_prod
 
 
 class Order(db.Model):
@@ -9,7 +9,7 @@ class Order(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    userId = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    userId = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
     total = db.Column(db.Float, nullable=False)
     createdAt = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
     updatedAt = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
