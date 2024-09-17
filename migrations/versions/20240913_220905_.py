@@ -64,17 +64,17 @@ def upgrade():
     )
     if environment == "production":
         op.execute(f"ALTER TABLE products SET SCHEMA {SCHEMA};")
-    # op.create_table('shoppingCarts',
-    # sa.Column('id', sa.Integer(), nullable=False),
-    # sa.Column('userId', sa.Integer(), nullable=False),
-    # sa.Column('total', sa.Float(), nullable=False),
-    # sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
-    # sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
-    # sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
-    # sa.PrimaryKeyConstraint('id')
-    # )
-    # if environment == "production":
-    #     op.execute(f"ALTER TABLE shoppingCarts SET SCHEMA {SCHEMA};")
+    op.create_table('shopping_carts',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('userId', sa.Integer(), nullable=False),
+    sa.Column('total', sa.Float(), nullable=False),
+    sa.Column('createdAt', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('updatedAt', sa.DateTime(timezone=True), nullable=False),
+    sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    if environment == "production":
+        op.execute(f"ALTER TABLE shopping_carts SET SCHEMA {SCHEMA};")
     # op.create_table('cartItems',
     # sa.Column('id', sa.Integer(), nullable=False),
     # sa.Column('cartId', sa.Integer(), nullable=False),
