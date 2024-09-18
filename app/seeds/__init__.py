@@ -2,10 +2,10 @@ from flask.cli import AppGroup
 from .users import seed_users, undo_users
 from .products import seed_products, undo_products
 from .reviews import seed_reviews, undo_reviews
-from .reviewimages import seed_reviewImages, undo_reviewImages
+from .reviewimages import seed_review_images, undo_review_images
 from .orders import seed_orders, undo_orders
-from .orderitems import seed_orderItems, undo_orderItems
-from .productImages import seed_product_images, undo_productImages
+from .orderitems import seed_order_items, undo_order_items
+from .productimages import seed_product_images, undo_product_images
 
 
 from app.models.db import db, environment, SCHEMA
@@ -23,13 +23,14 @@ def seed():
         # command, which will  truncate all tables prefixed with
         # the schema name (see comment in users.py undo_users function).
         # Make sure to add all your other model's undo functions below
-        undo_users()
-        undo_products()
-        undo_reviews()
-        undo_reviewImages()
+        undo_product_images()
+        undo_order_items()
         undo_orders()
-        undo_orderItems()
-        undo_productImages()
+        undo_review_images()
+        undo_reviews()
+        undo_products()
+        undo_users()
+
 
     seed_users()
     # Add other seed functions here
@@ -37,22 +38,19 @@ def seed():
     seed_product_images()
 
     seed_reviews()
-    seed_reviewImages()
+    seed_review_images()
     seed_orders()
-    seed_orderItems()
+    seed_order_items()
 
 
 # Creates the `flask seed undo` command
 @seed_commands.command('undo') ##might want this to be reverse order?
 def undo():
+    undo_product_images()
+    undo_order_items()
+    undo_orders()
+    undo_review_images()
+    undo_reviews()
+    undo_products()
     undo_users()
     # Add other undo functions here
-    undo_products()
-
-    undo_reviews()
-    undo_reviewImages()
-    undo_orders()
-    undo_orderItems()
-    
-    undo_productImages()
-

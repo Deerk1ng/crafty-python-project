@@ -1,30 +1,30 @@
 from datetime import datetime
-from .db import db, environment, SCHEMA
+from .db import db, environment, SCHEMA, add_prefix_for_prod
 
 
 class CartItem(db.Model):
-    __tablename__ = 'cartItems'
+    __tablename__ = 'cart_items'
 
     if environment == 'production':
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    cartId = db.Column(db.Integer, db.ForeignKey("shoppingCarts.id"), nullable=False)
-    productId = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
+    cart_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("shopping_carts.id")), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('products.id')), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
-    createdAt = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    updatedAt = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
-    cart = db.relationship('ShoppingCart', back_populates='cartItems')
-    product = db.relationship("Product", back_populates="cartItems")
-    shoppingCart = db.relationship("ShoppingCart", back_populates="cartItems")
+    cart = db.relationship('ShoppingCart', back_populates='cart_items')
+    product = db.relationship("Product", back_populates="cart_items")
+    shopping_cart = db.relationship("ShoppingCart", back_populates="cart_items")
 
     def to_dict(self):
         return {
             'id': self.id,
-            'cartId': self.cartId,
-            'productId': self.productId,
+            'cart_id': self.cart_id,
+            'product_id': self.product_id,
             'quantity': self.quantity,
-            'createdAt': self.createdAt,
-            'updatedAt': self.updatedAt
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
         }

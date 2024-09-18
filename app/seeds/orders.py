@@ -3,11 +3,11 @@ from sqlalchemy.sql import text
 
 def seed_orders():
     order1 = Order(
-        userId=1 ,total=999.99)
+        user_id=1 ,total=999.99)
     order2 = Order(
-        userId=1 ,total=123.99)
+        user_id=1 ,total=123.99)
     order3 = Order(
-        userId=1 ,total=444.99)
+        user_id=1 ,total=444.99)
 
     db.session.add(order1)
     db.session.add(order2)
