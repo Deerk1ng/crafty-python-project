@@ -50,8 +50,13 @@ def sign_up():
     """
     form = SignUpForm()
     form['csrf_token'].data = request.cookies['csrf_token']
+
     if form.validate_on_submit():
         user = User(
+            first_name=form.data['firstName'],
+            last_name=form.data['lastName'],
+            shop_name=form.data['shopName'],
+            address=form.data['address'],
             username=form.data['username'],
             email=form.data['email'],
             password=form.data['password']
@@ -59,8 +64,10 @@ def sign_up():
         db.session.add(user)
         db.session.commit()
         login_user(user)
+
         return user.to_dict()
-    return form.errors, 401
+
+    return form.errors, 400
 
 
 @auth_routes.route('/unauthorized')
