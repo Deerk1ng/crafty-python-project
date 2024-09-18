@@ -90,7 +90,7 @@ def productsForUser():
 
 
 
-@product_route.route('/:product_id')
+@product_route.route('/<product_id>')
 @login_required
 def deleteProduct(product_id):
     currentUser = current_user.to_dict()
