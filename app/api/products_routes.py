@@ -1,9 +1,9 @@
-from flask import Blueprint, jsonify, session, redirect, request
+from flask import Blueprint, jsonify, redirect, request
 from app import db
-from app.models import Product, Review, ProductImage, User
+from app.models import Product, Review, ProductImage, ReviewImage, User
 from flask_login import current_user, login_required
 # create "create product form" and import it
-from app.forms import CreateProductForm
+from app.forms import CreateProductForm, CreateReviewForm
 
 
 
@@ -207,9 +207,6 @@ def editProduct(product_id):
 
 
 
-
-
-
 @product_route.route('/<int:product_id>', methods=['DELETE'])
 @login_required
 def deleteProduct(product_id):
@@ -229,3 +226,41 @@ def deleteProduct(product_id):
         return redirect('/api/products/current')
 
     return {'error': 'Unauthorized to delete this productById'}, 401
+
+@product_route.route('/<int:product_id>/reviews')
+def get_reviews_by_product_id(product_id):
+    reviews = db.session.query(Review).filter(Review.product_id == product_id).all()
+    reviewsList = []
+
+    for review in reviews:
+        reviewDict = review.to_dict()
+
+        images = db.session.query(ReviewImage).filter(ReviewImage.review_id == review.id)
+
+        reviewDict['image'] = [image.to_dict() for image in images]
+        reviewsList.append(reviewDict)
+    return jsonify({'reviews': reviewsList})
+
+@product_route.route('/<int:product_id>/reviews', methods=['POST'])
+@login_required
+def create_review_by_product_id(product_id):
+    currentUser = current_user.to_dict()
+
+    form = CreateReviewForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        review = Review(
+            user_id = currentUser['id'],
+            product_id = product_id,
+            item_rating = form.data['item_rating'],
+            shipping_rating = form.data['shipping_rating'],
+            description = form.data['description']
+        )
+
+        db.session.add(review)
+        db.session.commit()
+        new_review = review.to_dict()
+
+        return {'created_review': new_review}
+
+    return form.errors, 400

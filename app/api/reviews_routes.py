@@ -1,7 +1,8 @@
-from flask import Blueprint, jsonify, session, redirect
+from flask import Blueprint, jsonify, redirect, request
 from app import db
 from app.models import Product, Review, ReviewImage, User
 from flask_login import current_user, login_required
+from app.forms import CreateProductForm, CreateReviewForm
 
 review_route = Blueprint('review', __name__)
 
@@ -17,16 +18,56 @@ def get_all_reviews():
 
     return jsonify({'reviews': reviewsList})
 
-@review_route.route('/<product_id>')
-def get_reviews_by_product_id(product_id):
-    reviews = db.session.query(Review).filter(Review.product_id == product_id).all()
-    reviewsList = []
+@review_route.route('/<int:review_id>', methods=['PUT'])
+@login_required
+def edit_review(review_id):
+    """
+    edits a review
+    """
+    logged_in_user = current_user.to_dict()
 
-    for review in reviews:
-        reviewDict = review.to_dict()
+    if not logged_in_user:
+        return redirect('/api/auth/unauthorized'), 401
 
-        images = db.session.query(ReviewImage).filter(ReviewImage.review_id == review.id)
+    review_by_id = db.session.query(Review).filter(Review.id == review_id).first()
 
-        reviewDict['image'] = [image.to_dict() for image in images]
-        reviewsList.append(reviewDict)
-    return jsonify({'reviews': reviewsList})
+    if not review_by_id:
+        return {'errors': {'message': 'Review does not exist'}}, 404
+
+    if review_by_id.user_id == logged_in_user['id']:
+        form = CreateReviewForm()
+
+        form['csrf_token'].data = request.cookies['csrf_token']
+        if form.validate_on_submit():
+            review_by_id.item_rating = form.data['item_rating']
+            review_by_id.shipping_rating = form.data['shipping_rating']
+            review_by_id.description = form.data['description']
+
+            db.session.commit()
+
+            updated_review = review_by_id.to_dict()
+            return {'updated_review': updated_review}, 201
+        else:
+            return form.errors, 400
+    elif not review_by_id.user_id == logged_in_user['id']:
+        return redirect('/api/auth/unauthorized'), 401
+
+@review_route.route('/<int:review_id>', methods=['DELETE'])
+@login_required
+def delete_review(review_id):
+    logged_in_user = current_user.to_dict()
+
+    if not logged_in_user:
+        return redirect('/api/auth/unauthorized'), 401
+
+    review_by_id = db.session.query(Review).filter(Review.id == review_id).first()
+
+    if not review_by_id:
+        return {'errors': {'message': 'Review does not exist'}}, 404
+
+    if review_by_id.user_id == logged_in_user['id']:
+        db.session.delete(review_by_id)
+        db.session.commit()
+        return {'message': 'Delete Successful'}, 200
+
+    return {'error': 'Unauthorized to delete this review'}, 401
