@@ -22,7 +22,7 @@ def username_exists(form, field):
 def shopname_exists(form, field):
     # checking if shopname is already in use
     shop_name = field.data
-    print('yeeeeeeeeeet', shop_name)
+
     user_shop = User.query.filter(User.shop_name == shop_name).first()
 
     if user_shop:

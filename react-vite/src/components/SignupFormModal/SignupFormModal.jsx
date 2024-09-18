@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
@@ -6,10 +7,10 @@ import "./SignupForm.css";
 
 function SignupFormModal() {
   const dispatch = useDispatch();
-  const [first_name, setFirst_name] = useState("")
-  const [last_name, setLast_name] = useState("")
-  const [shop_name, setShop_name] = useState("")
-  const [address, setAddress] = useState("")
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [shopName, setShopName] = useState("");
+  const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -20,9 +21,6 @@ function SignupFormModal() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("First Nameeeeeee:", first_name);
-    console.log("Last Nameeeeeeee:", last_name);
-    console.log("Shop Nameeeeeeee:", shop_name);
 
     if (password !== confirmPassword) {
       return setErrors({
@@ -33,13 +31,13 @@ function SignupFormModal() {
 
     const serverResponse = await dispatch(
       thunkSignup({
-        first_name,
-        last_name,
-        shop_name,
-        address,
-        email,
-        username,
-        password,
+        first_name: firstName,
+        last_name: lastName,
+        shop_name: shopName,
+        address: address,
+        email: email,
+        username: username,
+        password: password,
       })
     );
 
@@ -55,41 +53,41 @@ function SignupFormModal() {
       <h1>Sign Up</h1>
       {errors.server && <p>{errors.server}</p>}
       <form onSubmit={handleSubmit}>
-      <label>
-      First Name
-      <input
-        type="text"
-        value={first_name}
-        onChange={(e) => setFirst_name(e.target.value)}
-        required
-      />
-    </label>
-    {errors.first_name && <p>{errors.first_name}</p>}
-
-    <label>
-      Last Name
-      <input
-        type="text"
-        value={last_name}
-        onChange={(e) => setLast_name(e.target.value)}
-        required
-      />
-    </label>
-    {errors.last_name && <p>{errors.last_name}</p>}
-
-    <label>
-      Shop Name
-      <input
-        type="text"
-        value={shop_name}
-        onChange={(e) => setShop_name(e.target.value)}
-        required
-      />
-    </label>
-    {errors.shop_name && <p>{errors.shop_name}</p>}
+        <label>
+          First Name
+          <input
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            required
+          />
+        </label>
+        {errors.first_name && <p>{errors.first_name}</p>}
 
         <label>
-            Address
+          Last Name
+          <input
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            required
+          />
+        </label>
+        {errors.last_name && <p>{errors.last_name}</p>}
+
+        <label>
+          Shop Name
+          <input
+            type="text"
+            value={shopName}
+            onChange={(e) => setShopName(e.target.value)}
+            required
+          />
+        </label>
+        {errors.shop_name && <p>{errors.shop_name}</p>}
+
+        <label>
+          Address
           <input
             type="text"
             value={address}
@@ -98,6 +96,7 @@ function SignupFormModal() {
           />
         </label>
         {errors.address && <p>{errors.address}</p>}
+
         <label>
           Email
           <input
@@ -108,6 +107,7 @@ function SignupFormModal() {
           />
         </label>
         {errors.email && <p>{errors.email}</p>}
+
         <label>
           Username
           <input
@@ -118,6 +118,7 @@ function SignupFormModal() {
           />
         </label>
         {errors.username && <p>{errors.username}</p>}
+
         <label>
           Password
           <input
@@ -128,6 +129,7 @@ function SignupFormModal() {
           />
         </label>
         {errors.password && <p>{errors.password}</p>}
+
         <label>
           Confirm Password
           <input
@@ -138,6 +140,7 @@ function SignupFormModal() {
           />
         </label>
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+
         <button type="submit">Sign Up</button>
       </form>
     </>
