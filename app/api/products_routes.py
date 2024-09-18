@@ -19,8 +19,8 @@ def homeAllProducts():
         productDict = product.to_dict()
 
         # Query for images related to the current product
-        images = db.session.query(ProductImage).filter(ProductImage.productId == product.id).all()
-        reviews = db.session.query(Review).filter(Review.productId == product.id).all()
+        images = db.session.query(ProductImage).filter(ProductImage.product_id == product.id).all()
+        reviews = db.session.query(Review).filter(Review.product_id == product.id).all()
         # Add images to the product dictionary
         reviewLngth = len(reviews)
         itemRte = 0
@@ -28,8 +28,8 @@ def homeAllProducts():
 
         # grab the ratings from the reviews and divide them by len of reviews
         for review in reviews:
-            itemRte += review.itemRating
-            shippingRte += review.shippingRating
+            itemRte += review.item_rating
+            shippingRte += review.shipping_rating
 
         # avgRating added to data
         productDict['avgRating'] = (itemRte + shippingRte) / reviewLngth
@@ -49,8 +49,8 @@ def productsForUser():
     # Convert current_user to a dictionary
     currentUser = current_user.to_dict()
 
-    # Query products where the ownerId matches the current user's ID
-    products = db.session.query(Product).filter(Product.ownerId == currentUser['id']).all()
+    # Query products where the owner_id matches the current user's ID
+    products = db.session.query(Product).filter(Product.owner_id == currentUser['id']).all()
 
     productsList = []
 
@@ -59,8 +59,8 @@ def productsForUser():
         productDict = product.to_dict()
 
         # Query for images and reviews related to the current product
-        images = db.session.query(ProductImage).filter(ProductImage.productId == product.id).all()
-        reviews = db.session.query(Review).filter(Review.productId == product.id).all()
+        images = db.session.query(ProductImage).filter(ProductImage.product_id == product.id).all()
+        reviews = db.session.query(Review).filter(Review.product_id == product.id).all()
 
         # Calculate average ratings
         review_length = len(reviews)
@@ -68,8 +68,8 @@ def productsForUser():
         shipping_rating_sum = 0
 
         for review in reviews:
-            item_rating_sum += review.itemRating
-            shipping_rating_sum += review.shippingRating
+            item_rating_sum += review.item_rating
+            shipping_rating_sum += review.shipping_rating
 
         # Avoid division by zero
         avg_rating = 0
@@ -90,17 +90,17 @@ def productsForUser():
 
 
 
-@product_route.route('/:productId')
+@product_route.route('/:product_id')
 @login_required
-def deleteProduct(productId):
+def deleteProduct(product_id):
     currentUser = current_user.to_dict()
 
-    product = db.session.query(Product).filter(Product.id == productId)
+    product = db.session.query(Product).filter(Product.id == product_id)
 
     if not product:
         return {'error': 'Product does not exist'}, 404
 
-    if product and product.ownerId == currentUser.id:
+    if product and product.owner_id == currentUser.id:
         db.session.delete(product)
         db.session.commit()
         return redirect('api/products/current')
