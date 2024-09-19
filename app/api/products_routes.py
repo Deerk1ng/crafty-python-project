@@ -32,7 +32,10 @@ def homeAllProducts():
 
 
         # Add images to the productById dictionary
-        reviewLngth = len(reviews)
+        if len(reviews):
+            reviewLngth = len(reviews)
+        else:
+            reviewLngth = 1
         itemRte = 0
         shippingRte = 0
 
@@ -253,7 +256,7 @@ def get_reviews_by_product_id(product_id):
 
         images = db.session.query(ReviewImage).filter(ReviewImage.review_id == review.id)
         user = db.session.query(User).filter(User.id == reviewDict['user_id']).first().to_dict()
-        print('eeeeeeeeeeeeeeeee:', user)
+
         # just grabbng id and shop_name
         user_info = {'id': user['id'], 'shop_name': user['shop_name']}
         reviewDict['user'] = user_info
@@ -275,6 +278,8 @@ def create_review_by_product_id(product_id):
 
     if product_reviews:
         return {'error': 'User already has a review for this product'}, 403
+
+
 
     form = CreateReviewForm()
     form['csrf_token'].data = request.cookies['csrf_token']
