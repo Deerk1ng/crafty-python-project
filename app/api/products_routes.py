@@ -240,6 +240,11 @@ def deleteProduct(product_id):
 
 @product_route.route('/<int:product_id>/reviews')
 def get_reviews_by_product_id(product_id):
+    productById = db.session.query(Product).filter(Product.id == product_id).first()
+
+    if not productById:
+        return {'error': 'Product does not exist'}, 404
+
     reviews = db.session.query(Review).filter(Review.product_id == product_id).all()
     reviewsList = []
 
@@ -247,7 +252,11 @@ def get_reviews_by_product_id(product_id):
         reviewDict = review.to_dict()
 
         images = db.session.query(ReviewImage).filter(ReviewImage.review_id == review.id)
-
+        user = db.session.query(User).filter(User.id == reviewDict['user_id']).first().to_dict()
+        print('eeeeeeeeeeeeeeeee:', user)
+        # just grabbng id and shop_name
+        user_info = {'id': user['id'], 'shop_name': user['shop_name']}
+        reviewDict['user'] = user_info
         reviewDict['image'] = [image.to_dict() for image in images]
         reviewsList.append(reviewDict)
     return jsonify({'reviews': reviewsList})
@@ -256,6 +265,16 @@ def get_reviews_by_product_id(product_id):
 @login_required
 def create_review_by_product_id(product_id):
     currentUser = current_user.to_dict()
+    productById = db.session.query(Product).filter(Product.id == product_id).first()
+
+    if not productById:
+        return {'error': 'Product does not exist'}, 404
+
+
+    product_reviews = db.session.query(Review).join(Product).filter(Product.id == product_id).filter(Review.user_id == currentUser['id']).one_or_none()
+
+    if product_reviews:
+        return {'error': 'User already has a review for this product'}, 403
 
     form = CreateReviewForm()
     form['csrf_token'].data = request.cookies['csrf_token']
