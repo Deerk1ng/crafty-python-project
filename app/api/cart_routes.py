@@ -7,11 +7,21 @@ from flask_login import current_user, login_required
 cart_route = Blueprint('cart', __name__)
 
 
-#Create new shopping cart for user
-@cart_route.route('/current')
+#Create/delete shopping cart for user
+@cart_route.route('/current', methods=['POST', 'DELETE'])
 @login_required
-def newShoppingCart():
+def createShoppingCart():
     currentUser = current_user.to_dict()
+    cart = ShoppingCart(
+        user_id= currentUser['id'],
+        total= 0
+    )
+    try:
+        db.session.add(cart)
+        db.session.commit()
+        return redirect('/current')
+    except:
+        return {'errors': {'message': 'There was an error creating cart'}}
 
 
 #Get items for Shopping Cart
@@ -48,4 +58,10 @@ def getShoppingCart(cart_id):
     cart_dict['items'] = items_dict
     cart_dict['total'] = total
 
-    return {'shoppingCart': cart_dict}
+    return {'shoppingCart': cart_dict}, 200
+
+#Add item to shopping cart
+@cart_route.route('/<int:cart_id>/<int:item_id>', methods=['POST', 'DELETE'])
+@login_required
+def addItem(cart_id, item_id):
+    return {cart_id, item_id}, 200
