@@ -6,8 +6,9 @@ from .reviewimages import seed_review_images, undo_review_images
 from .orders import seed_orders, undo_orders
 from .orderitems import seed_order_items, undo_order_items
 from .productimages import seed_product_images, undo_product_images
-
-
+from .cartitems import seed_cart_items, undo_cart_items
+from .shopingcart import seed_shopping_carts, undo_shopping_carts
+from .favorites import seed_favorites, undo_favorites
 from app.models.db import db, environment, SCHEMA
 
 # Creates a seed group to hold our commands
@@ -42,6 +43,12 @@ def seed():
     seed_orders()
     seed_order_items()
 
+    # added seed data for cartitems, favorites and shoppingcart
+
+    seed_shopping_carts()
+    seed_cart_items()
+    seed_favorites()
+
 
 # Creates the `flask seed undo` command
 @seed_commands.command('undo') ##might want this to be reverse order?
@@ -53,4 +60,8 @@ def undo():
     undo_reviews()
     undo_products()
     undo_users()
+
+    undo_favorites()
+    undo_shopping_carts()
+    undo_cart_items()
     # Add other undo functions here

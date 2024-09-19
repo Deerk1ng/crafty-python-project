@@ -1,32 +1,39 @@
+
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useModal } from "../../context/Modal";
 import { thunkSignup } from "../../redux/session";
+import "./SignupForm.css";
 
 function SignupFormPage() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const sessionUser = useSelector((state) => state.session.user);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [shopName, setShopName] = useState("");
+  const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
-
-  if (sessionUser) return <Navigate to="/" replace={true} />;
+  const { closeModal } = useModal();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+
     if (password !== confirmPassword) {
       return setErrors({
-        confirmPassword:
-          "Confirm Password field must be the same as the Password field",
+        confirmPassword: "Confirm Password field must be the same as the Password field",
       });
     }
 
     const serverResponse = await dispatch(
       thunkSignup({
+        first_name: firstName, // Ensure these match backend field names
+        last_name: lastName,
+        shop_name: shopName,
+        address,
         email,
         username,
         password,
@@ -36,7 +43,7 @@ function SignupFormPage() {
     if (serverResponse) {
       setErrors(serverResponse);
     } else {
-      navigate("/");
+      closeModal();
     }
   };
 
@@ -45,6 +52,50 @@ function SignupFormPage() {
       <h1>Sign Up</h1>
       {errors.server && <p>{errors.server}</p>}
       <form onSubmit={handleSubmit}>
+        <label>
+          First Name
+          <input
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            required
+          />
+        </label>
+        {errors.first_name && <p>{errors.first_name}</p>}
+
+        <label>
+          Last Name
+          <input
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            required
+          />
+        </label>
+        {errors.last_name && <p>{errors.last_name}</p>}
+
+        <label>
+          Shop Name
+          <input
+            type="text"
+            value={shopName}
+            onChange={(e) => setShopName(e.target.value)}
+            required
+          />
+        </label>
+        {errors.shop_name && <p>{errors.shop_name}</p>}
+
+        <label>
+          Address
+          <input
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            required
+          />
+        </label>
+        {errors.address && <p>{errors.address}</p>}
+
         <label>
           Email
           <input
@@ -55,6 +106,7 @@ function SignupFormPage() {
           />
         </label>
         {errors.email && <p>{errors.email}</p>}
+
         <label>
           Username
           <input
@@ -65,6 +117,7 @@ function SignupFormPage() {
           />
         </label>
         {errors.username && <p>{errors.username}</p>}
+
         <label>
           Password
           <input
@@ -75,6 +128,7 @@ function SignupFormPage() {
           />
         </label>
         {errors.password && <p>{errors.password}</p>}
+
         <label>
           Confirm Password
           <input
@@ -85,6 +139,7 @@ function SignupFormPage() {
           />
         </label>
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+
         <button type="submit">Sign Up</button>
       </form>
     </>
