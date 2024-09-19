@@ -26,6 +26,11 @@ def homeAllProducts():
         # Query for images related to the current productById
         images = db.session.query(ProductImage).filter(ProductImage.product_id == productById.id).all()
         reviews = db.session.query(Review).filter(Review.product_id == productById.id).all()
+        user = db.session.query(User).filter(User.id == productById.owner_id).first().to_dict()
+
+        user_info = {'id': user['id'], 'shop_name': user['shop_name']}
+
+
         # Add images to the productById dictionary
         reviewLngth = len(reviews)
         itemRte = 0
@@ -37,6 +42,7 @@ def homeAllProducts():
             shippingRte += review.shipping_rating
 
         # avgRating added to data
+        productDict['owner'] = user_info
         productDict['avgRating'] = (itemRte + shippingRte) / reviewLngth
         productDict['images'] = [image.to_dict() for image in images]
         productDict['reviews'] = [review.to_dict() for review in reviews]
@@ -56,7 +62,7 @@ def productsForUser():
     """
     # Convert current_user to a dictionary
     currentUser = current_user.to_dict()
-
+    print('eeeeeeeeeeeeeeeooooooooo', currentUser)
     # Query products where the owner_id matches the current user's ID
     products = db.session.query(Product).filter(Product.owner_id == currentUser['id']).all()
 
@@ -69,6 +75,10 @@ def productsForUser():
         # Query for images and reviews related to the current productById
         images = db.session.query(ProductImage).filter(ProductImage.product_id == productById.id).all()
         reviews = db.session.query(Review).filter(Review.product_id == productById.id).all()
+        user = db.session.query(User).filter(User.id == productDict['owner_id']).first().to_dict()
+
+        # just grabbng id and shop_name
+        user_info = {'id': user['id'], 'shop_name': user['shop_name']}
 
         # Calculate average ratings
         review_length = len(reviews)
@@ -85,6 +95,7 @@ def productsForUser():
             avg_rating = (item_rating_sum + shipping_rating_sum) / (2 * review_length)
 
         # Add images, reviews, and average rating to the productById dictionary
+        productDict['owner'] = user_info
         productDict['avgRating'] = avg_rating
         productDict['images'] = [image.to_dict() for image in images]
         productDict['reviews'] = [review.to_dict() for review in reviews]
@@ -92,7 +103,7 @@ def productsForUser():
         # Append the productById dictionary to the list
         productsList.append(productDict)
     # Return the JSON response
-    return jsonify({'currentUser': currentUser}, {'products': productsList})
+    return jsonify({'products': productsList})
 
 
 @product_route.route('/<int:product_id>')
@@ -143,11 +154,12 @@ def createProduct():
     """
     currentUser = current_user.to_dict()
 
+    print('eeeeeeeeeee', currentUser)
     form = CreateProductForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         product = Product(
-            owner_id= currentUser.id,
+            owner_id= currentUser['id'],
             name= form.data['name'],
             price= form.data['price'],
             description= form.data['description'],
@@ -158,7 +170,7 @@ def createProduct():
         db.session.commit()
         new_product = product.to_dict()
 
-        return {'created_product' :new_product}, redirect(f'/api/products/{new_product.id}'), 201
+        return {'created_product' :new_product}, 201
 
     return form.errors, 400
 
@@ -167,41 +179,40 @@ def createProduct():
 @login_required
 def editProduct(product_id):
     """
-    edits a product and redirects user to the product after submitting data
+    Edits a product and returns the updated product's details in JSON format
     """
     logged_in_user = current_user.to_dict()
 
     product_by_id = db.session.query(Product).filter(Product.id == product_id).first()
 
-    if not logged_in_user:
-        return redirect('/api/auth/unauthorized'), 401
-
     if not product_by_id:
         return {'errors': {'message': 'Product does not exist'}}, 404
 
-    if product_by_id.owner_id == logged_in_user.id:
-        form = CreateProductForm()
+    if product_by_id.owner_id != logged_in_user['id']:
+        return {'errors': {'message': 'Unauthorized to edit this product'}}, 403
 
-        form['csrf_token'].data = request.cookies['csrf_token']
-        if form.validate_on_submit():
-            if form.data.get('name'):
-                product_by_id.name = form.data['name']
-            if form.data.get('price'):
-                product_by_id.price = form.data['price']
-            if form.data.get('description'):
-                product_by_id.description = form.data['description']
-            if form.data.get('category'):
-                product_by_id.category = form.data['category']
+    form = CreateProductForm()
 
-            db.session.commit()
+    form['csrf_token'].data = request.cookies['csrf_token']
 
-            updated_product = product_by_id.to_dict()
+    if form.validate_on_submit():
+        if form.data.get('name'):
+            product_by_id.name = form.data['name']
+        if form.data.get('price'):
+            product_by_id.price = form.data['price']
+        if form.data.get('description'):
+            product_by_id.description = form.data['description']
+        if form.data.get('category'):
+            product_by_id.category = form.data['category']
 
-            return {'updated_product': updated_product}, redirect(f'/api/products/{updated_product.id}'), 201
-        elif not product_by_id.owner_id == logged_in_user.id:
-            return redirect('/api/auth/unauthorized'), 401
-        else:
-            return form.errors, 400
+        db.session.commit()
+
+        updated_product = product_by_id.to_dict()
+
+        return {'updated_product': updated_product}, 200
+
+    return form.errors, 400
+
 
 
 
@@ -218,12 +229,12 @@ def deleteProduct(product_id):
     productById = db.session.query(Product).filter(Product.id == product_id).first()
 
     if not productById:
-        return {'error': 'Product does not exist'}, 403
+        return {'error': 'Product does not exist'}, 404
 
     if productById.owner_id == currentUser['id']:
         db.session.delete(productById)
         db.session.commit()
-        return redirect('/api/products/current')
+        return {'message': "product deleted successfuly"}, 200
 
     return {'error': 'Unauthorized to delete this productById'}, 401
 
