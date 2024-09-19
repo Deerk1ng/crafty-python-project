@@ -7,7 +7,7 @@ from app.forms import CreateProductForm, CreateReviewForm
 
 
 
-product_route = Blueprint('productById', __name__)
+product_route = Blueprint('products', __name__)
 
 @product_route.route('/')
 def homeAllProducts():
@@ -62,7 +62,7 @@ def productsForUser():
     """
     # Convert current_user to a dictionary
     currentUser = current_user.to_dict()
-    print('eeeeeeeeeeeeeeeooooooooo', currentUser)
+
     # Query products where the owner_id matches the current user's ID
     products = db.session.query(Product).filter(Product.owner_id == currentUser['id']).all()
 
@@ -154,7 +154,7 @@ def createProduct():
     """
     currentUser = current_user.to_dict()
 
-    print('eeeeeeeeeee', currentUser)
+
     form = CreateProductForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
