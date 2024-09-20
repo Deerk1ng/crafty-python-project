@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, session, redirect
+from flask import Blueprint, jsonify, session, redirect, request
 from app import db
 from app.models import ShoppingCart, CartItem, Product, ProductImage
 from flask_login import current_user, login_required
@@ -7,21 +7,22 @@ from flask_login import current_user, login_required
 cart_route = Blueprint('cart', __name__)
 
 
-#Create/delete shopping cart for user
-@cart_route.route('/current', methods=['POST', 'DELETE'])
+#Create shopping cart for user
+@cart_route.route('/current', methods=['POST'])
 @login_required
 def createShoppingCart():
     currentUser = current_user.to_dict()
+    user_id = currentUser['id']
     cart = ShoppingCart(
-        user_id= currentUser['id'],
-        total= 0
+        user_id = user_id,
+        total = 0
     )
     try:
         db.session.add(cart)
         db.session.commit()
-        return redirect('/current')
+        return {'shopping_cart': cart.to_dict()}
     except:
-        return {'errors': {'message': 'There was an error creating cart'}}
+        return {'errors': {'message': 'There was an error creating shopping cart'}}
 
 
 #Get items for Shopping Cart
@@ -60,8 +61,50 @@ def getShoppingCart(cart_id):
 
     return {'shoppingCart': cart_dict}, 200
 
-#Add item to shopping cart
-@cart_route.route('/<int:cart_id>/<int:item_id>', methods=['POST', 'DELETE'])
+#Remove item to shopping cart
+@cart_route.route('/<int:item_id>', methods=['DELETE'])
 @login_required
-def addItem(cart_id, item_id):
-    return {cart_id, item_id}, 200
+def removeItem(item_id):
+
+    cart_item = db.session.query(CartItem).filter(CartItem.id == item_id).first()
+
+    try:
+        db.session.delete(cart_item)
+        db.session.commit()
+        return {'message': 'Cart item successfuly deleted'}
+    except:
+        return {'errors': {'message': 'There was an error in deleted item from cart'}}
+
+
+#While in PRODUCTS PAGE, add item to shopping cart
+@cart_route.route('/<int:cart_id>/<int:product_id>', methods=['POST'])
+@login_required
+def addItem(cart_id, product_id):
+
+    item = db.session.query(CartItem).filter(CartItem.cart_id == cart_id).filter(CartItem.product_id == product_id).first()
+
+    #if item already in cart, add +1 to quantity
+    if item:
+        item.quantity = item.quantity + 1
+        try:
+            db.session.commit()
+            return {'item': item.to_dict()}
+        except:
+            return {'errors': {'message': 'Could not update quantity of item'}}
+
+    #if item not found in cart, add to cart
+    if not item:
+        new_item = CartItem(
+            cart_id = cart_id,
+            product_id = product_id,
+            quantity = 1
+        )
+        try:
+            db.session.add(new_item)
+            db.session.commit()
+            return {'new_item': new_item.to_dict()}
+        except:
+            return {'errors': {'message': 'Could not update add item to cart'}}
+
+
+#While in CART, Add/Subtract quantity of item
