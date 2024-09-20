@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, redirect, request
 from app import db
-from app.models import Product, Review, ProductImage, ReviewImage, User
+from app.models import Product, Review, ProductImage, ReviewImage, User, Favorite
 from flask_login import current_user, login_required
 # create "create product form" and import it
 from app.forms import CreateProductForm, CreateReviewForm
@@ -299,3 +299,33 @@ def create_review_by_product_id(product_id):
         return {'created_review': new_review}
 
     return form.errors, 400
+
+
+
+# Add to favorites route
+@product_route.route('<int:productId>/favorites', methods=["POST"])
+@login_required
+def add_to_favorites(productId):
+    """
+    add current productId to current users favorites
+    """
+    check_fav = db.session.query(Favorite).filter(Favorite.product_id == productId, Favorite.user_id == current_user.id).first()
+
+    check_product = db.session.query(Product).filter(Product.id == productId).first()
+
+    if not check_product:
+        return {'error': "Product does not exist"}, 404
+
+    if not check_fav:
+        new_fav = Favorite(
+            user_id = current_user.id,
+            product_id = productId
+        )
+
+        db.session.add(new_fav)
+        db.session.commit()
+
+        new_fav.to_dict()
+        return {"message": 'Product added to favorites successfully!'}, 201
+    else:
+        return {'error': 'Product is already added to favorites'}
