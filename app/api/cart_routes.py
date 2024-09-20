@@ -1,4 +1,4 @@
-from flask import Blueprint, session, request
+from flask import Blueprint, request
 from app import db
 from app.models import ShoppingCart, CartItem, Product, Order, OrderItem, ProductImage
 from flask_login import current_user, login_required
@@ -11,6 +11,7 @@ cart_route = Blueprint('cart', __name__)
 @cart_route.route('/current', methods=['POST'])
 @login_required
 def createShoppingCart():
+
     currentUser = current_user.to_dict()
     user_id = currentUser['id']
     cart = ShoppingCart(
@@ -24,6 +25,17 @@ def createShoppingCart():
     except:
         return {'errors': {'message': 'There was an error creating shopping cart'}}
 
+
+@cart_route.route('/current/<int:cart_id>', methods=['DELETE'])
+@login_required
+def deleteShoppingCart(cart_id):
+    cart = db.session.query(ShoppingCart).filter(ShoppingCart.id == cart_id).first()
+    try:
+        db.session.delete(cart)
+        db.session.commit()
+        return {'message': 'Shopping cart successfuly deleted'}, 200
+    except:
+        return {'errors': {'message': 'There was an error deleting shopping cart'}}
 
 #Get items for Shopping Cart, sets total of cart
 @cart_route.route('/<int:cart_id>')
@@ -67,7 +79,7 @@ def getShoppingCart(cart_id):
 #Add item via ITEM id
 @cart_route.route('/add/<int:item_id>/<int:quantity>', methods=['POST'])
 @login_required
-def addItem(item_id, quantity):
+def addItemViaItemID(item_id, quantity):
 
     cart_item = db.session.query(CartItem).filter(CartItem.id == item_id).first()
 
@@ -80,7 +92,7 @@ def addItem(item_id, quantity):
             return {'errors': {'message': 'There was an error in adding quantity to item'}}
 
 #Subtract/delete item via ITEM id
-@cart_route.route('/subtract/<int:item_id>/<int:quantity', methods=['PUT', 'DELETE'])
+@cart_route.route('/subtract/<int:item_id>/<int:quantity>', methods=['POST', 'DELETE'])
 def subtractDeleteItem(item_id, quantity):
 
     cart_item = db.session.query(CartItem).filter(CartItem.id == item_id).first()
@@ -108,9 +120,9 @@ def subtractDeleteItem(item_id, quantity):
             return {'errors': {'message': 'There was an error in subtracting quantity from item'}}
 
 #Add item via PRODUCT id and CART id
-@cart_route.route('/<int:cart_id>/<int:product_id>', methods=['POST'])
+@cart_route.route('/add-product/<int:cart_id>/<int:product_id>', methods=['POST'])
 @login_required
-def addItem(cart_id, product_id):
+def addItemViaProductId(cart_id, product_id):
 
     item = db.session.query(CartItem).filter(CartItem.cart_id == cart_id).filter(CartItem.product_id == product_id).first()
 
@@ -155,7 +167,7 @@ def createOrder():
         return {'errors': {'message': 'There was an error creating order'}}
 
 #Add item to order
-@cart_route.route('/orders/<int:order_id>/<int:cart_item_id>')
+@cart_route.route('/orders/<int:order_id>/<int:cart_item_id>', methods=['POST'])
 @login_required
 def addItemOrder(order_id, cart_item_id):
 
