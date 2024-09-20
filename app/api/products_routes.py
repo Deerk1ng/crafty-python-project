@@ -1,13 +1,13 @@
 from flask import Blueprint, jsonify, redirect, request
 from app import db
-from app.models import Product, Review, ProductImage, ReviewImage, User
+from app.models import Product, Review, ProductImage, ReviewImage, User, Favorite
 from flask_login import current_user, login_required
 # create "create product form" and import it
-from app.forms import CreateProductForm, CreateReviewForm
+from app.forms import CreateProductForm, CreateReviewForm, CreateImageForm
 
 
 
-product_route = Blueprint('productById', __name__)
+product_route = Blueprint('products', __name__)
 
 @product_route.route('/')
 def homeAllProducts():
@@ -65,7 +65,7 @@ def productsForUser():
     """
     # Convert current_user to a dictionary
     currentUser = current_user.to_dict()
-    print('eeeeeeeeeeeeeeeooooooooo', currentUser)
+
     # Query products where the owner_id matches the current user's ID
     products = db.session.query(Product).filter(Product.owner_id == currentUser['id']).all()
 
@@ -157,7 +157,7 @@ def createProduct():
     """
     currentUser = current_user.to_dict()
 
-    print('eeeeeeeeeee', currentUser)
+
     form = CreateProductForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
@@ -216,9 +216,62 @@ def editProduct(product_id):
 
     return form.errors, 400
 
+@product_route.route('/<int:product_id>/images', methods=['POST'])
+@login_required
+def add_image_to_product(product_id):
+    logged_in_user = current_user.to_dict()
 
+    if not logged_in_user:
+        return redirect('/api/auth/unauthorized'), 401
 
+    product_by_id = db.session.query(Product).filter(Product.id == product_id).first()
 
+    if not product_by_id:
+        return {'errors': {'message': 'Product does not exist'}}, 404
+
+    if product_by_id.owner_id == logged_in_user['id']:
+        form = CreateImageForm()
+
+        form['csrf_token'].data = request.cookies['csrf_token']
+        if form.validate_on_submit():
+            image = ProductImage(
+                url = form.data['url'],
+                preview = form.data['preview'],
+                product_id = product_id
+            )
+
+            db.session.add(image)
+            db.session.commit()
+            new_image = image.to_dict()
+
+            return {'new_image': new_image}, 201
+        else:
+            return form.errors, 400
+    elif not product_by_id.owner_id == logged_in_user['id']:
+        return redirect('/api/auth/unauthorized'), 401
+
+########
+@product_route.route('/<int:product_id>/images/<int:image_id>', methods=['DELETE'])
+@login_required
+def delete_product_image(product_id, image_id):
+    logged_in_user = current_user.to_dict()
+
+    if not logged_in_user:
+        return redirect('/api/auth/unauthorized'), 401
+
+    image_by_id = db.session.query(ProductImage).filter(ProductImage.id == image_id).first()
+
+    if not image_by_id:
+        return {'errors': {'message': 'Product Image does not exist'}}, 404
+
+    product_by_id = db.session.query(Product).filter(Product.id == product_id).first()
+
+    if product_by_id.owner_id == logged_in_user['id']:
+        db.session.delete(image_by_id)
+        db.session.commit()
+        return {'Message': 'Delete Successful'}, 200
+
+    return {'error': 'Unauthorized to delete this Product Image'}, 401
 
 
 @product_route.route('/<int:product_id>', methods=['DELETE'])
@@ -299,3 +352,33 @@ def create_review_by_product_id(product_id):
         return {'created_review': new_review}
 
     return form.errors, 400
+
+
+
+# Add to favorites route
+@product_route.route('<int:productId>/favorites', methods=["POST"])
+@login_required
+def add_to_favorites(productId):
+    """
+    add current productId to current users favorites
+    """
+    check_fav = db.session.query(Favorite).filter(Favorite.product_id == productId, Favorite.user_id == current_user.id).first()
+
+    check_product = db.session.query(Product).filter(Product.id == productId).first()
+
+    if not check_product:
+        return {'error': "Product does not exist"}, 404
+
+    if not check_fav:
+        new_fav = Favorite(
+            user_id = current_user.id,
+            product_id = productId
+        )
+
+        db.session.add(new_fav)
+        db.session.commit()
+
+        new_fav.to_dict()
+        return {"message": 'Product added to favorites successfully!'}, 201
+    else:
+        return {'error': 'Product is already added to favorites'}
