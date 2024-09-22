@@ -11,14 +11,14 @@ cart_route = Blueprint('cart', __name__)
 @cart_route.route('/current', methods=['POST'])
 @login_required
 def createShoppingCart():
-
+    # Should check if a user already has a cart and throw an error if he does
     currentUser = current_user.to_dict()
     user_id = currentUser['id']
     cart = ShoppingCart(
         user_id = user_id,
         total = 0
     )
-    try:
+    try: ## i believe its bad practice to use a try/catch in production. we should remove these after confirmation
         db.session.add(cart)
         db.session.commit()
         return {'shopping_cart': cart.to_dict()}, 201
@@ -28,8 +28,10 @@ def createShoppingCart():
 
 @cart_route.route('/current/<int:cart_id>', methods=['DELETE'])
 @login_required
-def deleteShoppingCart(cart_id):
+def deleteShoppingCart(cart_id): #can't delete a shopping cart if it has items in it
     cart = db.session.query(ShoppingCart).filter(ShoppingCart.id == cart_id).first()
+    #should check if the cart belongs to the current user just in case
+    #I think searching for carts by owner id would be easier in production but can't confirm till we try it
     try:
         db.session.delete(cart)
         db.session.commit()
@@ -63,7 +65,7 @@ def getShoppingCart(cart_id):
 
         #add product and images to item
         item['product'] = product.to_dict()
-        item['images'] = [image.to_dict() for image in images]
+        item['images'] = [image.to_dict() for image in images] #should maybe just get the first image
 
 
     #set total of cart
@@ -82,7 +84,8 @@ def getShoppingCart(cart_id):
 def addItemViaItemID(item_id, quantity):
 
     cart_item = db.session.query(CartItem).filter(CartItem.id == item_id).first()
-
+    #this should be bundled up in the add-products route so we don't have to make two fetch requests when doing this in production
+    #quantity should be inputed through a form
     if request.method == "POST":
         cart_item.quantity += quantity
         try:
@@ -125,7 +128,10 @@ def subtractDeleteItem(item_id, quantity):
 def addItemViaProductId(cart_id, product_id):
 
     item = db.session.query(CartItem).filter(CartItem.cart_id == cart_id).filter(CartItem.product_id == product_id).first()
-
+    #Should check if item belongs to user to send an error
+    #should check if an item exists
+    #should check if the item is already in the shopping cart
+    #quantity should be inputed through a form
     #if item already in cart, add +1 to quantity
     if item:
         item.quantity = item.quantity + 1

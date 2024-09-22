@@ -9,8 +9,8 @@ class Favorite(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
-    product_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('products.id')), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id'), ondelete="CASCADE"), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('products.id'), ondelete="CASCADE"), nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
 

@@ -130,9 +130,16 @@ def productById(product_id):
     item_rating_sum = 0
     shipping_rating_sum = 0
 
+    reviews_list = []
+
     for review in reviews:
         item_rating_sum += review.item_rating
         shipping_rating_sum += review.shipping_rating
+        r = review.to_dict()
+        review_images = db.session.query(ReviewImage).filter(ReviewImage.review_id == review.id).all()
+        r['images'] = [review_image.to_dict() for review_image in review_images]
+        reviews_list.append(r)
+
 
 
     avg_rating = 0
@@ -141,7 +148,7 @@ def productById(product_id):
 
 
     product_dict['images'] = [image.to_dict() for image in images]
-    product_dict['reviews'] = [review.to_dict() for review in reviews]
+    product_dict['reviews'] = reviews_list #[review.to_dict() for review in reviews]
     product_dict['avgRating'] = avg_rating
 
 
@@ -356,7 +363,7 @@ def create_review_by_product_id(product_id):
 
 
 # Add to favorites route
-@product_route.route('<int:productId>/favorites', methods=["POST"])
+@product_route.route('/<int:productId>/favorites', methods=["POST"])
 @login_required
 def add_to_favorites(productId):
     """
@@ -379,6 +386,6 @@ def add_to_favorites(productId):
         db.session.commit()
 
         new_fav.to_dict()
-        return {"message": 'Product added to favorites successfully!'}, 201
+        return {"message": 'Product added to favorites successfully!', "fav": new_fav.to_dict()}, 201
     else:
         return {'error': 'Product is already added to favorites'}

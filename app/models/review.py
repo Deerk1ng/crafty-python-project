@@ -8,8 +8,8 @@ class Review(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
-    product_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('products.id')), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id"), ondelete="CASCADE"), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('products.id'), ondelete="CASCADE"), nullable=False)
     item_rating = db.Column(db.Integer, nullable=False)
     shipping_rating = db.Column(db.Integer, nullable=False)
     description = db.Column(db.Text)
@@ -18,7 +18,7 @@ class Review(db.Model):
 
     user = db.relationship('User', back_populates='reviews')
     product = db.relationship('Product', back_populates='reviews')
-    reviewImage = db.relationship('ReviewImage', back_populates='review')
+    reviewImage = db.relationship('ReviewImage', back_populates='review', cascade="all, delete-orphan")
 
     def to_dict(self):
         return {
