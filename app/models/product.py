@@ -9,7 +9,7 @@ class Product(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    owner_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
+    owner_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id"), ondelete="CASCADE"), nullable=False)
     name = db.Column(db.String(40))
     price = db.Column(db.Float, nullable=False)
     description = db.Column(db.Text)
@@ -18,11 +18,11 @@ class Product(db.Model):
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
 
     owner = db.relationship("User", back_populates="products")
-    favorites = db.relationship("Favorite", back_populates="product")
-    cart_items = db.relationship("CartItem", back_populates="product")
-    order_items = db.relationship("OrderItem", back_populates="product")
-    product_images = db.relationship("ProductImage", back_populates="product")
-    reviews = db.relationship("Review", back_populates="product")
+    favorites = db.relationship("Favorite", back_populates="product", cascade="all, delete-orphan")
+    cart_items = db.relationship("CartItem", back_populates="product", cascade="all, delete-orphan")
+    order_items = db.relationship("OrderItem", back_populates="product", cascade="all, delete-orphan")
+    product_images = db.relationship("ProductImage", back_populates="product", cascade="all, delete-orphan")
+    reviews = db.relationship("Review", back_populates="product", cascade="all, delete-orphan")
 
     def to_dict(self):
         return {

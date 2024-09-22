@@ -21,12 +21,12 @@ class User(db.Model, UserMixin):
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
 
-    products = db.relationship("Product", back_populates="owner")
+    products = db.relationship("Product", back_populates="owner", cascade="all, delete-orphan")
 
-    favorites = db.relationship("Favorite", back_populates="user")
-    orders = db.relationship("Order", back_populates="user")
-    reviews = db.relationship("Review", back_populates="user")
-    shopping_cart = db.relationship("ShoppingCart", back_populates="user")
+    favorites = db.relationship("Favorite", back_populates="user", cascade="all, delete-orphan")
+    orders = db.relationship("Order", back_populates="user", cascade="all, delete-orphan")
+    reviews = db.relationship("Review", back_populates="user", cascade="all, delete-orphan")
+    shopping_cart = db.relationship("ShoppingCart", back_populates="user", cascade="all, delete-orphan")
 
     @property
     def password(self):

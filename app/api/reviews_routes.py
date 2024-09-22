@@ -100,7 +100,7 @@ def add_image_to_review(review_id):
             db.session.commit()
             new_image = image.to_dict()
 
-            return {'updated_review': new_image}, 201
+            return {'added_image': new_image}, 201
         else:
             return form.errors, 400
     elif not review_by_id.user_id == logged_in_user['id']:

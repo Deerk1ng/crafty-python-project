@@ -9,13 +9,13 @@ class ShoppingCart(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id'), ondelete="CASCADE"), nullable=False)
     total = db.Column(db.Float, nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
 
     user = db.relationship('User', back_populates='shopping_cart')
-    cart_items = db.relationship('CartItem', back_populates='shopping_cart')
+    cart_items = db.relationship('CartItem', back_populates='shopping_cart', cascade="all, delete-orphan")
 
     def to_dict(self):
         return {
