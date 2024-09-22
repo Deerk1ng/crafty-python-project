@@ -1,8 +1,6 @@
 import { NavLink } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
 import './Navigation.css'
-import OpenModalMenuItem from "./OpenModalMenuItem";
-import Categories from "../CategoriesModalPage";
 import { useEffect, useState, ulRef } from "react";
 import { RiMenu4Line } from "react-icons/ri";
 import { MdFavoriteBorder } from "react-icons/md";
@@ -33,7 +31,7 @@ function Navigation() {
     return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
 
-  const closeMenu = () => setShowMenu(false);
+
 
   return (
     <ul className="Nav-bar">
@@ -57,25 +55,24 @@ function Navigation() {
 
       <li>
         <input
-        text="Text"
         placeholder="Search..."
         className="search-bar"
         ></input>
       </li>
 
       <li>
-        <NavLink to={'/api/favorites/current'}><MdFavoriteBorder className='heart'/></NavLink>
+        <NavLink to={'/favorites/current'}><MdFavoriteBorder className='heart'/></NavLink>
       </li>
 
       <li>
-          <NavLink to={'/api/products/current'} ><FaShop className="shop-icn"/> </NavLink>
+          <NavLink to={'/products/current'} ><FaShop className="shop-icn"/> </NavLink>
       </li>
 
       <li>
         <ProfileButton />
       </li>
       <li>
-        <NavLink to={'/api/shopping-cart/current'}><BsCart2 className="cart"/> </NavLink>
+        <NavLink to={'/shopping-cart/current'}><BsCart2 className="cart"/> </NavLink>
       </li>
     </ul>
   );
