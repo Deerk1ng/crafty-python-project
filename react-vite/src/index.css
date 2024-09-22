@@ -8,7 +8,9 @@
     font-family: "Montserrat", sans-serif;
     font-style: normal;
 }
-
+html, body {
+    margin: 0;
+}
 h1 {
     font-size: 24pt;
     font-weight: bold;
