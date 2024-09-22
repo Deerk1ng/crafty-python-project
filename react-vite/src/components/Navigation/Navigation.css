@@ -34,7 +34,20 @@
 }
 
 
+.shop-icn {
+  font-size: 25px;
+  padding: 10px;
+  color: black;
+}
+.shop-icn:hover {
+  font-size: 25px;
+  font-weight: bold;
+  background-color: black;
+  color: white;
+  padding: 10px;
 
+  border-radius: 10px;
+}
 
 .heart{
   font-size: 25px;
@@ -78,7 +91,7 @@
 #logo-img {
   width: 6rem;
   margin-top: 10px;
-
+  margin-left: 50px;
 }
 
 .search-bar {
@@ -92,13 +105,12 @@
 
 .Nav-bar {
   display: flex;
-  gap: 50px;
+  gap: 30px;
   align-items: center;
   border-bottom: 2px solid rgb(188, 188, 188);
   margin: 0;
   height: 100px;
-  padding: -0 -50% 0 50%;
-  border: 1px solid red;
+
 }
 
 #profile-btn{

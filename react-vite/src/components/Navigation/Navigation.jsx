@@ -7,7 +7,7 @@ import { useEffect, useState, ulRef } from "react";
 import { RiMenu4Line } from "react-icons/ri";
 import { MdFavoriteBorder } from "react-icons/md";
 import { BsCart2 } from "react-icons/bs";
-import { FaChevronRight } from "react-icons/fa";
+import { FaShop } from "react-icons/fa6";
 
 
 
@@ -65,6 +65,10 @@ function Navigation() {
 
       <li>
         <NavLink to={'/api/favorites/current'}><MdFavoriteBorder className='heart'/></NavLink>
+      </li>
+
+      <li>
+          <NavLink to={'/api/products/current'} ><FaShop className="shop-icn"/> </NavLink>
       </li>
 
       <li>
