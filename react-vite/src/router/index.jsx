@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
+import MainPage from '../components/MainPage';
 
 export const router = createBrowserRouter([
   {
@@ -9,7 +10,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <h1>Welcome!</h1>,
+        element: <MainPage />,
       },
       {
         path: "login",
@@ -19,6 +20,19 @@ export const router = createBrowserRouter([
         path: "signup",
         element: <SignupFormPage />,
       },
+      {
+        path: '/favorites/current',
+        element: <h1>Comming Soon</h1>
+      },
+      {
+        path: '/shopping-cart/current',
+        element: <h1>Coming Soon</h1>
+      }
     ],
+  },
+  // different nav
+  {
+    path: '/products/current',
+    element: <h1>Coming Soon</h1>
   },
 ]);
