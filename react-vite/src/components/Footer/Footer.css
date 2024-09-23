@@ -1,0 +1,63 @@
+/* Footer Container */
+.footer {
+    display: flex;
+    margin-top: 75px;
+    padding: 30px;
+    width: 100vw;
+    position: relative;
+    bottom: 0;
+    background-color: rgb(241, 241, 241);
+}
+
+/* Footer Image */
+.img-ftr {
+    width: 50%;
+    margin: 0 25%;
+}
+
+/* Left and Right Footer Sections */
+.left-ftr {
+    width: 45%;
+}
+
+.right-ftr {
+    display: flex;
+    width: 55%;
+}
+
+/* Right Footer List Items */
+.right-ftr li {
+    margin-top: 5px;
+}
+
+/* Footer Header */
+.footer-header {
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Right Footer Links */
+.right-ftr a {
+    margin-top: 5px;
+    color: black;
+    text-decoration: none;
+}
+
+/* Social Media Icons */
+.social {
+    font-size: 30px;
+    color: black;
+}
+
+.social:hover {
+    color: rgb(128, 0, 0);
+}
+
+/* Social Media Section */
+.social-media {
+    margin: 10px 0 0 0;
+    display: flex;
+    gap: 7px;
+    justify-content: start;
+    padding: 0;
+}

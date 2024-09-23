@@ -1,119 +1,86 @@
+/* Dropdown Menus */
 .profile-dropdown {
   position: absolute;
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
-.categories-dropdown{
+
+.categories-dropdown {
   position: absolute;
-  padding: 5px 0 5px 0;
+  padding: 5px 0;
   top: 10%;
-  right: 77%;
+  right: 72%;
   width: fit-content;
-  /* height: 60%; */
   display: flex;
   flex-direction: column;
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
-
 }
-.categories-dropdown a{
+
+.categories-dropdown a {
   color: black;
   text-decoration: none;
   padding: 20px 30px;
-  /* margin: 10px 0 0 0; */
   border-bottom: 1px solid rgb(168, 168, 168);
-
 }
-.categories-dropdown a:hover{
-  color: black;
-  text-decoration: none;
+
+.categories-dropdown a:hover {
   background-color: beige;
   border-bottom: 1px solid rgb(168, 168, 168);
-  padding: 20px 30px;
-  /* margin: 10px 0 0 0; */
 }
 
-
-
-
-.heart{
+/* Icons */
+.shop-icn, .heart, .cart {
   font-size: 25px;
   padding: 10px;
   color: black;
 }
 
-.heart:hover {
-  font-size: 25px;
+.shop-icn:hover, .heart:hover, .cart:hover {
   background-color: black;
   color: white;
-  padding: 10px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+/* Buttons */
+.categories-btn, #profile-btn {
+  border: none;
+  padding: 5px 10px;
+}
+
+.categories-btn:hover, #profile-btn:hover {
+  background-color: black;
+  color: white;
   border-radius: 10px;
 }
-.cart{
-  font-size: 25px;
-  color: black;
-  padding: 10px;
-  /* border-radius: 100px; */
-}
-.cart:hover {
-  font-size: 25px;
-  background-color: black;
-  color: white;
-  padding: 10px;
-  border-radius: 10px;
-}
 
-.categories-btn{
-  border: none;
-  padding:  5px 10px;
-}
-.categories-btn:hover{
-  border: none;
-  background-color: black;
-  color: white;
-  padding:  5px 10px;
-
-}
-
+/* Logo */
 #logo-img {
   width: 6rem;
-  margin-top: 10px;
-
+  margin: 10px 50px;
 }
 
+/* Search Bar */
 .search-bar {
   width: 550px;
   height: 30px;
   padding: 5px 25px;
   border-radius: 30px;
   border: 1px solid black;
-  margin-top: 0;
 }
 
+/* Navigation Bar */
 .Nav-bar {
   display: flex;
-  gap: 50px;
+  gap: 30px;
   align-items: center;
   border-bottom: 2px solid rgb(188, 188, 188);
-  margin: 0;
   height: 100px;
-  padding: -0 -50% 0 50%;
-  border: 1px solid red;
+  margin: 0;
 }
 
-#profile-btn{
-  /* padding: 7px; */
-  border: none;
-  padding:  5px 10px;
-}
-#profile-btn:hover{
-  border: none;
-  background-color: black;
-  color: white;
-  padding:  5px 10px;
-  border-radius: 10px;
-}
-
+/* Profile Picture Icon */
 .pfp {
   font-size: 25px;
   margin: 5px;
