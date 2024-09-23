@@ -24,16 +24,24 @@ const MainPage = () => {
 
     // func for random 5 products to show case
     function getRandomProducts(productsArray, numberOfProducts = 5) {
+        // Create a copy of the array to avoid mutating the original array
+        const copyProductsArray = [...productsArray];
+
         // Shuffle the array using the Fisher-Yates shuffle algorithm
-        for (let i = productsArray.length - 1; i > 0; i--) {
+        for (let i = copyProductsArray.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [productsArray[i], productsArray[j]] = [productsArray[j], productsArray[i]];
+            [copyProductsArray[i], copyProductsArray[j]] = [copyProductsArray[j], copyProductsArray[i]];
         }
 
         // Return the first 'numberOfProducts' items after shuffle
-        return productsArray.slice(0, numberOfProducts);
+        return copyProductsArray.slice(0, numberOfProducts);
     }
+
     const randomProducts = getRandomProducts(allProducts);
+
+    // Remove the random products from the main list
+    const remainingProducts = allProducts.filter(product => !randomProducts.includes(product));
+
 
 
     const dispatch = useDispatch();
@@ -57,7 +65,7 @@ const MainPage = () => {
 
             <h2>Products</h2>
             <div className='products-main'>
-                {allProducts.map(product => (
+                {remainingProducts.map(product => (
                     <div className='product-container'>
                         <NavLink className={'product_nav'} to={`/products/${product.id}`}>
                         <img className='main-prdct-img' src={product.images[0].url} alt={product.name}></img>
