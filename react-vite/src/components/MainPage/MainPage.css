@@ -1,0 +1,106 @@
+/* Main container styles */
+.main-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 30px 50px;
+}
+
+.main-div h2 {
+    align-self: flex-start;
+    margin-bottom: 20px;
+}
+
+/* Products section */
+.products-main {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 5px;
+}
+
+.product-container {
+    display: flex;
+    flex-flow: column wrap;
+    height: fit-content;
+    border-radius: 3px;
+    margin: 0 10px 10px 0;
+    transition: filter 0.3s ease;
+}
+
+.product-container p,
+.product-container h3 {
+    margin: 5px 0;
+}
+
+.product-container:hover {
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    filter: brightness(0.7);
+}
+
+/* Product images */
+.main-prdct-img {
+    width: 320px;
+    height: 260px;
+    border-radius: 5px;
+    transition: filter 0.3s ease;
+}
+
+.main-prdct-img:hover {
+    filter: brightness(0.7);
+}
+
+/* Stars */
+.stars {
+    font-size: 17px;
+    color: rgb(76, 40, 39);
+}
+
+/* Navigation */
+.product_nav {
+    text-decoration: none;
+    color: black;
+}
+
+/* Bubbles section */
+.cat-bubbles {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 0 50px 0;
+    gap: 30px;
+}
+
+.cat-bubbles ul {
+    display: flex;
+    gap: 50px;
+    flex-direction: row;
+}
+
+.bubbles {
+    display: flex;
+    flex-flow: column wrap;
+    width: 150px;
+    align-items: center;
+    text-align: center;
+    color: black;
+    text-decoration: none;
+    transition: filter 0.3s ease;
+}
+
+.bubbles:hover {
+    text-decoration: underline;
+    filter: brightness(0.7);
+}
+
+/* Bubble images */
+.bubble-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    transition: filter 0.3s ease;
+}
+
+.bubble-img:hover {
+    filter: brightness(0.7);
+}
