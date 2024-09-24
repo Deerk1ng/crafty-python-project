@@ -106,7 +106,7 @@ def productsForUser():
         # Append the productById dictionary to the list
         productsList.append(productDict)
     # Return the JSON response
-    return jsonify({'products': productsList})
+    return jsonify(productsList)
 
 
 @product_route.route('/<int:product_id>')
