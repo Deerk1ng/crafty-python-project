@@ -1,15 +1,41 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { thunkLogin } from "../../redux/session";
-import { useDispatch } from "react-redux";
-import { useModal } from "../../context/Modal";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
 import "./LoginForm.css";
+import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
+import SignupFormModal from "../SignupFormModal";
 
-function LoginFormModal() {
+
+function LogInFormModal() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const sessionUser = useSelector((state) => state.session.user);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const { closeModal } = useModal();
+  const [showMenu, setShowMenu] = useState(false);
+  const ulRef = useRef();
+
+
+  useEffect(() => {
+    if (!showMenu) return;
+
+    const closeMenu = (e) => {
+      if (ulRef.current && !ulRef.current.contains(e.target)) {
+        setShowMenu(false);
+      }
+    };
+
+    document.addEventListener("click", closeMenu);
+
+    return () => document.removeEventListener("click", closeMenu);
+  }, [showMenu]);
+
+  const closeMenu = () => setShowMenu(false);
+
+
+  if (sessionUser) return <Navigate to="/" replace={true} />;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,14 +50,22 @@ function LoginFormModal() {
     if (serverResponse) {
       setErrors(serverResponse);
     } else {
-      closeModal();
+      navigate("/");
     }
   };
 
   return (
-    <>
-      <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
+    <div className="main-login">
+    <div className="login-top">
+      <h1>Sign In</h1>
+      <button className="span-signup"><OpenModalMenuItem
+        itemText="Sign Up"
+        onItemClick={closeMenu}
+        modalComponent={<SignupFormModal />}/></button>
+    </div>
+      {errors.length > 0 &&
+        errors.map((message) => <p key={message}>{message}</p>)}
+      <form className='form-login' onSubmit={handleSubmit}>
         <label>
           Email
           <input
@@ -54,8 +88,8 @@ function LoginFormModal() {
         {errors.password && <p>{errors.password}</p>}
         <button type="submit">Log In</button>
       </form>
-    </>
+    </div>
   );
 }
 
-export default LoginFormModal;
+export default LogInFormModal;

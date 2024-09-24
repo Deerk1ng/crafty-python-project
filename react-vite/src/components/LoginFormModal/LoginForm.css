@@ -1,0 +1,16 @@
+.span-signup{
+    background-color: aqua;
+}
+
+.main-login {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-login{
+    display: flex;
+    flex-direction: column;
+}
+.login-top{
+    display: flex;
+}
