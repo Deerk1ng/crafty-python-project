@@ -55,7 +55,7 @@ const MainPage = () => {
                 <h3>Top products that are trending....</h3>
                 <ul>
                     {randomProducts.map(productran => (
-                        <NavLink to={`/products/${productran.id}`} className={'bubbles'}>
+                        <NavLink key={productran.id} to={`/products/${productran.id}`} className={'bubbles'}>
                             <img className='bubble-img' src={productran.images[0].url} alt='product image'></img>
                             <h3>{productran.name}</h3>
                         </NavLink>
@@ -65,8 +65,8 @@ const MainPage = () => {
 
             <h2>Products</h2>
             <div className='products-main'>
-                {remainingProducts.map(product => (
-                    <div className='product-container'>
+                {remainingProducts.map(product => ( 
+                    <div className='product-container' key={product.id}>
                         <NavLink className={'product_nav'} to={`/products/${product.id}`}>
                         <img className='main-prdct-img' src={product.images[0].url} alt={product.name}></img>
                         <h3>{product.name}</h3>
