@@ -2,8 +2,9 @@ import './UserListings.css'
 import { getUserProducts } from '../../redux/products';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState, ulRef } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { IoMdHome, IoMdAdd } from "react-icons/io";
+import { thunkLogout } from "../../redux/session";
 import { IoSettings } from "react-icons/io5";
 import { TfiAnnouncement, TfiHelpAlt } from "react-icons/tfi";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
@@ -14,6 +15,8 @@ import Footer from '../Footer/footer';
 
 
 const UserListings = () => {
+    const navigate = useNavigate();
+
     const [showMenu, setShowMenu] = useState(false);
     const toggleMenu = (e) => {
         e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
@@ -33,6 +36,7 @@ const UserListings = () => {
         return () => document.removeEventListener("click", closeMenu);
     }, [showMenu]);
 
+    const closeMenu = () => setShowMenu(false);
 
     const products = useSelector(state => state.productsReducer.userProducts)
 
@@ -62,8 +66,14 @@ const UserListings = () => {
     }
 
 
-
-
+    const logout = (e) => {
+        e.preventDefault();
+        dispatch(thunkLogout()).then(() => {
+            // Redirect to home
+            navigate('/');
+            closeMenu();
+        });
+    };
 
 
 
@@ -85,6 +95,8 @@ const UserListings = () => {
                 <NavLink onClick={''}><FaMoneyBillTrendUp />Finances</NavLink>
                 <NavLink onClick={''}><TfiHelpAlt />Help</NavLink>
                 <NavLink onClick={''}><IoSettings />Settings</NavLink>
+                <button onClick={logout}>Log Out</button>
+
             </ul>
         </div>
         <div>
@@ -106,7 +118,9 @@ const UserListings = () => {
                                 <ul>
                                     <NavLink to={`/products/${product.id}`}>View Product</NavLink>
                                     <NavLink to={`/products/${product.id}/edit`}>edit</NavLink>
-                                    <li>Delete</li>
+
+                                    {/* needs to be modal for delete product */}
+                                    <button className='delete_prodct'>Delete</button>
                                 </ul>
                             )}
                         </div>
