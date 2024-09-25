@@ -3,6 +3,8 @@ import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
 import MainPage from '../components/MainPage';
+import UserListings from '../components/UserListings/UserListings';
+import CreateProduct from '../components/CreateProduct/CreateProduct';
 
 export const router = createBrowserRouter([
   {
@@ -30,9 +32,12 @@ export const router = createBrowserRouter([
       }
     ],
   },
-  // different nav
   {
     path: '/products/current',
-    element: <h1>Coming Soon</h1>
+    element: <UserListings  />
+  },
+  {
+    path: '/products/new',
+    element: <CreateProduct />
   },
 ]);
