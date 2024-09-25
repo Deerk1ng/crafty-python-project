@@ -3,8 +3,8 @@ import { getUserProducts } from '../../redux/products';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState, ulRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { IoMdHome, IoMdAdd } from "react-icons/io";
 import { thunkLogout } from "../../redux/session";
+import { IoMdHome, IoMdAdd } from "react-icons/io";
 import { IoSettings } from "react-icons/io5";
 import { TfiAnnouncement, TfiHelpAlt } from "react-icons/tfi";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
@@ -41,7 +41,7 @@ const UserListings = () => {
     const products = useSelector(state => state.productsReducer.userProducts)
 
     const allProducts = products ? Object.values(products) : [];
-
+    console.log('allproducts', allProducts[9])
 
     function getDateTwoMonthsFromNow() {
         const now = new Date();
@@ -105,29 +105,33 @@ const UserListings = () => {
                 <NavLink className={'listing-bttn'} to={'/products/new'}><IoMdAdd />Add Listing</NavLink>
             </div>
             <div>
-                {allProducts.map(product => (
-                    <div key={product.id}>
-                        <img className='user-product-img' src={product.images[0].url} alt=''></img>
-                        <p>{product.name}</p>
-                        <p style={{fontWeight: '700'}}>${product.price.toFixed(2)}</p>
-                        <p>Auto renews on {getDateTwoMonthsFromNow()}</p>
-                        <div className='list-btm'>
-                            <input type="checkbox" id="agree" name="agree" />
-                            <button className='settings' onClick={toggleMenu} ><IoSettings /><FaChevronDown /></button>
-                            {showMenu && (
-                                <ul>
-                                    <NavLink to={`/products/${product.id}`}>View Product</NavLink>
-                                    <NavLink to={`/products/${product.id}/edit`}>edit</NavLink>
+            <div>
+    {allProducts.map(product => (
+        <div key={product.id}>
+            {product.images && product.images.length > 0 ? (
+                <img className='user-product-img' src={product.images[0].url} alt='' />
+            ) : (
+                <div className='no-image'>No image available</div>
+            )}
+            <p>{product.name}</p>
+            <p style={{ fontWeight: '700' }}>${product.price.toFixed(2)}</p>
+            <p>Auto renews on {getDateTwoMonthsFromNow()}</p>
+            <div className='list-btm'>
+                <input type="checkbox" id="agree" name="agree" />
+                <button className='settings' onClick={toggleMenu}><IoSettings /><FaChevronDown /></button>
+                {showMenu && (
+                    <ul>
+                        <NavLink to={`/products/${product.id}`}>View Product</NavLink>
+                        <NavLink to={`/products/${product.id}/edit`}>Edit</NavLink>
+                        {/* needs to be modal for delete product */}
+                        <button className='delete_product'>Delete</button>
+                    </ul>
+                )}
+            </div>
+        </div>
+    ))}
+</div>
 
-                                    {/* needs to be modal for delete product */}
-                                    <button className='delete_prodct'>Delete</button>
-                                </ul>
-                            )}
-                        </div>
-
-                    </div>
-
-                ))}
             </div>
             <Footer />
         </div>
