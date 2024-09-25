@@ -7,7 +7,7 @@ from flask_login import current_user, login_required
 cart_route = Blueprint('cart', __name__)
 
 
-#Get current user shopping cart, or create shopping cart for user
+#Get current user shopping cart and items, or create shopping cart for user
 @cart_route.route('/current', methods=['GET', 'POST'])
 @login_required
 def getShoppingCart():
@@ -16,8 +16,38 @@ def getShoppingCart():
     cart = db.session.query(ShoppingCart).filter(ShoppingCart.user_id == user_id).first()
 
     if(cart):
-        return {'shopping_cart': cart.to_dict()}, 200
-    else:
+        cart_id = cart.id
+        items = db.session.query(CartItem).filter(CartItem.cart_id == cart_id)
+        items_dict = [item.to_dict() for item in items]
+
+    # calculate cart total
+        total = 0
+
+    #get product info and images
+        for item in items_dict:
+            product = db.session.query(Product).filter(Product.id == item['product_id']).first()
+            images = db.session.query(ProductImage).filter(ProductImage.product_id == item['product_id'])
+
+            #add item cost to total
+            item_price = product.price * item['quantity']
+            total += item_price
+
+            #add product and images to item
+            item['product'] = product.to_dict()
+            item['images'] = [image.to_dict() for image in images] #should maybe just get the first image
+
+
+            #set total of cart
+            cart.total = total
+            db.session.commit()
+
+            cart_dict = cart.to_dict()
+            cart_dict['items'] = items_dict
+            cart_dict['total'] = total
+
+            return {'shopping_cart': cart_dict}, 200
+
+    else: #makes new cart if no cart found
         cart = ShoppingCart(
             user_id = user_id,
             total = 0
@@ -33,15 +63,14 @@ def getShoppingCart():
 def deleteShoppingCart(cart_id): #can't delete a shopping cart if it has items in it
     cart = db.session.query(ShoppingCart).filter(ShoppingCart.id == cart_id).first()
     user_id = current_user.id
-
-    try:
+    if (user_id == cart.user_id):
         db.session.delete(cart)
         db.session.commit()
         return {'message': 'Shopping cart successfuly deleted'}, 200
-    except:
+    else:
         return {'errors': {'message': 'There was an error deleting shopping cart'}}
 
-#Get items for Shopping Cart, sets total of cart
+#Get items for Shopping Cart with cart id, sets total of cart
 @cart_route.route('/<int:cart_id>')
 @login_required
 def getItems(cart_id):
