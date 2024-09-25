@@ -113,7 +113,7 @@ export const createProduct = (product) => async (dispatch) => {
         }
 
 
-    // dispatch(addProduct(created_product));
+    dispatch(addProduct(created_product));
     return created_product;
 };
 
@@ -139,26 +139,6 @@ function productsReducer(state = initialState, action) {
             return {
                 ...state,
                 currProduct,
-            };
-        }
-        case ALL_USER_PRODUCTS: {
-            const userProducts = {};
-            action.products.forEach((product) => {
-                userProducts[product.id] = product;
-            });
-            return {
-                ...state,
-                userProducts,
-            };
-        }
-        case ADD_PRODUCT: {
-            const newProduct = action.payload;
-            return {
-                ...state,
-                allGroups: {
-                    ...state.allProducts,
-                    [newProduct.id]: newProduct
-                }
             };
         }
         case ALL_USER_PRODUCTS: {
