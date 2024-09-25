@@ -1,7 +1,8 @@
 import { csrfFetch } from "./csrf";
 
 // Action types
-const ALL_PRODUCTS = 'session/allProducts';
+const ALL_PRODUCTS = 'products/allProducts';
+const ONE_PRODUCT = "products/oneProduct"
 const ADD_PRODUCT = 'session/ADDPRODUCT';
 const ALL_USER_PRODUCTS = 'session/allUserProducts';
 
@@ -10,6 +11,11 @@ const ALL_USER_PRODUCTS = 'session/allUserProducts';
 const loadProducts = (products) => ({
     type: ALL_PRODUCTS,
     products
+});
+
+const loadOneProduct = (product) => ({
+    type: ONE_PRODUCT,
+    product
 });
 
 // load current Users listings
@@ -32,6 +38,17 @@ export const getProducts = () => async (dispatch) => {
     if (res.ok) {
         const data = await res.json();
         dispatch(loadProducts(data));
+        return data;
+    }
+    return res;
+};
+
+export const getOneProduct = (product_id) => async (dispatch) => {
+    const res = await csrfFetch(`/api/products/${product_id}`);
+
+    if (res.ok) {
+        const data = await res.json();
+        dispatch(loadOneProduct(data.product));
         return data;
     }
     return res;
@@ -103,7 +120,7 @@ export const createProduct = (product) => async (dispatch) => {
 
 
 // Initial state
-const initialState = { allProducts: {}, userProducts: {} };
+const initialState = { allProducts: {}, currProduct: {}, userProducts: {} };
 
 // Reducer
 function productsReducer(state = initialState, action) {
@@ -116,6 +133,32 @@ function productsReducer(state = initialState, action) {
             return {
                 ...state,
                 allProducts,
+            };
+     } case ONE_PRODUCT: {
+            const currProduct = action.product
+            return {
+                ...state,
+                currProduct,
+            };
+        }
+        case ALL_USER_PRODUCTS: {
+            const userProducts = {};
+            action.products.forEach((product) => {
+                userProducts[product.id] = product;
+            });
+            return {
+                ...state,
+                userProducts,
+            };
+        }
+        case ADD_PRODUCT: {
+            const newProduct = action.payload;
+            return {
+                ...state,
+                allGroups: {
+                    ...state.allProducts,
+                    [newProduct.id]: newProduct
+                }
             };
         }
         case ALL_USER_PRODUCTS: {

@@ -3,6 +3,7 @@ import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
 import MainPage from '../components/MainPage';
+import ProductDetailsPage from '../components/ProductDetailsPage';
 import UserListings from '../components/UserListings/UserListings';
 import CreateProduct from '../components/CreateProduct/CreateProduct';
 
@@ -12,7 +13,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <MainPage />,
+        element: <MainPage />
       },
       {
         path: "login",
@@ -29,6 +30,15 @@ export const router = createBrowserRouter([
       {
         path: '/shopping-cart/current',
         element: <h1>Coming Soon</h1>
+      },
+      {
+        path: 'products',
+        children: [
+          {
+            path: ':product_id',
+            element: <ProductDetailsPage />
+          }
+        ]
       }
     ],
   },
