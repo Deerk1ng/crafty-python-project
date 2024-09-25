@@ -6,50 +6,78 @@ import { IoMdStar, IoMdHeart, IoMdPerson } from "react-icons/io";
 import { useParams } from 'react-router-dom';
 import Footer from "../Footer"
 import { getOneProduct } from "../../redux/products";
+import OpenModalButton from "../OpenModalButton/OpenModalButton"
+import CreateReviewModal from "../CreateReviewModal/CreateReviewModal"
+import DeleteReviewModal from "../DeleteReviewModal/DeleteReviewModal";
 
 const ProductDetailsPage = () => {
     const {product_id} = useParams()
+    const user = useSelector(state => state.session.user)
     const product = useSelector(state => state.productsReducer.currProduct)
     const review = useSelector((state) => state.reviewsReducer.ReviewsForCurrentProduct)
     const [isLoaded, setIsLoaded] = useState(false)
+    const [revArr, setRevArr] = useState([])
     const dispatch = useDispatch()
 
     const getStarRating = (rating) => {
-        if (rating >= 5) return 5;
-        if (rating >= 4) return 4;
-        if (rating >= 3) return 3;
-        if (rating >= 2) return 2;
+        if (Number(rating) >= 5) return 5;
+        if (Number(rating) >= 4) return 4;
+        if (Number(rating) >= 3) return 3;
+        if (Number(rating) >= 2) return 2;
         return 1;
     };
 
-    const reviewLoop = (reviews) => {
+    useEffect(() => {
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        const rLength = Object.keys(reviews).length
-        const revArr = []
+        const rLength = Object.keys(review)
+        const reviewArr = []
 
-        for (let i = 1; i < rLength + 1; i++) {
-            console.log(reviews[i])
-            const dateFormatted = new Date(reviews[i]?.created_at)
-            const date = months[dateFormatted.getMonth()] + " " + dateFormatted.getFullYear()
-            revArr.push((
-                <div className={`review-${i}`}>
-                    <p>{Array.from({ length: getStarRating(reviews[i]?.itemRating) }, (_, index) => ( <IoMdStar key={index} className="stars" /> ))}</p>
-                    <div className="prod-description" key={i}>{reviews[i]?.description}</div>
+        for (let j = 0; j < rLength.length; j++) {
+            let i = rLength[j]
+            const dateFormatted = new Date(review[i]?.created_at)
+            const date = months[dateFormatted.getMonth()] + " " + dateFormatted.getDay() + " " + dateFormatted.getFullYear()
+            reviewArr.push((
+                <div className={`review-${i}`} key={i}>
+                    <p>{Array.from({ length: getStarRating(review[i]?.item_rating) }, (_, index) => (<IoMdStar key={index} className="stars" />))}</p>
+                    <div className="prod-description" key={i}>{review[i]?.description}</div>
                     <div className="prod-item">purchased item: {product.name}</div>
-                    {reviews[i]?.image.length ? ( <img src={reviews[i]?.image.url} alt="image uploaded by user of the product received" className="review-img"/> ) : (<></>)}
-                    <div><IoMdPerson/> {reviews[i]?.user.name} {date}</div>
+                    {review[i]?.image?.length ? ( <img src={review[i]?.image.url} alt="image uploaded by user of the product received" className="review-img"/> ) : (<></>)}
+                    <div><IoMdPerson/> {review[i]?.user.name} {date}</div>
+                    { review[i].user_id == user.id ?
+                        <OpenModalButton
+                            buttonText="Delete"
+                            className='delete-button'
+                            modalComponent={<DeleteReviewModal review_id={review[i].id}/>}
+                        /> : <></>
+                    }
                 </div>
+
              ))
         }
-        return revArr
+        setRevArr([...reviewArr])
+    }, [review, product])
+
+    const imgLoop = (images) => {
+
+        const newImgArr = []
+        for(let i = 0; i < 5; i++){
+            const currImg = images[i]
+            newImgArr.push(<img key={currImg.id}  src={currImg.url} alt={`image belonging to the spot ${product.name}`} className='preview' />)
+        }
+        return newImgArr
+    }
+
+    const checkCritics = (reviews) => {
+        const idLog = []
+        Object.values(reviews).forEach(review => idLog.push(review.user_id))
+        return idLog.includes(user.id)
     }
 
     useEffect(() => {
         dispatch(getOneProduct(product_id))
         .then(dispatch(getReviews(product_id)))
         .then(setIsLoaded(true))
-        console.log("at dispatch", review)
-    }, [product_id])
+    }, [product_id, dispatch])
 
 
     return (
@@ -57,7 +85,9 @@ const ProductDetailsPage = () => {
         { isLoaded ? (
             <>
             <div className="prod-shopping">
-                <div className="photos"></div>
+                <div className="photos">
+                {isLoaded && product?.images?.length? imgLoop(product?.images) : <></>}
+                </div>
                 <div className="buy-container">
                     <h2 className="prod-price">{product?.price}</h2>
                     <div className="prod-title">{product?.name}</div>
@@ -67,11 +97,17 @@ const ProductDetailsPage = () => {
                     <button className="favorites-button"> <IoMdHeart /> Add to Favorites</button>
                 </div>
             </div>
+            {(user && user.id !== product.owner_id) && !checkCritics(review) ?
+                <OpenModalButton
+                    buttonText="Post Your Review"
+                    className='newSpot-button'
+                    modalComponent={<CreateReviewModal product_id={product.id}/>} />
+                : <></>}
             <div className="prod-review">
                 <div>{product?.reviews?.length} Reviews</div>
                 <p>{Array.from({ length: getStarRating(product.avgRating) }, (_, index) => ( <IoMdStar key={index} className="stars" /> ))}<span style={{marginLeft: '6px', fontWeight: '100'}}>({product.avgRating})</span></p>
                 <div className="review-container">
-                    {Object.keys(review).length ? reviewLoop(review) : <></>}
+                    {revArr}
                 </div>
             </div>
             <div className="prod-details">
