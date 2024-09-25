@@ -1,20 +1,25 @@
 import './ShoppingCart.css'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { getCartThunk } from '../../redux/cart';
-import { getItemsThunk } from '../../redux/cart';
+
 
 const ShoppingCart = () => {
 
     const user = useSelector((state) => state.session.user)
+    const items = useSelector((state) => state.cartState.cart.items)
+    const [cartEmpty, setCartEmpty] = useState(true)
     const dispatch = useDispatch();
 
-    let cartEmpty = true
 
     useEffect(() => {
         dispatch(getCartThunk())
-    })
+
+        if(items){
+            setCartEmpty(false)
+        }
+    }, [])
 
 
 

@@ -50,11 +50,11 @@ function cartReducer(state = initialState, action) {
     switch (action.type) {
         case SESSION_CART:
             newState = {...state}
-            newState.shopping_cart = action.payload.shopping_cart
+            newState.cart = action.payload.shopping_cart
             return newState
         case GET_ITEMS:
             newState = {...state}
-            newState.items = action.payload.shoppingCart.items
+            newState.items = action.payload.cart.items
             return newState
         default:
             return state;
