@@ -7,31 +7,33 @@ from flask_login import current_user, login_required
 cart_route = Blueprint('cart', __name__)
 
 
-#Create shopping cart for user
-@cart_route.route('/current', methods=['POST'])
+#Get current user shopping cart, or create shopping cart for user
+@cart_route.route('/current', methods=['GET', 'POST'])
 @login_required
-def createShoppingCart():
-    # Should check if a user already has a cart and throw an error if he does
-    currentUser = current_user.to_dict()
-    user_id = currentUser['id']
-    cart = ShoppingCart(
-        user_id = user_id,
-        total = 0
-    )
-    try: ## i believe its bad practice to use a try/catch in production. we should remove these after confirmation
+def getShoppingCart():
+
+    user_id = current_user.id
+    cart = db.session.query(ShoppingCart).filter(ShoppingCart.user_id == user_id).first()
+
+    if(cart):
+        return {'shopping_cart': cart.to_dict()}, 200
+    else:
+        cart = ShoppingCart(
+            user_id = user_id,
+            total = 0
+        )
         db.session.add(cart)
         db.session.commit()
         return {'shopping_cart': cart.to_dict()}, 201
-    except:
-        return {'errors': {'message': 'There was an error creating shopping cart'}}
+
 
 
 @cart_route.route('/current/<int:cart_id>', methods=['DELETE'])
 @login_required
 def deleteShoppingCart(cart_id): #can't delete a shopping cart if it has items in it
     cart = db.session.query(ShoppingCart).filter(ShoppingCart.id == cart_id).first()
-    #should check if the cart belongs to the current user just in case
-    #I think searching for carts by owner id would be easier in production but can't confirm till we try it
+    user_id = current_user.id
+
     try:
         db.session.delete(cart)
         db.session.commit()
@@ -42,7 +44,7 @@ def deleteShoppingCart(cart_id): #can't delete a shopping cart if it has items i
 #Get items for Shopping Cart, sets total of cart
 @cart_route.route('/<int:cart_id>')
 @login_required
-def getShoppingCart(cart_id):
+def getItems(cart_id):
     cart_by_id = db.session.query(ShoppingCart).filter(ShoppingCart.id == cart_id).first()
 
     if not cart_by_id:
