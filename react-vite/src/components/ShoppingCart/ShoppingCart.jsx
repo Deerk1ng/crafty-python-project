@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { getCartThunk } from '../../redux/cart';
+import ItemCard from './Item';
 
 
 const ShoppingCart = () => {
@@ -15,12 +16,13 @@ const ShoppingCart = () => {
 
     useEffect(() => {
         dispatch(getCartThunk())
+    }, [])
 
+    useEffect(() => {
         if(items){
             setCartEmpty(false)
         }
-    }, [])
-
+    }, [items])
 
 
     return (
@@ -33,7 +35,24 @@ const ShoppingCart = () => {
                     <NavLink to={'/favorites/current'} className="to-favorites">View your favorites</NavLink>
             </div>
             :
-            <div> Not Empty </div>
+            <div className='items-container'>
+                {items.map((item) => {
+                    return (
+                        <div key={`${item.id}-${item.product_id}`}>
+                            <span>
+                                <ItemCard
+                                shopName={item.owner.shop_name}
+                                name={item.product.name}
+                                price={item.product.price}
+                                preview={item.images[0].url}
+                                quantity={item.quantity}
+                                />
+                            </span>
+
+                        </div>
+                    )
+                })}
+            </div>
          :
             <h2 className='please-sign-in'>Please sign in to use Shopping Cart</h2>
          }

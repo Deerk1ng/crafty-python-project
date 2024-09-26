@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from app import db
-from app.models import ShoppingCart, CartItem, Product, Order, OrderItem, ProductImage
+from app.models import ShoppingCart, CartItem, Product, Order, OrderItem, ProductImage, User
 from flask_login import current_user, login_required
 
 
@@ -27,6 +27,7 @@ def getShoppingCart():
         for item in items_dict:
             product = db.session.query(Product).filter(Product.id == item['product_id']).first()
             images = db.session.query(ProductImage).filter(ProductImage.product_id == item['product_id'])
+            owner = db.session.query(User).filter(User.id == product.owner_id).first()
 
             #add item cost to total
             item_price = product.price * item['quantity']
@@ -35,17 +36,17 @@ def getShoppingCart():
             #add product and images to item
             item['product'] = product.to_dict()
             item['images'] = [image.to_dict() for image in images] #should maybe just get the first image
+            item['owner'] = owner.to_dict()
 
+        #set total of cart
+        cart.total = total
+        db.session.commit()
 
-            #set total of cart
-            cart.total = total
-            db.session.commit()
+        cart_dict = cart.to_dict()
+        cart_dict['items'] = items_dict
+        cart_dict['total'] = total
 
-            cart_dict = cart.to_dict()
-            cart_dict['items'] = items_dict
-            cart_dict['total'] = total
-
-            return {'shopping_cart': cart_dict}, 200
+        return {'shopping_cart': cart_dict}, 200
 
     else: #makes new cart if no cart found
         cart = ShoppingCart(
