@@ -127,7 +127,7 @@ def productById(product_id):
     user = db.session.query(User).filter(User.id == product_dict['owner_id']).first().to_dict()
 
     # just grabbng id and shop_name
-    user_info = {'id': user['id'], 'first_name': user['first_name']}
+    user_info = {'id': user['id'], 'first_name': user['first_name'], 'shop_name': user['shop_name']}
 
     # review avg rating
     review_length = len(reviews)

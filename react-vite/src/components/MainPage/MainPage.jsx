@@ -76,10 +76,8 @@ const MainPage = () => {
                     </div>
                 ))}
             </div>
-            <Footer />
         </div>
     )
 }
 
 export default MainPage;
-

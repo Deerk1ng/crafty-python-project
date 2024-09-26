@@ -4,7 +4,6 @@ import { csrfFetch } from "./csrf";
 const REVIEWS_BY_ID = 'reviews/allReviewsByProductId';
 const ADD_REVIEW = 'reviews/createNewReview'
 const DELETE_REVIEW = 'reviews/DeleteReview'
-
 // Action creator for loading all products
 
 const loadReviews = (reviews) => ({
@@ -36,7 +35,7 @@ export const getReviews = (product_id) => async (dispatch) => {
 };
 
 export const createReview = (el) => async (dispatch) => {
-    const {item_rating, shipping_rating, description, product_id} = el
+    const {item_rating, shipping_rating, description, product_id, url} = el
 
     const res = await csrfFetch(`/api/products/${product_id}/reviews`, {
         method: 'POST',
@@ -50,8 +49,50 @@ export const createReview = (el) => async (dispatch) => {
     const data = await res.json()
     if(res.ok){
         const newRev = { ...data }
-        dispatch(makeReview(newRev.created_review))
+        if(url.length){
+            const imgRes = await csrfFetch(`/api/reviews/${newRev.created_review.id}/images`,{
+                method: 'POST',
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    url
+                })
+            })
+            if (imgRes.ok){
+                const img = await imgRes.json()
+                const completed_rev = {
+                    ...newRev.created_review,
+                    image: [img]
+                }
+                dispatch(makeReview(completed_rev))
+                return completed_rev
+            } else return img.errors
+        }
+        const completed_rev = {
+            ...newRev.created_review,
+            image: []
+        }
+        dispatch(makeReview(completed_rev))
         return newRev
+    }
+    return data.errors
+}
+
+export const updateReview = (review) => async (dispatch) => {
+    const {item_rating, shipping_rating, description, id} = review
+
+    const res = await csrfFetch(`/api/reviews/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            item_rating,
+            shipping_rating,
+            description
+        })
+    })
+
+    const data = await res.json()
+    if(res.ok){
+        dispatch(makeReview(data.updated_review))
+        return data
     }
     return data.errors
 }
@@ -66,6 +107,8 @@ export const deleteReview = (review_id) => async (dispatch) => {
         return res
     }
 }
+
+
 // Initial state
 const initialState = { ReviewsForCurrentProduct: {} };
 
@@ -83,12 +126,12 @@ function reviewsReducer(state = initialState, action) {
             };
         }
         case ADD_REVIEW: {
-            const new_state = { ...state }
+            const new_state = structuredClone(state)
             new_state['ReviewsForCurrentProduct'][action.review.id] = action.review
             return new_state
         }
         case DELETE_REVIEW: {
-            const new_state = {...state}
+            const new_state = structuredClone(state)
             delete new_state['ReviewsForCurrentProduct'][action.review_id]
             return new_state
         }

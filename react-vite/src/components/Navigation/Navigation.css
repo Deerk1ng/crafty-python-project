@@ -75,6 +75,7 @@
   display: flex;
   gap: 30px;
   align-items: center;
+  justify-content: center;
   border-bottom: 2px solid rgb(188, 188, 188);
   height: 100px;
   margin: 0;
