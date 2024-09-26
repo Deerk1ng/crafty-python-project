@@ -110,7 +110,7 @@ def getItems(cart_id):
 
     return {'shoppingCart': cart_dict}, 200
 
-#Add item via ITEM id
+#Add quantity to item via ITEM id
 @cart_route.route('/add/<int:item_id>/<int:quantity>', methods=['POST'])
 @login_required
 def addItemViaItemID(item_id, quantity):
@@ -118,30 +118,33 @@ def addItemViaItemID(item_id, quantity):
     cart_item = db.session.query(CartItem).filter(CartItem.id == item_id).first()
     #this should be bundled up in the add-products route so we don't have to make two fetch requests when doing this in production
     #quantity should be inputed through a form
-    if request.method == "POST":
-        cart_item.quantity += quantity
-        try:
-            db.session.commit()
-            return {'cart_item': cart_item.to_dict()}, 201
-        except:
-            return {'errors': {'message': 'There was an error in adding quantity to item'}}
 
-#Subtract/delete item via ITEM id
+    cart_item.quantity += quantity
+    db.session.commit()
+    return {'cart_item': cart_item.to_dict()}, 201
+
+
+
+#Delete item (regardless of quantity)
+@cart_route.route('/delete/<int:item_id>', methods=['DELETE'])
+def deleteItem(item_id):
+
+    cart_item = db.session.query(CartItem).filter(CartItem.id == item_id).first()
+
+    db.session.delete(cart_item)
+    db.session.commit()
+    return {'message': 'Cart item successfuly deleted'}, 200
+
+
+
+#Subtract quantity of item via ITEM id. Will auto-delete item if it is 0 quantity
 @cart_route.route('/subtract/<int:item_id>/<int:quantity>', methods=['POST', 'DELETE'])
 def subtractDeleteItem(item_id, quantity):
 
     cart_item = db.session.query(CartItem).filter(CartItem.id == item_id).first()
 
-    if request.method == "DELETE":
-        try:
-            db.session.delete(cart_item)
-            db.session.commit()
-            return {'message': 'Cart item successfuly deleted'}, 200
-        except:
-            return {'errors': {'message': 'There was an error in deleting item from cart'}}
-
     if request.method == "POST":
-        try:
+
             cart_item.quantity = cart_item.quantity - quantity
 
             if cart_item.quantity <= 0:
@@ -151,8 +154,7 @@ def subtractDeleteItem(item_id, quantity):
             else:
                 db.session.commit()
                 return {'cart_item': cart_item.to_dict()}
-        except:
-            return {'errors': {'message': 'There was an error in subtracting quantity from item'}}
+
 
 #Add item via PRODUCT id and CART id
 @cart_route.route('/add-product/<int:cart_id>/<int:product_id>', methods=['POST'])

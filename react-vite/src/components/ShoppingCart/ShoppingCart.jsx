@@ -9,10 +9,13 @@ import ItemCard from './Item';
 const ShoppingCart = () => {
 
     const user = useSelector((state) => state.session.user)
-    const items = useSelector((state) => state.cartState.cart.items)
+    const items = useSelector((state) => state.cartState.items)
+    const itemsArr = Object.values(items)
     const [cartEmpty, setCartEmpty] = useState(true)
     const dispatch = useDispatch();
 
+
+    console.log(itemsArr)
 
     useEffect(() => {
         dispatch(getCartThunk())
@@ -36,11 +39,12 @@ const ShoppingCart = () => {
             </div>
             :
             <div className='items-container'>
-                {items.map((item) => {
+                {itemsArr.map((item) => {
                     return (
-                        <div key={`${item.id}-${item.product_id}`}>
+                        <div key={`${item.id}-${item.product_id}`} className='card-holder'>
                             <span>
                                 <ItemCard
+                                id={item.id}
                                 shopName={item.owner.shop_name}
                                 name={item.product.name}
                                 price={item.product.price}
