@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { IoMdStar } from "react-icons/io";
 import { NavLink } from 'react-router-dom';
-import Footer from '../Footer';
 
 const MainPage = () => {
     const products = useSelector(state => state.productsReducer.allProducts)
@@ -18,7 +17,7 @@ const MainPage = () => {
         return 1;
     };
 
-    function getRandomProducts(productsArray, numberOfProducts = 5) {
+    const getRandomProducts = (productsArray, numberOfProducts = 5) => {
         const copyProductsArray = [...productsArray];
         for (let i = copyProductsArray.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -35,19 +34,21 @@ const MainPage = () => {
         dispatch(getProducts());
     }, [dispatch]);
 
+    if (!allProducts.length) return <div>Loading...</div>;
+
     return (
         <div className='main-div'>
             <div className='cat-bubbles'>
                 <h3>Top products that are trending....</h3>
                 <ul>
-                    {randomProducts.map(productran => (
-                        <NavLink key={productran.id} to={`/products/${productran.id}`} className={'bubbles'}>
-                            {productran.images && productran.images.length > 0 ? (
-                                <img className='bubble-img' src={productran.images[0].url} alt='product image'></img>
+                    {randomProducts.map(successfulProduct => (
+                        <NavLink key={successfulProduct.id} to={`/products/${successfulProduct.id}`} className={'bubbles'}>
+                            {successfulProduct.images && successfulProduct.images.length > 0 ? (
+                                <img className='bubble-img' src={successfulProduct.images[0].url} alt='product image'></img>
                             ) : (
                                 <div className='no-image'>No image available</div>
                             )}
-                            <h3>{productran.name}</h3>
+                            <h3>{successfulProduct.name}</h3>
                         </NavLink>
                     ))}
                 </ul>
@@ -68,10 +69,10 @@ const MainPage = () => {
                                 {Array.from({ length: getStarRating(product.avgRating) }, (_, index) => (
                                     <IoMdStar key={index} className="stars" />
                                 ))}
-                                <span style={{ marginLeft: '6px', fontWeight: '100' }}>({product.reviews.length})</span>
+                                <span style={{ marginLeft: '6px', fontWeight: '100' }}>({product.reviews?.length || 0})</span>
                             </p>
                             <p>${product.price.toFixed(2)}</p>
-                            <p>{product.owner.shop_name}</p>
+                            <p>{product.owner?.shop_name || 'Anonymous'}</p>
                         </NavLink>
                     </div>
                 ))}

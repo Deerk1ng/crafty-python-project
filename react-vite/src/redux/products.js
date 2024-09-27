@@ -128,6 +128,7 @@ export const createProduct = (product) => async (dispatch) => {
 // edit product details
 export const updateProductDetails = (product, product_id) => async (dispatch) => {
     let res;
+    console.log(product.category)
 
     let updateProduct = {
         name: product.name,
@@ -151,6 +152,8 @@ export const updateProductDetails = (product, product_id) => async (dispatch) =>
         const updatedProduct = await res.json();
         dispatch(updateAProduct(updatedProduct));
         return updatedProduct;
+    } else {
+        return res
     }
 };
 
