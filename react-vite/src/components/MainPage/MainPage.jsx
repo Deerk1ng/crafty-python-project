@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { IoMdStar } from "react-icons/io";
 import { NavLink } from 'react-router-dom';
-import Footer from '../Footer';
 
 const MainPage = () => {
     const products = useSelector(state => state.productsReducer.allProducts)

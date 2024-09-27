@@ -2,9 +2,10 @@ import "./ProductDetails.css"
 import { getReviews } from "../../redux/reviews"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
-import { IoMdStar, IoMdHeart, IoMdPerson } from "react-icons/io";
+import { IoMdStar, IoMdHeart, IoMdHeartEmpty, IoMdPerson } from "react-icons/io";
 import { useParams } from 'react-router-dom';
 import { getOneProduct } from "../../redux/products";
+import { createFavorite, deleteFavorite } from "../../redux/favorites";
 import OpenModalButton from "../OpenModalButton/OpenModalButton"
 import CreateReviewModal from "../CreateReviewModal/CreateReviewModal"
 import DeleteReviewModal from "../DeleteReviewModal/DeleteReviewModal";
@@ -15,6 +16,7 @@ const ProductDetailsPage = () => {
     const user = useSelector(state => state.session.user);
     const product = useSelector(state => state.productsReducer.currProduct);
     const review = useSelector((state) => state.reviewsReducer.ReviewsForCurrentProduct);
+    const favorites = useSelector((state) => state.favoritesReducer.currentFavorites)
     const [isLoaded, setIsLoaded] = useState(false);
     const [revArr, setRevArr] = useState([]);
     const [bigImg, setBigImg] = useState('')
@@ -99,6 +101,16 @@ const ProductDetailsPage = () => {
             .then(() => setIsLoaded(true));
     }, [product_id, dispatch]);
 
+    const handleDelete = (e) => {
+        e.preventDefault();
+
+        dispatch(deleteFavorite(favorites[product.id].id,product.id))
+    }
+
+    const handleAdd = (e) => {
+        e.preventDefault();
+        dispatch(createFavorite(product.id))
+    }
 
     return (
         <>
@@ -117,7 +129,7 @@ const ProductDetailsPage = () => {
                             {/* <button className="buy-button">Buy it Now</button> */}
                             <p></p>
                             <button className="cart-button">Add to Cart</button>
-                            <button className="favorites-button"><IoMdHeart /> Add to Favorites</button>
+                            {favorites[product.id] ? <button className="favorites-button" onClick={(e) => handleDelete(e)}><IoMdHeart /> Delete from Favorites</button> : <button className="favorites-button" onClick={(e) => handleAdd(e)}><IoMdHeartEmpty /> Add to Favorites</button>}
                         </div>
                     </div>
                     <div className="rev-container">

@@ -65,7 +65,7 @@ export const createReview = (el) => async (dispatch) => {
                 }
                 dispatch(makeReview(completed_rev))
                 return completed_rev
-            } else return img.errors
+            } else return imgRes.errors
         }
         const completed_rev = {
             ...newRev.created_review,
