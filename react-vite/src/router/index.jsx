@@ -3,6 +3,7 @@ import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
 import MainPage from '../components/MainPage';
+import ShoppingCart from '../components/ShoppingCart';
 
 export const router = createBrowserRouter([
   {
@@ -22,11 +23,11 @@ export const router = createBrowserRouter([
       },
       {
         path: '/favorites/current',
-        element: <h1>Comming Soon</h1>
+        element: <h1>Coming Soon</h1>
       },
       {
         path: '/shopping-cart/current',
-        element: <h1>Coming Soon</h1>
+        element: <ShoppingCart />,
       }
     ],
   },
