@@ -25,5 +25,8 @@
 }
 
 .card-holder {
-    padding-top: 35px;
+    padding: 30px;
+}
+.items-container {
+    padding: 20px;
 }

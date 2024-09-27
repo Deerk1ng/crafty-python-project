@@ -41,7 +41,7 @@ const ShoppingCart = () => {
                     <NavLink to={'/favorites/current'} className="to-favorites">View your favorites</NavLink>
             </div>
             :
-            <div>
+            <div className='cart-holder'>
                 <div className='items-container'>
                     {itemsArr.map((item) => {
                         totalCart = totalCart + (item.product.price * item.quantity)
