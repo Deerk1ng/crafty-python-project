@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FavCard from './FavCard';
 import { getFavoritesThunk } from '../../redux/favorites';
-
+import { addItemThunk } from '../../redux/cart';
+import { useNavigate } from 'react-router-dom';
 
 const Favorites = () => {
 
@@ -13,6 +14,7 @@ const Favorites = () => {
     const favArr = Object.values(favorites)
     const [favEmpty, setFavEmpty] = useState(true)
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -27,6 +29,13 @@ const Favorites = () => {
 
     }, [favorites])
 
+
+    const AddItemClick = (e, user_id, product_id) => {
+        e.preventDefault();
+
+        dispatch(addItemThunk(user_id, product_id));
+        navigate('/shopping-cart/current')
+    }
 
     return isLoaded && (
     <div>
@@ -52,7 +61,15 @@ const Favorites = () => {
                                 preview={favorite.images[0].url}
                                 />
                             </span>
-                            <button className="cart-button">Add to Cart</button>
+                            {user && user.id ?
+                            (
+                                <button
+                                    className="cart-button"
+                                    onClick={(e) => AddItemClick(e, user.id, favorite.id)}
+                                >Add to Cart</button>
+                            )
+                                : null
+                            }
                         </div>
                     )
                 })}
