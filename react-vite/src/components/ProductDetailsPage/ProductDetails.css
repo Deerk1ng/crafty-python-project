@@ -1,0 +1,86 @@
+.prod-container {
+    display: flex;
+    flex-direction: column;
+    width: 1250px;
+    margin: 30px auto;
+}
+
+.prod-shopping {
+    display: flex;
+    flex-direction: row;
+    max-height: 50%;
+}
+
+.photos {
+    display: flex;
+    flex-direction: column;
+    width: 10%;
+    padding-left: 20px;
+}
+
+.image {
+    padding: 5px;
+    max-width: 80px;
+    max-height: 80px;
+    object-fit: contain;
+
+}
+
+.big-image {
+    width: 60%;
+    height: 500px;
+    object-fit: contain;
+    margin-top: 0px;
+}
+
+.prod-details {
+    width: 20%;
+}
+
+.buy-container {
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+    width: 20%;
+    margin-left: 30px;
+}
+.user-rev-rating {
+    text-align: end;
+}
+.rev-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 30px 50px;
+}
+
+.prod-review {
+    width: 70%;
+}
+
+.prod-owner {
+    font-weight: bold;
+}
+
+.deets {
+    font-weight: bold;
+    font-size: large;
+}
+
+.reviews-title-card {
+    font-size:x-large;
+}
+
+.review-container {
+    padding: 10px 5px;
+}
+
+.review {
+    border-bottom: 1px solid #0e0e0e2e;
+    padding-bottom: 20px;
+    padding-top: 5px;
+}
+
+.rev-signature {
+    padding-top: 10px;
+}

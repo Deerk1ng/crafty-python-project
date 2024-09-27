@@ -1,48 +1,80 @@
 from flask import Blueprint, request
 from app import db
-from app.models import ShoppingCart, CartItem, Product, Order, OrderItem, ProductImage
+from app.models import ShoppingCart, CartItem, Product, Order, OrderItem, ProductImage, User
 from flask_login import current_user, login_required
 
 
 cart_route = Blueprint('cart', __name__)
 
 
-#Create shopping cart for user
-@cart_route.route('/current', methods=['POST'])
+#Get current user shopping cart and items, or create shopping cart for user
+@cart_route.route('/current', methods=['GET', 'POST'])
 @login_required
-def createShoppingCart():
-    # Should check if a user already has a cart and throw an error if he does
-    currentUser = current_user.to_dict()
-    user_id = currentUser['id']
-    cart = ShoppingCart(
-        user_id = user_id,
+def getShoppingCart():
+
+    user_id = current_user.id
+    cart = db.session.query(ShoppingCart).filter(ShoppingCart.user_id == user_id).first()
+
+    if(cart):
+        cart_id = cart.id
+        items = db.session.query(CartItem).filter(CartItem.cart_id == cart_id)
+        items_dict = [item.to_dict() for item in items]
+
+    # calculate cart total
         total = 0
-    )
-    try: ## i believe its bad practice to use a try/catch in production. we should remove these after confirmation
+
+    #get product info and images
+        for item in items_dict:
+            product = db.session.query(Product).filter(Product.id == item['product_id']).first()
+            images = db.session.query(ProductImage).filter(ProductImage.product_id == item['product_id'])
+            owner = db.session.query(User).filter(User.id == product.owner_id).first()
+
+            #add item cost to total
+            item_price = product.price * item['quantity']
+            total += item_price
+
+            #add product and images to item
+            item['product'] = product.to_dict()
+            item['images'] = [image.to_dict() for image in images] #should maybe just get the first image
+            item['owner'] = owner.to_dict()
+
+        #set total of cart
+        cart.total = total
+        db.session.commit()
+
+        cart_dict = cart.to_dict()
+        cart_dict['items'] = items_dict
+        cart_dict['total'] = total
+
+        return {'shopping_cart': cart_dict}, 200
+
+    else: #makes new cart if no cart found
+        cart = ShoppingCart(
+            user_id = user_id,
+            total = 0
+        )
         db.session.add(cart)
         db.session.commit()
         return {'shopping_cart': cart.to_dict()}, 201
-    except:
-        return {'errors': {'message': 'There was an error creating shopping cart'}}
+
 
 
 @cart_route.route('/current/<int:cart_id>', methods=['DELETE'])
 @login_required
 def deleteShoppingCart(cart_id): #can't delete a shopping cart if it has items in it
     cart = db.session.query(ShoppingCart).filter(ShoppingCart.id == cart_id).first()
-    #should check if the cart belongs to the current user just in case
-    #I think searching for carts by owner id would be easier in production but can't confirm till we try it
-    try:
+    user_id = current_user.id
+    if (user_id == cart.user_id):
         db.session.delete(cart)
         db.session.commit()
         return {'message': 'Shopping cart successfuly deleted'}, 200
-    except:
+    else:
         return {'errors': {'message': 'There was an error deleting shopping cart'}}
 
-#Get items for Shopping Cart, sets total of cart
+#Get items for Shopping Cart with cart id, sets total of cart
 @cart_route.route('/<int:cart_id>')
 @login_required
-def getShoppingCart(cart_id):
+def getItems(cart_id):
     cart_by_id = db.session.query(ShoppingCart).filter(ShoppingCart.id == cart_id).first()
 
     if not cart_by_id:
@@ -78,38 +110,51 @@ def getShoppingCart(cart_id):
 
     return {'shoppingCart': cart_dict}, 200
 
-#Add item via ITEM id
+#Add quantity to item via ITEM id
 @cart_route.route('/add/<int:item_id>/<int:quantity>', methods=['POST'])
 @login_required
 def addItemViaItemID(item_id, quantity):
 
     cart_item = db.session.query(CartItem).filter(CartItem.id == item_id).first()
-    #this should be bundled up in the add-products route so we don't have to make two fetch requests when doing this in production
-    #quantity should be inputed through a form
-    if request.method == "POST":
-        cart_item.quantity += quantity
-        try:
-            db.session.commit()
-            return {'cart_item': cart_item.to_dict()}, 201
-        except:
-            return {'errors': {'message': 'There was an error in adding quantity to item'}}
 
-#Subtract/delete item via ITEM id
+    cart_item.quantity += quantity
+    db.session.commit()
+
+    item = cart_item.to_dict()
+
+    product = db.session.query(Product).filter(Product.id == item['product_id']).first()
+    images = db.session.query(ProductImage).filter(ProductImage.product_id == item['product_id'])
+    owner = db.session.query(User).filter(User.id == product.owner_id).first()
+
+    #add product and images to item
+    item['product'] = product.to_dict()
+    item['images'] = [image.to_dict() for image in images] #should maybe just get the first image
+    item['owner'] = owner.to_dict()
+
+    return {'cart_item': item}, 201
+
+
+
+#Delete item (regardless of quantity)
+@cart_route.route('/delete/<int:item_id>', methods=['DELETE'])
+def deleteItem(item_id):
+
+    cart_item = db.session.query(CartItem).filter(CartItem.id == item_id).first()
+
+    db.session.delete(cart_item)
+    db.session.commit()
+    return {'message': 'Cart item successfuly deleted'}, 200
+
+
+
+#Subtract quantity of item via ITEM id. Will auto-delete item if it is 0 quantity
 @cart_route.route('/subtract/<int:item_id>/<int:quantity>', methods=['POST', 'DELETE'])
 def subtractDeleteItem(item_id, quantity):
 
     cart_item = db.session.query(CartItem).filter(CartItem.id == item_id).first()
 
-    if request.method == "DELETE":
-        try:
-            db.session.delete(cart_item)
-            db.session.commit()
-            return {'message': 'Cart item successfuly deleted'}, 200
-        except:
-            return {'errors': {'message': 'There was an error in deleting item from cart'}}
-
     if request.method == "POST":
-        try:
+
             cart_item.quantity = cart_item.quantity - quantity
 
             if cart_item.quantity <= 0:
@@ -119,8 +164,7 @@ def subtractDeleteItem(item_id, quantity):
             else:
                 db.session.commit()
                 return {'cart_item': cart_item.to_dict()}
-        except:
-            return {'errors': {'message': 'There was an error in subtracting quantity from item'}}
+
 
 #Add item via PRODUCT id and CART id
 @cart_route.route('/add-product/<int:cart_id>/<int:product_id>', methods=['POST'])

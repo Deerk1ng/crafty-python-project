@@ -12,6 +12,6 @@ class CreateProductForm(FlaskForm):
     description = StringField('description', validators=[DataRequired()])
     category = SelectField(
         'Category',
-        choices=[('mens', 'MENS'), ('women', 'WOMEN'), ('melee', 'MELEE'), ('long-range', 'LONG-RANGE'), ('accessories', 'ACCESSORIES')],
+        choices=[('mens', 'MENS'), ('womens', 'WOMENS'), ('melee', 'MELEE'), ('long-range', 'LONG-RANGE'), ('accessories', 'ACCESSORIES')],
         validators=[DataRequired()]
     )

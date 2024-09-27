@@ -10,7 +10,6 @@ import { TfiAnnouncement, TfiHelpAlt } from "react-icons/tfi";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import { FaChevronDown } from "react-icons/fa";
 import { MdFavoriteBorder, MdReviews, MdQueryStats } from "react-icons/md";
-import Footer from '../Footer/footer';
 
 
 
@@ -133,7 +132,6 @@ const UserListings = () => {
 </div>
 
             </div>
-            <Footer />
         </div>
 
         </>
