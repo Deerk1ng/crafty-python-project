@@ -150,9 +150,6 @@ const ProductDetailsPage = () => {
                                 : null
                             }
 
-                            <button className="favorites-button"><IoMdHeart /> Add to Favorites</button>
-
-
                             {favorites[product.id] ? <button className="favorites-button" onClick={(e) => handleDelete(e)}><IoMdHeart /> Delete from Favorites</button> : <button className="favorites-button" onClick={(e) => handleAdd(e)}><IoMdHeartEmpty /> Add to Favorites</button>}
 
                         </div>
