@@ -63,7 +63,7 @@ const ItemCard = ({ id, shopName, name, price, preview, quantity}) => {
             -
         </button>
 
-        <span>
+        <span id='quantity'>
             {quantity}
         </span>
 

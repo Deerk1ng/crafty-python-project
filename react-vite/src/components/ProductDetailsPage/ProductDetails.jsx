@@ -103,6 +103,7 @@ const ProductDetailsPage = () => {
 
     const AddItemClick = (e, user_id, product_id) => {
         e.preventDefault();
+
         dispatch(addItemThunk(user_id, product_id));
         navigate('/shopping-cart/current')
     }
@@ -123,11 +124,15 @@ const ProductDetailsPage = () => {
                             <div className="user-rev-rating">({revRating} <IoMdStar className="stars" />)</div>
                             {/* <button className="buy-button">Buy it Now</button> */}
                             <p></p>
-                            <button
-                                className="cart-button"
-                                onClick={(e) => AddItemClick(e, user.id, product.id)}
-                            >Add to Cart</button>
+                            {user && user.id ?(
+                                <button
+                                    className="cart-button"
+                                    onClick={(e) => AddItemClick(e, user.id, product.id)}
+                                >Add to Cart</button>)
+                                : null }
+
                             <button className="favorites-button"><IoMdHeart /> Add to Favorites</button>
+
                         </div>
                     </div>
                     <div className="rev-container">
