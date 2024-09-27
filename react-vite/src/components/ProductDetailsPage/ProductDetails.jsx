@@ -4,7 +4,7 @@ import { getReviews } from "../../redux/reviews"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import { IoMdStar, IoMdHeart, IoMdPerson } from "react-icons/io";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getOneProduct } from "../../redux/products";
 import OpenModalButton from "../OpenModalButton/OpenModalButton"
 import CreateReviewModal from "../CreateReviewModal/CreateReviewModal"
@@ -21,6 +21,7 @@ const ProductDetailsPage = () => {
     const [bigImg, setBigImg] = useState('')
     const [imgArr, setImgArr] = useState([])
     const [revRating, setRevRating] = useState(0)
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const getStarRating = (rating) => {
@@ -102,7 +103,8 @@ const ProductDetailsPage = () => {
 
     const AddItemClick = (e, user_id, product_id) => {
         e.preventDefault();
-        dispatch(addItemThunk(user_id, product_id))
+        dispatch(addItemThunk(user_id, product_id));
+        navigate('/shopping-cart/current')
     }
 
     return (
