@@ -58,13 +58,15 @@ def getShoppingCart():
         return {'shopping_cart': cart.to_dict()}, 201
 
 
-
+#Delete cart
 @cart_route.route('/current/<int:cart_id>', methods=['DELETE'])
 @login_required
-def deleteShoppingCart(cart_id): #can't delete a shopping cart if it has items in it
+def deleteShoppingCart(cart_id):
     cart = db.session.query(ShoppingCart).filter(ShoppingCart.id == cart_id).first()
+    items = db.session.query(CartItem).filter(CartItem.cart_id == cart_id)
     user_id = current_user.id
-    if (user_id == cart.user_id):
+
+    if (user_id == cart.user_id and not items):
         db.session.delete(cart)
         db.session.commit()
         return {'message': 'Shopping cart successfuly deleted'}, 200
@@ -134,6 +136,29 @@ def addItemViaItemID(item_id, quantity):
     return {'cart_item': item}, 201
 
 
+#Subtract quantity of item via ITEM id.
+@cart_route.route('/subtract/<int:item_id>/<int:quantity>', methods=['POST'])
+def subtractDeleteItem(item_id, quantity):
+
+    cart_item = db.session.query(CartItem).filter(CartItem.id == item_id).first()
+
+    cart_item.quantity = cart_item.quantity - quantity
+    db.session.commit()
+
+    item = cart_item.to_dict()
+
+    product = db.session.query(Product).filter(Product.id == item['product_id']).first()
+    images = db.session.query(ProductImage).filter(ProductImage.product_id == item['product_id'])
+    owner = db.session.query(User).filter(User.id == product.owner_id).first()
+
+    #add product and images to item
+    item['product'] = product.to_dict()
+    item['images'] = [image.to_dict() for image in images] #should maybe just get the first image
+    item['owner'] = owner.to_dict()
+
+
+    return {'cart_item': item}, 201
+
 
 #Delete item (regardless of quantity)
 @cart_route.route('/delete/<int:item_id>', methods=['DELETE'])
@@ -145,59 +170,47 @@ def deleteItem(item_id):
     db.session.commit()
     return {'message': 'Cart item successfuly deleted'}, 200
 
-
-
-#Subtract quantity of item via ITEM id. Will auto-delete item if it is 0 quantity
-@cart_route.route('/subtract/<int:item_id>/<int:quantity>', methods=['POST', 'DELETE'])
-def subtractDeleteItem(item_id, quantity):
-
-    cart_item = db.session.query(CartItem).filter(CartItem.id == item_id).first()
-
-    if request.method == "POST":
-
-            cart_item.quantity = cart_item.quantity - quantity
-
-            if cart_item.quantity <= 0:
-                db.session.delete(cart_item)
-                db.session.commit()
-                return {'message': 'Cart item successfuly deleted'}, 200
-            else:
-                db.session.commit()
-                return {'cart_item': cart_item.to_dict()}
-
-
-#Add item via PRODUCT id and CART id
-@cart_route.route('/add-product/<int:cart_id>/<int:product_id>', methods=['POST'])
+#Add item via PRODUCT id and USER id
+@cart_route.route('/add-product/<int:user_id>/<int:product_id>', methods=['POST'])
 @login_required
-def addItemViaProductId(cart_id, product_id):
+def addItemViaProductId(user_id, product_id):
 
-    item = db.session.query(CartItem).filter(CartItem.cart_id == cart_id).filter(CartItem.product_id == product_id).first()
+    user_cart = db.session.query(ShoppingCart).filter(ShoppingCart.user_id == user_id).first()
+    item_by_id = None
+
+    if user_cart: #if user cart exists, try to find item
+        item_by_id = db.session.query(CartItem).filter(CartItem.cart_id == user_cart.id).filter(CartItem.product_id == product_id).first()
+
     #Should check if item belongs to user to send an error
-    #should check if an item exists
-    #should check if the item is already in the shopping cart
-    #quantity should be inputed through a form
-    #if item already in cart, add +1 to quantity
-    if item:
-        item.quantity = item.quantity + 1
-        try:
-            db.session.commit()
-            return {'item': item.to_dict()}, 201
-        except:
-            return {'errors': {'message': 'Could not update quantity of item'}}
+
+    #if item exists, add 1
+    if item_by_id:
+        item_by_id.quantity = item_by_id.quantity + 1
+        db.session.commit()
+        item = item_by_id.to_dict()
 
     #if item not found in cart, add to cart
-    if not item:
+    if not item_by_id:
         new_item = CartItem(
-            cart_id = cart_id,
+            cart_id = user_cart.id,
             product_id = product_id,
             quantity = 1
         )
-        try:
-            db.session.add(new_item)
-            db.session.commit()
-            return {'new_item': new_item.to_dict()}, 201
-        except:
-            return {'errors': {'message': 'Could not update add item to cart'}}
+        db.session.add(new_item)
+        db.session.commit()
+        item = new_item.to_dict()
+
+
+    product = db.session.query(Product).filter(Product.id == item['product_id']).first()
+    images = db.session.query(ProductImage).filter(ProductImage.product_id == item['product_id'])
+    owner = db.session.query(User).filter(User.id == product.owner_id).first()
+
+    #add product and images to item
+    item['product'] = product.to_dict()
+    item['images'] = [image.to_dict() for image in images] #should maybe just get the first image
+    item['owner'] = owner.to_dict()
+
+    return {'item': item}, 201
 
 #Create new order
 @cart_route.route('/orders', methods=['POST'])

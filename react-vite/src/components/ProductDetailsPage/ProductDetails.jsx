@@ -1,4 +1,5 @@
 import "./ProductDetails.css"
+import { addItemThunk } from "../../redux/cart"
 import { getReviews } from "../../redux/reviews"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
@@ -99,6 +100,10 @@ const ProductDetailsPage = () => {
             .then(() => setIsLoaded(true));
     }, [product_id, dispatch]);
 
+    const AddItemClick = (e, user_id, product_id) => {
+        e.preventDefault();
+        dispatch(addItemThunk(user_id, product_id))
+    }
 
     return (
         <>
@@ -116,7 +121,10 @@ const ProductDetailsPage = () => {
                             <div className="user-rev-rating">({revRating} <IoMdStar className="stars" />)</div>
                             {/* <button className="buy-button">Buy it Now</button> */}
                             <p></p>
-                            <button className="cart-button">Add to Cart</button>
+                            <button
+                                className="cart-button"
+                                onClick={(e) => AddItemClick(e, user.id, product.id)}
+                            >Add to Cart</button>
                             <button className="favorites-button"><IoMdHeart /> Add to Favorites</button>
                         </div>
                     </div>
