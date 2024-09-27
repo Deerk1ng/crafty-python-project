@@ -1,0 +1,34 @@
+.modal {
+    text-align: center;
+}
+
+#modal-content {
+    position: absolute;
+    top: 150px;
+    border-radius: 20px;
+    height: auto;
+    width: 350px;
+
+}
+
+.delete-button {
+    background-color: #cc6945;
+    border-color: #cc6945;
+    color: #ffffff;
+    padding: 5px;
+    width: 80%;
+    margin: 20px 0px 0px 0px;
+}
+
+.keep-button {
+    padding: 5px;
+    border-color: #999999;
+    color: #ffffff;
+    background-color: #999999;
+    width: 80%;
+    margin: 20px 0px;
+}
+
+.delete-desc {
+    margin-bottom: 10px;
+}
