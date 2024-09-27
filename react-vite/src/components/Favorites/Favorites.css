@@ -1,0 +1,23 @@
+.fav-empty h2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 100px;
+    padding-bottom: 20px
+}
+.fav-empty div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.please-sign-in {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 50px
+}
+
+.card-holder {
+    padding-top: 35px;
+}

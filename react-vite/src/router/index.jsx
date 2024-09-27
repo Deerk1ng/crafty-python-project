@@ -8,6 +8,7 @@ import UserListings from '../components/UserListings/UserListings';
 import CreateProduct from '../components/CreateProduct/CreateProduct';
 import EditProduct from '../components/EditProduct';
 import ShoppingCart from '../components/ShoppingCart';
+import Favorites from '../components/Favorites/Favorites';
 
 export const router = createBrowserRouter([
   {
@@ -27,7 +28,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/favorites/current',
-        element: <h1>Coming Soon</h1>
+        element: <Favorites />
       },
       {
         path: '/shopping-cart/current',
