@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, redirect, request
 from app import db
-from app.models import Review, ReviewImage
+from app.models import Review, ReviewImage, User
 from flask_login import current_user, login_required
 from app.forms import CreateReviewForm, CreateImageForm
 
@@ -45,8 +45,15 @@ def edit_review(review_id):
 
             db.session.commit()
 
-            updated_review = review_by_id.to_dict()
-            return {'updated_review': updated_review}, 201
+            reviewDict = review_by_id.to_dict()
+            images = db.session.query(ReviewImage).filter(ReviewImage.review_id == reviewDict['id'])
+            user = db.session.query(User).filter(User.id == reviewDict['user_id']).first().to_dict()
+
+            user_info = {'id': user['id'], 'name': user['first_name']}
+            reviewDict['user'] = user_info
+            reviewDict['image'] = [image.to_dict() for image in images]
+
+            return {'updated_review': reviewDict}, 201
         else:
             return form.errors, 400
     elif not review_by_id.user_id == logged_in_user['id']:

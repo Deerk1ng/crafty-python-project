@@ -32,7 +32,7 @@ function Navigation() {
   }, [showMenu]);
 
 
-
+  // const closeMenu = () => setShowMenu(false);
   return (
     <ul className="Nav-bar">
 

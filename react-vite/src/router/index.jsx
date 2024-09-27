@@ -3,6 +3,10 @@ import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
 import MainPage from '../components/MainPage';
+import ProductDetailsPage from '../components/ProductDetailsPage';
+import UserListings from '../components/UserListings/UserListings';
+import CreateProduct from '../components/CreateProduct/CreateProduct';
+import EditProduct from '../components/EditProduct';
 import ShoppingCart from '../components/ShoppingCart';
 
 export const router = createBrowserRouter([
@@ -11,7 +15,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <MainPage />,
+        element: <MainPage />
       },
       {
         path: "login",
@@ -27,13 +31,29 @@ export const router = createBrowserRouter([
       },
       {
         path: '/shopping-cart/current',
-        element: <ShoppingCart />,
+        element: <ShoppingCart />
+      },
+      {
+        path: 'products',
+        children: [
+          {
+            path: ':product_id',
+            element: <ProductDetailsPage />
+          }
+        ]
       }
     ],
   },
-  // different nav
   {
     path: '/products/current',
-    element: <h1>Coming Soon</h1>
+    element: <UserListings  />
   },
+  {
+    path: '/products/new',
+    element: <CreateProduct />
+  },
+  {
+    path: '/products/:product_id/edit',
+    element: <EditProduct />
+  }
 ]);

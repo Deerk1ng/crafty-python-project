@@ -106,7 +106,7 @@ def productsForUser():
         # Append the productById dictionary to the list
         productsList.append(productDict)
     # Return the JSON response
-    return jsonify({'products': productsList})
+    return jsonify(productsList)
 
 
 @product_route.route('/<int:product_id>')
@@ -124,6 +124,10 @@ def productById(product_id):
 
     images = db.session.query(ProductImage).filter(ProductImage.product_id == product_id).all()
     reviews = db.session.query(Review).filter(Review.product_id == product_id).all()
+    user = db.session.query(User).filter(User.id == product_dict['owner_id']).first().to_dict()
+
+    # just grabbng id and shop_name
+    user_info = {'id': user['id'], 'first_name': user['first_name'], 'shop_name': user['shop_name']}
 
     # review avg rating
     review_length = len(reviews)
@@ -146,7 +150,7 @@ def productById(product_id):
     if review_length > 0:
         avg_rating = (item_rating_sum + shipping_rating_sum) / (2 * review_length)
 
-
+    product_dict['owner'] = user_info
     product_dict['images'] = [image.to_dict() for image in images]
     product_dict['reviews'] = reviews_list #[review.to_dict() for review in reviews]
     product_dict['avgRating'] = avg_rating
@@ -318,7 +322,7 @@ def get_reviews_by_product_id(product_id):
         user = db.session.query(User).filter(User.id == reviewDict['user_id']).first().to_dict()
 
         # just grabbng id and shop_name
-        user_info = {'id': user['id'], 'shop_name': user['shop_name']}
+        user_info = {'id': user['id'], 'name': user['first_name']}
         reviewDict['user'] = user_info
         reviewDict['image'] = [image.to_dict() for image in images]
         reviewsList.append(reviewDict)
