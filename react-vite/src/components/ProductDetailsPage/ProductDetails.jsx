@@ -91,8 +91,8 @@ const ProductDetailsPage = () => {
                             {product?.images?.length ? imgLoop(product.images) : <div>No images available</div>}
                         </div>
                         <div className="buy-container">
-                            <h2 className="prod-price">{product?.price}</h2>
-                            <div className="prod-title">{product?.name}</div>
+                            <h2 className="prod-price">{product.price}</h2>
+                            <div className="prod-title">{product.name}</div>
                             <div className="user-reviews">Shop Seller: {product?.avgRating}</div>
                             <button className="buy-button">Buy it Now</button>
                             <button className="cart-button">Add to Cart</button>

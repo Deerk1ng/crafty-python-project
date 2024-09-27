@@ -6,6 +6,9 @@ const ONE_PRODUCT = "products/oneProduct"
 const ADD_PRODUCT = 'session/ADDPRODUCT';
 const ALL_USER_PRODUCTS = 'session/allUserProducts';
 
+const UPDATE_PRODUCT = 'session/updateProduct'
+
+
 
 // Action creator for loading all products
 const loadProducts = (products) => ({
@@ -30,6 +33,11 @@ const addProduct = (payload) => ({
     payload
 });
 
+
+const updateAProduct = (product) => ({
+    type: UPDATE_PRODUCT,
+    product,
+});
 
 // Thunk to fetch all products
 export const getProducts = () => async (dispatch) => {
@@ -90,7 +98,7 @@ export const createProduct = (product) => async (dispatch) => {
     const data = await res.json();
 
     const {created_product} = data;
-    console.log('wwwwwwww',created_product)
+
 
     // If product.images is an array, handle multiple images
 
@@ -100,7 +108,7 @@ export const createProduct = (product) => async (dispatch) => {
                 preview: true,
                 product_id: created_product.id
             };
-            console.log("image    ",image)
+
             try {
                 await csrfFetch(`/api/products/${created_product.id}/images`, {
                     method: 'POST',
@@ -116,6 +124,36 @@ export const createProduct = (product) => async (dispatch) => {
     dispatch(addProduct(created_product));
     return created_product;
 };
+
+// edit product details
+export const updateProductDetails = (product, product_id) => async (dispatch) => {
+    let res;
+
+    let updateProduct = {
+        name: product.name,
+        price: product.price,
+        description: product.description,
+        category: product.category
+    };
+
+    try {
+        console.log(product_id)
+        res = await csrfFetch(`/api/products/${product_id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updateProduct)
+        });
+    } catch (error) {
+        return await error.json();
+    }
+
+    if (res.ok) {
+        const updatedProduct = await res.json();
+        dispatch(updateAProduct(updatedProduct));
+        return updatedProduct;
+    }
+};
+
 
 
 
@@ -155,10 +193,21 @@ function productsReducer(state = initialState, action) {
             const newProduct = action.payload;
             return {
                 ...state,
-                allGroups: {
+                allProducts: {
                     ...state.allProducts,
                     [newProduct.id]: newProduct
                 }
+            };
+        }
+        case UPDATE_PRODUCT: {
+            const updatedProduct = action.product;
+            return {
+                ...state,
+                allProducts: {
+                    ...state.allProducts,
+                    [updatedProduct.id]: updatedProduct
+                },
+                currProduct: updatedProduct,  // Update current product if necessary
             };
         }
         default:
