@@ -14,7 +14,7 @@ const FavCard = ({id, shopName, name, price, preview}) => {
     }
   return (
     <div className='favcard' onClick={(e)=> goToSpotDetails(e, id)}>
-        <div className='preview-box'>
+        <div className='fav-preview-box'>
             <img src={preview} alt={name} />
         </div>
         <span>

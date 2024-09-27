@@ -109,6 +109,7 @@ const ProductDetailsPage = () => {
 
         dispatch(addItemThunk(user_id, product_id));
         navigate('/shopping-cart/current')
+    }
 
     const handleDelete = (e) => {
         e.preventDefault();
@@ -139,12 +140,15 @@ const ProductDetailsPage = () => {
                             {/* <button className="buy-button">Buy it Now</button> */}
                             <p></p>
 
-                            {user && user.id ?(
+                            {user && user.id ?
+                            (
                                 <button
                                     className="cart-button"
                                     onClick={(e) => AddItemClick(e, user.id, product.id)}
-                                >Add to Cart</button>)
-                                : null }
+                                >Add to Cart</button>
+                            )
+                                : null
+                            }
 
                             <button className="favorites-button"><IoMdHeart /> Add to Favorites</button>
 
@@ -182,5 +186,6 @@ const ProductDetailsPage = () => {
         </>
     );
 }
+
 
 export default ProductDetailsPage;
