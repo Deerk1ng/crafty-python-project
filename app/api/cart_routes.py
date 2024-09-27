@@ -116,12 +116,22 @@ def getItems(cart_id):
 def addItemViaItemID(item_id, quantity):
 
     cart_item = db.session.query(CartItem).filter(CartItem.id == item_id).first()
-    #this should be bundled up in the add-products route so we don't have to make two fetch requests when doing this in production
-    #quantity should be inputed through a form
 
     cart_item.quantity += quantity
     db.session.commit()
-    return {'cart_item': cart_item.to_dict()}, 201
+
+    item = cart_item.to_dict()
+
+    product = db.session.query(Product).filter(Product.id == item['product_id']).first()
+    images = db.session.query(ProductImage).filter(ProductImage.product_id == item['product_id'])
+    owner = db.session.query(User).filter(User.id == product.owner_id).first()
+
+    #add product and images to item
+    item['product'] = product.to_dict()
+    item['images'] = [image.to_dict() for image in images] #should maybe just get the first image
+    item['owner'] = owner.to_dict()
+
+    return {'cart_item': item}, 201
 
 
 

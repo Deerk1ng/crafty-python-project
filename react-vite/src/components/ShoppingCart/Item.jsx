@@ -54,10 +54,13 @@ const ItemCard = ({ id, shopName, name, price, preview, quantity}) => {
             Remove
         </button>
         <button onClick={(e) => AddClick(e, id, quant)}>
-            -
-        </button>
-        <button onClick={(e) => SubClick(e, id, quant)}>
             +
+        </button>
+        <span>
+            {quantity}
+        </span>
+        <button onClick={(e) => SubClick(e, id, quant)}>
+            -
         </button>
     </div>
   );

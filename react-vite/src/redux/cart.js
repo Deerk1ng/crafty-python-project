@@ -84,11 +84,16 @@ export const removeItemThunk = (item_id) => async (dispatch) => {
 
 // Thunk add to quantity
 export const addQuantThunk = (item_id, quantity) => async(dispatch) => {
-    const res = await csrfFetch(`/api/shipping-cart/add/${item_id}/${quantity}`)
+    const res = await csrfFetch(`/api/shopping-cart/add/${item_id}/${quantity}`,
+    {
+        method: 'POST',
+        body: JSON.stringify({item_id, quantity})
+    })
 
     if(res.ok){
         const data = await res.json();
         dispatch(addQuant(data))
+        console.log(data)
         return data;
     }
     return res;
@@ -96,11 +101,16 @@ export const addQuantThunk = (item_id, quantity) => async(dispatch) => {
 
 //Thunk sub from quantity
 export const subQuantThunk = (item_id, quantity) => async(dispatch) => {
-    const res = await csrfFetch(`/api/shipping-cart/subtract/${item_id}/${quantity}`)
+    const res = await csrfFetch(`/api/shopping-cart/subtract/${item_id}/${quantity}`,
+    {
+        method: 'POST',
+        body: JSON.stringify({item_id, quantity})
+    })
 
     if(res.ok){
         const data = await res.json();
         dispatch(subQuant(data))
+        console.log(data)
         return data;
     }
     return res;
@@ -133,12 +143,15 @@ function cartReducer(state = initialState, action) {
             delete newState.items[action.payload]
             return newState
         case ADD_QUANT:
-            newState = {...state}
-            newState.items = action.payload
+            newState = structuredClone(state)
+            console.log(action.payload)
+            console.log(newState)
+            newState.items[action.payload['cart_item'].id] = action.payload['cart_item']
+
             return newState
         case SUB_QUANT:
-            newState = {...state}
-            newState.items = action.payload
+            newState = structuredClone(state)
+            newState.items[action.payload['cart_item'].id] = action.payload['cart_item']
             return newState
         default:
             return state;

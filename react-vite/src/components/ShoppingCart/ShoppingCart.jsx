@@ -10,25 +10,27 @@ const ShoppingCart = () => {
 
     const user = useSelector((state) => state.session.user)
     const items = useSelector((state) => state.cartState.items)
+    const [isLoaded, setIsLoaded] = useState(false);
     const itemsArr = Object.values(items)
     const [cartEmpty, setCartEmpty] = useState(true)
+    let totalCart = 0
     const dispatch = useDispatch();
 
 
-    console.log(itemsArr)
-
     useEffect(() => {
         dispatch(getCartThunk())
+        .then(() => setIsLoaded(true))
     }, [])
 
     useEffect(() => {
         if(items){
             setCartEmpty(false)
         }
+
     }, [items])
 
 
-    return (
+    return isLoaded && (
     <div>
         { user ?
             cartEmpty ?
@@ -40,6 +42,7 @@ const ShoppingCart = () => {
             :
             <div className='items-container'>
                 {itemsArr.map((item) => {
+                    totalCart = totalCart + (item.product.price * item.quantity)
                     return (
                         <div key={`${item.id}-${item.product_id}`} className='card-holder'>
                             <span>
@@ -60,6 +63,12 @@ const ShoppingCart = () => {
          :
             <h2 className='please-sign-in'>Please sign in to use Shopping Cart</h2>
          }
+        <div>
+            ${totalCart.toFixed(2)}
+        </div>
+         <button>
+            Proceed to checkout
+         </button>
     </div>
     )
 
