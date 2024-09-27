@@ -40,7 +40,7 @@ const newItem = (data) => ({
     payload: data
 })
 
-const deleteCart = (id) => ({
+const deleteCart = () => ({
     type: DELETE_CART
 })
 
@@ -73,7 +73,11 @@ export const getItemsThunk = (cart_id) => async (dispatch) => {
 
 // Thunk to remove item
 export const removeItemThunk = (item_id) => async (dispatch) => {
-    const res = await csrfFetch(`/api/shopping-cart/delete/${item_id}`);
+    const res = await csrfFetch(`/api/shopping-cart/delete/${item_id}`,
+        {
+            method: 'DELETE'
+        }
+    );
 
     if (res.ok) {
         dispatch(removeItem(item_id))
@@ -105,17 +109,32 @@ export const subQuantThunk = (item_id, quantity) => async(dispatch) => {
     {
         method: 'POST',
         body: JSON.stringify({item_id, quantity})
-    })
+    }
+)
 
     if(res.ok){
         const data = await res.json();
         dispatch(subQuant(data))
-        console.log(data)
         return data;
     }
     return res;
 }
 
+//Thunk add item from products page
+export const addItemThunk = (cart_id, product_id) => async(dispatch) => {
+    const res = await csrfFetch(`/api/shopping-cart/add-product/${cart_id}/${product_id}`,
+        {
+            method:'POST',
+            body: JSON.stringify({cart_id, product_id})
+        }
+    )
+    if(res.ok){
+        const data = await res.json()
+        dispatch(newItem(data))
+        return data;
+    }
+    return res;
+}
 
 // Initial state
 const initialState = {
@@ -144,14 +163,15 @@ function cartReducer(state = initialState, action) {
             return newState
         case ADD_QUANT:
             newState = structuredClone(state)
-            console.log(action.payload)
-            console.log(newState)
             newState.items[action.payload['cart_item'].id] = action.payload['cart_item']
-
             return newState
         case SUB_QUANT:
             newState = structuredClone(state)
             newState.items[action.payload['cart_item'].id] = action.payload['cart_item']
+            return newState
+        case NEW_ITEM:
+            newState = structuredClone(state)
+            newState.items[action.payload.item.id] = action.payload.item
             return newState
         default:
             return state;

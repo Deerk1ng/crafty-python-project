@@ -56,5 +56,9 @@ export const router = createBrowserRouter([
   {
     path: '/products/:product_id/edit',
     element: <EditProduct />
+  },
+  {
+    path: '/shopping-cart/checkout',
+    element: <h1>Coming Soon</h1>
   }
 ]);

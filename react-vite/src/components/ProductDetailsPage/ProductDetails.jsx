@@ -1,9 +1,10 @@
 import "./ProductDetails.css"
+import { addItemThunk } from "../../redux/cart"
 import { getReviews } from "../../redux/reviews"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import { IoMdStar, IoMdHeart, IoMdHeartEmpty, IoMdPerson } from "react-icons/io";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate} from 'react-router-dom';
 import { getOneProduct } from "../../redux/products";
 import { createFavorite, deleteFavorite } from "../../redux/favorites";
 import OpenModalButton from "../OpenModalButton/OpenModalButton"
@@ -22,6 +23,7 @@ const ProductDetailsPage = () => {
     const [bigImg, setBigImg] = useState('')
     const [imgArr, setImgArr] = useState([])
     const [revRating, setRevRating] = useState(0)
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const getStarRating = (rating) => {
@@ -101,6 +103,13 @@ const ProductDetailsPage = () => {
             .then(() => setIsLoaded(true));
     }, [product_id, dispatch]);
 
+
+    const AddItemClick = (e, user_id, product_id) => {
+        e.preventDefault();
+
+        dispatch(addItemThunk(user_id, product_id));
+        navigate('/shopping-cart/current')
+
     const handleDelete = (e) => {
         e.preventDefault();
 
@@ -110,6 +119,7 @@ const ProductDetailsPage = () => {
     const handleAdd = (e) => {
         e.preventDefault();
         dispatch(createFavorite(product.id))
+
     }
 
     return (
@@ -128,8 +138,19 @@ const ProductDetailsPage = () => {
                             <div className="user-rev-rating">({revRating} <IoMdStar className="stars" />)</div>
                             {/* <button className="buy-button">Buy it Now</button> */}
                             <p></p>
-                            <button className="cart-button">Add to Cart</button>
+
+                            {user && user.id ?(
+                                <button
+                                    className="cart-button"
+                                    onClick={(e) => AddItemClick(e, user.id, product.id)}
+                                >Add to Cart</button>)
+                                : null }
+
+                            <button className="favorites-button"><IoMdHeart /> Add to Favorites</button>
+
+
                             {favorites[product.id] ? <button className="favorites-button" onClick={(e) => handleDelete(e)}><IoMdHeart /> Delete from Favorites</button> : <button className="favorites-button" onClick={(e) => handleAdd(e)}><IoMdHeartEmpty /> Add to Favorites</button>}
+
                         </div>
                     </div>
                     <div className="rev-container">
