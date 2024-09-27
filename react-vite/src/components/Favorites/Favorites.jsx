@@ -2,28 +2,30 @@ import './Favorites.css'
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FavCard from './FavCard';
+import { getFavoritesThunk } from '../../redux/favorites';
 
 
 const Favorites = () => {
 
     const user = useSelector((state) => state.session.user)
-    // const favorites = useSelector((state) => state.cartState.items)
+    const favorites = useSelector((state) => state.favoritesReducer.currentFavorites)
     const [isLoaded, setIsLoaded] = useState(false);
-    // const favArr = Object.values(favs)
+    const favArr = Object.values(favorites)
     const [favEmpty, setFavEmpty] = useState(true)
     const dispatch = useDispatch();
 
 
     useEffect(() => {
-        setIsLoaded(true)
+        dispatch(getFavoritesThunk())
+        .then(() => setIsLoaded(true))
     }, [])
 
-    // useEffect(() => {
-    //     if(items){
-    //         setFavEmpty(false)
-    //     }
+    useEffect(() => {
+        if(favorites){
+            setFavEmpty(false)
+        }
 
-    // }, [items])
+    }, [favorites])
 
 
     return isLoaded && (
@@ -35,25 +37,25 @@ const Favorites = () => {
                     <div>Start favoriting items to compare, shop, and keep track of things you love</div>
             </div>
             :
-            <div className='items-container'>
-                {/* {itemsArr.map((item) => {
-                    totalCart = totalCart + (item.product.price * item.quantity)
+            <div className='favs-container'>
+                {favArr.map((favorite) => {
+
                     return (
-                        <div key={`${item.id}-${item.product_id}`} className='card-holder'>
+                        <div key={`${favorite.id}-${favorite.owner_id}`} className='card-holder'>
+
                             <span>
                                 <FavCard
-                                id={item.id}
-                                shopName={item.owner.shop_name}
-                                name={item.product.name}
-                                price={item.product.price}
-                                preview={item.images[0].url}
-                                quantity={item.quantity}
+                                id={favorite.id}
+                                shopName={favorite.owner.shop_name}
+                                name={favorite.name}
+                                price={favorite.price}
+                                preview={favorite.images[0].url}
                                 />
                             </span>
-
+                            <button className="cart-button">Add to Cart</button>
                         </div>
                     )
-                })} */}
+                })}
             </div>
          :
             <h2 className='please-sign-in'>Please sign in to use Favorites</h2>

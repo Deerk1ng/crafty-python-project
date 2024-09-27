@@ -1,34 +1,33 @@
 import './FavCard.css'
-import { FaStar } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 
 
 
-const FavCard = ({id, name, preview, city, state, rating, price}) => {
+const FavCard = ({id, shopName, name, price, preview}) => {
 
     const navigate = useNavigate();
     price = price.toFixed(2) //adds two decimal places
-    rating ? rating = rating.toFixed(1) : rating='New'
 
     const goToSpotDetails = (e, id) => {
         e.stopPropagation();
         navigate(`/spots/${id}`)
     }
   return (
-    <div className='card' onClick={(e)=> goToSpotDetails(e, id)}>
+    <div className='favcard' onClick={(e)=> goToSpotDetails(e, id)}>
         <div className='preview-box'>
             <img src={preview} alt={name} />
         </div>
+        <span>
+                {name}
+        </span>
         <div className='location-box'>
             <span>
-                {city}, {state}
+                {shopName}
             </span>
-            <span>
-            <FaStar/> {rating}
-            </span>
+
         </div>
         <div className='price-box'>
-            <span>${price} per night</span>
+            <span>${price}</span>
         </div>
     </div>
   );
