@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import { IoMdStar, IoMdHeart, IoMdPerson } from "react-icons/io";
 import { useParams } from 'react-router-dom';
-import Footer from "../Footer"
 import { getOneProduct } from "../../redux/products";
 import OpenModalButton from "../OpenModalButton/OpenModalButton"
 import CreateReviewModal from "../CreateReviewModal/CreateReviewModal"
 import DeleteReviewModal from "../DeleteReviewModal/DeleteReviewModal";
+import UpdateReviewModal from "../UpdateReviewModal/UpdateReviewModal";
 
 const ProductDetailsPage = () => {
     const { product_id } = useParams();
@@ -17,6 +17,9 @@ const ProductDetailsPage = () => {
     const review = useSelector((state) => state.reviewsReducer.ReviewsForCurrentProduct);
     const [isLoaded, setIsLoaded] = useState(false);
     const [revArr, setRevArr] = useState([]);
+    const [bigImg, setBigImg] = useState('')
+    const [imgArr, setImgArr] = useState([])
+    const [revRating, setRevRating] = useState(0)
     const dispatch = useDispatch();
 
     const getStarRating = (rating) => {
@@ -30,45 +33,59 @@ const ProductDetailsPage = () => {
     useEffect(() => {
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         const reviewArr = [];
-
+        let ratingSum = 0
         Object.keys(review).forEach((key, i) => {
+            ratingSum += review[key]?.item_rating
             const dateFormatted = new Date(review[key]?.created_at);
             const date = `${months[dateFormatted.getMonth()]} ${dateFormatted.getDate()} ${dateFormatted.getFullYear()}`;
-
             reviewArr.push((
-                <div className={`review-${i}`} key={i}>
+                <div className={`review`} key={i}>
                     <p>{Array.from({ length: getStarRating(review[key]?.item_rating) }, (_, index) => (<IoMdStar key={index} className="stars" />))}</p>
                     <div className="prod-description">{review[key]?.description}</div>
                     <div className="prod-item">Purchased item: {product?.name}</div>
-                    {review[key]?.image?.url ? (
-                        <img src={review[key]?.image.url} alt="image uploaded by user of the product received" className="review-img" />
+                    {review[key].image.length ? (
+                        <img src={review[key]?.image[0].url} alt="image uploaded by user of the product received" className="review-img" />
                     ) : null}
-                    <div><IoMdPerson /> {review[key]?.user?.name} {date}</div>
+                    <div className="rev-signature"><IoMdPerson /> {review[key]?.user?.name} {date}</div>
                     {review[key]?.user_id === user?.id ? (
-                        <OpenModalButton
+                        <div>
+                            <OpenModalButton
                             buttonText="Delete"
                             className='delete-button'
                             modalComponent={<DeleteReviewModal review_id={review[key].id} />}
-                        />
+                            />
+                            <OpenModalButton
+                            buttonText="Update"
+                            className='delete-button'
+                            modalComponent={<UpdateReviewModal review_id={review[key].id} review={review[key]} product={product}/>}
+                            />
+                        </div>
                     ) : null}
                 </div>
             ));
         });
         setRevArr(reviewArr);
+        setRevRating((ratingSum / reviewArr.length).toFixed(2))
     }, [review, product, user]);
 
-    const imgLoop = (images) => {
-        const newImgArr = [];
-        for (let i = 0; i < 5; i++) {
-            const currImg = images[i];
-            if (currImg) {
-                newImgArr.push(
-                    <img key={currImg.id} src={currImg.url} alt={`image belonging to the spot ${product?.name}`} className="preview" />
-                );
+
+    useEffect(() => {
+        if(product.images) {
+
+            const images = product.images
+            const newImgArr = [];
+            for (let i = 0; i < 5; i++) {
+                const currImg = images[i];
+                if (currImg) {
+                    newImgArr.push(
+                        <img key={currImg.id} src={currImg.url} alt={`image belonging to the spot ${product?.name}`} onClick={(e) => setBigImg(e.target.src)} className="image" />
+                    );
+                }
             }
+            setImgArr(newImgArr);
+            setBigImg(images[0].url)
         }
-        return newImgArr;
-    };
+    }, [product])
 
     const checkCritics = (reviews) => {
         const idLog = [];
@@ -82,46 +99,52 @@ const ProductDetailsPage = () => {
             .then(() => setIsLoaded(true));
     }, [product_id, dispatch]);
 
+
     return (
         <>
             {isLoaded ? (
-                <>
+                <div className="prod-container">
                     <div className="prod-shopping">
                         <div className="photos">
-                            {product?.images?.length ? imgLoop(product.images) : <div>No images available</div>}
+                            {imgArr.length ? imgArr : <div>No images available</div>}
                         </div>
+                        <img src={bigImg} alt={`${bigImg}`} className="big-image" />
                         <div className="buy-container">
-                            <h2 className="prod-price">{product.price}</h2>
-                            <div className="prod-title">{product.name}</div>
-                            <div className="user-reviews">Shop Seller: {product?.avgRating}</div>
-                            <button className="buy-button">Buy it Now</button>
+                            <h2 className="prod-price">${product?.price?.toFixed(2)}</h2>
+                            <h2 className="prod-title">{product?.name}</h2>
+                            <div className="user-reviews">{product.owner.shop_name}</div>
+                            <div className="user-rev-rating">({revRating} <IoMdStar className="stars" />)</div>
+                            {/* <button className="buy-button">Buy it Now</button> */}
+                            <p></p>
                             <button className="cart-button">Add to Cart</button>
                             <button className="favorites-button"><IoMdHeart /> Add to Favorites</button>
                         </div>
                     </div>
-                    {(user && user.id !== product?.owner_id) && !checkCritics(review) ? (
-                        <OpenModalButton
-                            buttonText="Post Your Review"
-                            className='newSpot-button'
-                            modalComponent={<CreateReviewModal product_id={product.id} />}
-                        />
-                    ) : null}
-                    <div className="prod-review">
-                        <div>{product?.reviews?.length} Reviews</div>
-                        <p>{Array.from({ length: getStarRating(product?.avgRating) }, (_, index) => (
-                            <IoMdStar key={index} className="stars" />
-                        ))}<span style={{ marginLeft: '6px', fontWeight: '100' }}>({product?.avgRating})</span></p>
-                        <div className="review-container">
-                            {revArr}
+                    <div className="rev-container">
+                        <div className="prod-review">
+                            {(user && user.id !== product?.owner_id) && !checkCritics(review) ? (
+                                <OpenModalButton
+                                    buttonText="Post Your Review"
+                                    className='newSpot-button'
+                                    modalComponent={<CreateReviewModal product_id={product.id} product={product} />}
+                                />
+                            ) : null}
+                            <div className="reviews-title-card">{revArr.length} Reviews {Array.from({ length: getStarRating(revRating) }, (_, index) => (
+                                <IoMdStar key={index} className="stars" />
+                            ))}<span style={{ marginLeft: '6px', fontWeight: '100' }}></span></div>
+
+                            <div className="review-container">
+                                {revArr.length ? revArr: <></>}
+                            </div>
+                        </div>
+                        <div className="prod-details">
+                            <p className="deets">Item Details</p>
+                            <div className="item-details">{product?.description}</div>
+                            <p></p>
+                            <div className="prod-owner">Sold by: {product?.owner?.first_name}</div>
                         </div>
                     </div>
-                    <div className="prod-details">
-                        <h3>Item Details</h3>
-                        <div className="item-details">{product?.description}</div>
-                        <div className="prod-owner">Sold by: {product?.owner?.first_name}</div>
-                    </div>
-                    <Footer />
-                </>
+                </div>
             ) : null}
         </>
     );

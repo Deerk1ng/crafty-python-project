@@ -133,7 +133,6 @@ const UserListings = () => {
 </div>
 
             </div>
-            <Footer />
         </div>
 
         </>
