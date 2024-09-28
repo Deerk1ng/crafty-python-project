@@ -26,7 +26,6 @@ const Favorites = () => {
         if(favorites){
             setFavEmpty(false)
         }
-
     }, [favorites])
 
 
