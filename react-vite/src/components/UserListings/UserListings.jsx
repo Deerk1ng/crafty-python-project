@@ -40,7 +40,7 @@ const UserListings = () => {
     const products = useSelector(state => state.productsReducer.userProducts)
 
     const allProducts = products ? Object.values(products) : [];
-    console.log('allproducts', allProducts[9])
+
 
     function getDateTwoMonthsFromNow() {
         const now = new Date();
@@ -81,7 +81,7 @@ const UserListings = () => {
         dispatch(getUserProducts());
     }, [dispatch]);
 
-    return (
+    return allProducts.length > 0 ? (
         <>
         <div className='side-nav'>
             <ul>
@@ -135,6 +135,29 @@ const UserListings = () => {
         </div>
 
         </>
+    ) :
+    (
+        <div>
+            <div className='side-nav'>
+                <ul>
+                    <li style={{fontWeight: '800'}}>Shop Manager</li>
+                    <NavLink to={'/'}><IoMdHome /> Home</NavLink>
+                    <NavLink to={'/favorites/current'}><MdFavoriteBorder />Favorites</NavLink>
+                    <NavLink onClick={''}><MdReviews />Shop Reviews</NavLink>
+                    <NavLink onClick={''}><MdQueryStats />Stats</NavLink>
+                    <NavLink onClick={''}><TfiAnnouncement />Marketing</NavLink>
+                    <NavLink onClick={''}><FaMoneyBillTrendUp />Finances</NavLink>
+                    <NavLink onClick={''}><TfiHelpAlt />Help</NavLink>
+                    <NavLink onClick={''}><IoSettings />Settings</NavLink>
+                    <button onClick={logout}>Log Out</button>
+
+                </ul>
+            </div>
+            <div className='right-top-none'>
+                <h3>You currently have no listings</h3>
+                <NavLink className={'listing-bttn-none'} to={'/products/new'}><IoMdAdd />Add Listing</NavLink>
+            </div>
+        </div>
     )
 }
 
