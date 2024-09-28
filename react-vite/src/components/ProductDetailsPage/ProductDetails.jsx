@@ -136,7 +136,7 @@ const ProductDetailsPage = () => {
                             <h2 className="prod-price">${product?.price?.toFixed(2)}</h2>
                             <h2 className="prod-title">{product?.name}</h2>
                             <div className="user-reviews">{product.owner.shop_name}</div>
-                            <div className="user-rev-rating">({revRating} <IoMdStar className="stars" />)</div>
+                            {Number(revRating) ? <div className="user-rev-rating">({revRating} <IoMdStar className="stars" />)</div> : <div className="user-rev-rating">No reviews!</div> }
                             {/* <button className="buy-button">Buy it Now</button> */}
                             <p></p>
 
