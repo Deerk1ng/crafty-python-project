@@ -6,11 +6,13 @@ import { RiMenu4Line } from "react-icons/ri";
 import { MdFavoriteBorder } from "react-icons/md";
 import { BsCart2 } from "react-icons/bs";
 import { FaShop } from "react-icons/fa6";
+import { useSelector } from "react-redux";
 
 
 
 function Navigation() {
   const [showMenu, setShowMenu] = useState(false);
+  const user = useSelector(state => state.session.user)
 
   const toggleMenu = (e) => {
     e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
@@ -40,7 +42,7 @@ function Navigation() {
         <NavLink to="/"><img id='logo-img' src="/logofornow.svg" alt="Crafty Logo"></img></NavLink>
       </li>
 
-      <li>
+      {/* <li>
         <button className='categories-btn' onClick={toggleMenu}><RiMenu4Line /> Categories</button>
       </li>
         {showMenu && (
@@ -51,29 +53,33 @@ function Navigation() {
             <NavLink to={'comingsoon'}>Category4 </NavLink>
             <NavLink to={'comingsoon'}>Category5 </NavLink>
           </ul>
-        )}
+        )} */}
 
       <li>
         <input
         placeholder="Search..."
         className="search-bar"
+        onClick={() => alert("Search feature coming soon.")}
         ></input>
       </li>
 
+      {user && user.id ?
       <li>
         <NavLink to={'/favorites/current'}><MdFavoriteBorder className='heart'/></NavLink>
-      </li>
+      </li> : null}
 
+      {user && user.id ?
       <li>
-              <NavLink to={'/products/current'} ><FaShop className="shop-icn"/> </NavLink>
-      </li>
+          <NavLink to={'/products/current'} ><FaShop className="shop-icn"/> </NavLink>
+      </li> : null}
 
       <li>
         <ProfileButton />
       </li>
+      {user && user.id ?
       <li>
         <NavLink to={'/shopping-cart/current'}><BsCart2 className="cart"/> </NavLink>
-      </li>
+      </li> : null}
     </ul>
   );
 }
