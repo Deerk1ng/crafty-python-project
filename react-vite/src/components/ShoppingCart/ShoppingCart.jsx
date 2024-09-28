@@ -23,9 +23,14 @@ const ShoppingCart = () => {
     }, [])
 
     useEffect(() => {
-        if(Object.keys(items).length){
+
+        if(items){
             setCartEmpty(false)
         } else {
+            setCartEmpty(true)
+        }
+
+        if (Object.values(items).length === 0){
             setCartEmpty(true)
         }
     }, [items])

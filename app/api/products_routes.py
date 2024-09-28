@@ -392,4 +392,4 @@ def add_to_favorites(productId):
         new_fav.to_dict()
         return {"message": 'Product added to favorites successfully!', "fav": new_fav.to_dict()}, 201
     else:
-        return {'error': 'Product is already added to favorites'}
+        return {'error': 'Product is already added to favorites'}, 401
