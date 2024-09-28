@@ -51,7 +51,8 @@ def favoritesByUserId():
             avg_rating = None
 
         product_dict['avgRating'] = avg_rating
-        favorites_list.append(product_dict)
+        favorite_dict['product'] = product_dict
+        favorites_list.append(favorite_dict)
 
     return favorites_list
 

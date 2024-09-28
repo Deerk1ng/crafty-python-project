@@ -141,16 +141,15 @@ const ProductDetailsPage = () => {
                             <p></p>
 
                             {user && user.id ?
-                            (
+                                <>
                                 <button
                                     className="cart-button"
-                                    onClick={(e) => AddItemClick(e, user.id, product.id)}
-                                >Add to Cart</button>
-                            )
-                                : null
-                            }
+                                    onClick={(e) => AddItemClick(e, user.id, product.id)} >Add to Cart</button>
+                                {favorites[product.id] ? <button className="favorites-button" onClick={(e) => handleDelete(e)}><IoMdHeart /> Delete from Favorites</button> : <button className="favorites-button" onClick={(e) => handleAdd(e)}><IoMdHeartEmpty /> Add to Favorites</button>}
+                                </>
 
-                            {favorites[product.id] ? <button className="favorites-button" onClick={(e) => handleDelete(e)}><IoMdHeart /> Delete from Favorites</button> : <button className="favorites-button" onClick={(e) => handleAdd(e)}><IoMdHeartEmpty /> Add to Favorites</button>}
+                            : <></>}
+
 
                         </div>
                     </div>
