@@ -8,7 +8,6 @@ function DeleteReviewModal({review_id}) {
     const dispatch = useDispatch()
 
     const handleDelete = () => {
-        console.log(review_id)
         dispatch(deleteReview(review_id))
         .then(closeModal)
     }

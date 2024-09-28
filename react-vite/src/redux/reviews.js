@@ -23,12 +23,23 @@ const removeReview = (review_id) => ({
 
 // Thunk to fetch all products
 export const getReviews = (product_id) => async (dispatch) => {
-
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const res = await csrfFetch(`/api/products/${product_id}/reviews`);
 
     if (res.ok) {
         const data = await res.json();
-        dispatch(loadReviews(data.reviews));
+        const arr = data.reviews
+        const reviewsArr = arr.map(rev => {
+            const dateFormatted = new Date(rev.created_at);
+            const date = `${months[dateFormatted.getMonth()]} ${dateFormatted.getDate()} ${dateFormatted.getFullYear()}`;
+            return {
+                ...rev,
+                date,
+                dateFormatted,
+
+            }
+        })
+        dispatch(loadReviews(reviewsArr));
         return data;
     }
     return res.errors;
@@ -36,6 +47,7 @@ export const getReviews = (product_id) => async (dispatch) => {
 
 export const createReview = (el) => async (dispatch) => {
     const {item_rating, shipping_rating, description, product_id, url} = el
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
     const res = await csrfFetch(`/api/products/${product_id}/reviews`, {
         method: 'POST',
@@ -48,9 +60,11 @@ export const createReview = (el) => async (dispatch) => {
 
     const data = await res.json()
     if(res.ok){
-        const newRev = { ...data }
+        const newRev = { ...data.created_review }
+        const dateFormatted = new Date(newRev.created_at);
+        const date = `${months[dateFormatted.getMonth()]} ${dateFormatted.getDate()} ${dateFormatted.getFullYear()}`;
         if(url.length){
-            const imgRes = await csrfFetch(`/api/reviews/${newRev.created_review.id}/images`,{
+            const imgRes = await csrfFetch(`/api/reviews/${newRev.id}/images`,{
                 method: 'POST',
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
@@ -60,15 +74,19 @@ export const createReview = (el) => async (dispatch) => {
             if (imgRes.ok){
                 const img = await imgRes.json()
                 const completed_rev = {
-                    ...newRev.created_review,
-                    image: [img]
+                    ...newRev,
+                    date,
+                    dateFormatted,
+                    image: [img.added_image]
                 }
                 dispatch(makeReview(completed_rev))
                 return completed_rev
             } else return imgRes.errors
         }
         const completed_rev = {
-            ...newRev.created_review,
+            ...newRev,
+            date,
+            dateFormatted,
             image: []
         }
         dispatch(makeReview(completed_rev))
@@ -79,6 +97,7 @@ export const createReview = (el) => async (dispatch) => {
 
 export const updateReview = (review) => async (dispatch) => {
     const {item_rating, shipping_rating, description, id} = review
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
     const res = await csrfFetch(`/api/reviews/${id}`, {
         method: 'PUT',
@@ -91,7 +110,14 @@ export const updateReview = (review) => async (dispatch) => {
 
     const data = await res.json()
     if(res.ok){
-        dispatch(makeReview(data.updated_review))
+        const dateFormatted = new Date(data.updated_review.created_at);
+        const date = `${months[dateFormatted.getMonth()]} ${dateFormatted.getDate()} ${dateFormatted.getFullYear()}`;
+        const completed_rev = {
+            ...data.updated_review,
+            date,
+            dateFormatted,
+        }
+        dispatch(makeReview(completed_rev))
         return data
     }
     return data.errors

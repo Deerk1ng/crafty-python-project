@@ -68,7 +68,6 @@ export const getUserProducts = () => async (dispatch) => {
 
     if (res.ok) {
         const data = await res.json();
-        console.log(data);
         dispatch(loadUserProducts(data));
         return data;
     }
@@ -129,7 +128,6 @@ export const createProduct = (product) => async (dispatch) => {
 // edit product details
 export const updateProductDetails = (product, product_id) => async (dispatch) => {
     let res;
-    console.log(product.category)
 
     let updateProduct = {
         name: product.name,
@@ -139,7 +137,6 @@ export const updateProductDetails = (product, product_id) => async (dispatch) =>
     };
 
     try {
-        console.log(product_id)
         res = await csrfFetch(`/api/products/${product_id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },

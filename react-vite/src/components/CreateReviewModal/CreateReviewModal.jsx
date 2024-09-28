@@ -36,10 +36,6 @@ function CreateReviewModal({product_id, product}) {
         })
     }
 
-    useEffect(() => {
-        console.log(product)
-    },[product])
-
     return (
         <div className="create-modal">
             <div className="prod-info">

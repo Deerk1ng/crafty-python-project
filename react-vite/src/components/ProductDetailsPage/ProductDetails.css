@@ -25,6 +25,12 @@
     object-fit: contain;
 
 }
+.review-image {
+        padding: 5px;
+        max-width: 200px;
+        max-height: 200px;
+        object-fit: contain;
+}
 
 .big-image {
     width: 60%;

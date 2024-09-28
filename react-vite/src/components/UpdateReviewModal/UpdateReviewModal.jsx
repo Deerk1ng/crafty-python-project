@@ -9,7 +9,7 @@ function UpdateReviewModal({review, product}) {
     const [description, setDescription] = useState(review.description)
     const [itemStars, setItemStars] = useState(review.item_rating)
     const [shippingStars, setshippingStars] = useState(review.shipping_rating)
-    const [url, setUrl] = useState(review.image?.url || '')
+    // const [url, setUrl] = useState(review.image?.url || '')
     const [hover, setHover] = useState(null)
     const [errors, setErrors] = useState({})
     const {closeModal} = useModal()
@@ -80,7 +80,7 @@ function UpdateReviewModal({review, product}) {
                     className="new-rev-desc"
                     />
             </div>
-            <div>
+            {/* <div>
                 <div className="label">Add a photo (optional)</div>
                     <input
                         type="url"
@@ -88,7 +88,7 @@ function UpdateReviewModal({review, product}) {
                         value={url}
                         onChange={(e) => setUrl(e.target.value)}
                         />
-            </div>
+            </div> */}
                 <button className='review-button' disabled={(description.length < 10 || !itemStars) ? true : false} >Update Your Review</button>
             </form>
         </div>
