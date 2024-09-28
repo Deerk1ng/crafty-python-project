@@ -6,9 +6,9 @@ const ADD_FAV = 'favorites/addFavorite'
 const DELETE_FAV = 'favorites/deleteFavorite'
 
 // Action creator for adding favorites
-const getFavorites = (data) => ({
+const getFavorites = (favorites) => ({
     type: GET_FAV,
-    payload: data
+    favorites
 })
 
 const addFavorite = (fav) => ({
@@ -44,6 +44,7 @@ export const createFavorite = (product_id) => async (dispatch) => {
 
     if(res.ok){
         const data = await res.json()
+        console.log("fav: ", data)
         dispatch(addFavorite(data.fav))
         return data
     }
@@ -71,7 +72,10 @@ function favoritesReducer(state = initialState, action){
     switch(action.type) {
         case GET_FAV:
             new_state = structuredClone(state)
-            new_state.currentFavorites = action.payload.products
+            console.log("new state: ", new_state, "action.favs: ", action.favorites)
+            action.favorites.forEach(favorite => {
+                new_state.currentFavorites[favorite.product_id] = favorite
+            })
             return new_state
         case ADD_FAV: {
             new_state = structuredClone(state)

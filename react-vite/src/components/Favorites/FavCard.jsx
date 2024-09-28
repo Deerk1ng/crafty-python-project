@@ -10,7 +10,7 @@ const FavCard = ({id, shopName, name, price, preview}) => {
 
     const goToSpotDetails = (e, id) => {
         e.stopPropagation();
-        navigate(`/spots/${id}`)
+        navigate(`/products/${id}`)
     }
   return (
     <div className='favcard' onClick={(e)=> goToSpotDetails(e, id)}>

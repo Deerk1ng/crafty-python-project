@@ -50,7 +50,7 @@ function LogInFormModal() {
     if (serverResponse) {
       setErrors(serverResponse);
     } else {
-      navigate("/");
+      closeMenu();
     }
   };
 
