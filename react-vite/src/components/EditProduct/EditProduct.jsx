@@ -20,7 +20,6 @@ const EditProduct = () => {
     const navigate = useNavigate();
 
     const productById = useSelector(state => state.productsReducer.currProduct);
-    console.log('product BY id      ',productById)
 
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');

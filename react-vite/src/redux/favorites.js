@@ -27,7 +27,6 @@ export const getFavoritesThunk = () => async(dispatch) => {
     const res = await csrfFetch(`/api/favorites/current`)
     if(res.ok) {
         const data = await res.json()
-        console.log(data)
         dispatch(getFavorites(data))
         return data
     }
@@ -44,7 +43,6 @@ export const createFavorite = (product_id) => async (dispatch) => {
 
     if(res.ok){
         const data = await res.json()
-        console.log("fav: ", data)
         dispatch(addFavorite(data.fav))
         return data
     }
@@ -72,20 +70,17 @@ function favoritesReducer(state = initialState, action){
     switch(action.type) {
         case GET_FAV:
             new_state = structuredClone(state)
-            console.log("new state: ", new_state, "action.favs: ", action.favorites)
             action.favorites.forEach(favorite => {
                 new_state.currentFavorites[favorite.product_id] = favorite
             })
             return new_state
         case ADD_FAV: {
             new_state = structuredClone(state)
-            console.log(action.fav)
             new_state['currentFavorites'][action.fav.product_id] = action.fav
             return new_state
         }
         case DELETE_FAV: {
             new_state = structuredClone(state)
-            console.log(action.product_id, new_state['currentFavorites'][action.product_id])
             delete new_state['currentFavorites'][action.product_id]
             return new_state
         }
