@@ -34,7 +34,9 @@ button {
     border-radius: 25px;
     box-shadow: none;
 }
-
+button:disabled {
+    cursor:default;
+}
 ul {
     list-style-type: none;
 }
