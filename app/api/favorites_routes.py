@@ -53,7 +53,7 @@ def favoritesByUserId():
         product_dict['avgRating'] = avg_rating
         favorites_list.append(product_dict)
 
-    return {'products': favorites_list}
+    return favorites_list
 
 
 @favorite_route.route('/<int:favoriteId>', methods=['DELETE'])

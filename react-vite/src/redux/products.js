@@ -67,8 +67,8 @@ export const getUserProducts = () => async (dispatch) => {
 
     if (res.ok) {
         const data = await res.json();
-        console.log(data);  // Check what the response looks like in the console
-        dispatch(loadUserProducts(data));  // Dispatch user-specific products action
+        console.log(data);
+        dispatch(loadUserProducts(data));
         return data;
     }
     return res;
@@ -100,7 +100,7 @@ export const createProduct = (product) => async (dispatch) => {
     const {created_product} = data;
 
 
-    // If product.images is an array, handle multiple images
+
 
         for (const imageUrl of product.images) {
             let image = {
