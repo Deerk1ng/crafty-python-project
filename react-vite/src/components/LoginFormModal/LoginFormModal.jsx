@@ -5,6 +5,8 @@ import { Navigate, useNavigate } from "react-router-dom";
 import "./LoginForm.css";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import SignupFormModal from "../SignupFormModal";
+import { useModal } from "../../context/Modal";
+
 
 
 function LogInFormModal() {
@@ -16,6 +18,7 @@ function LogInFormModal() {
   const [errors, setErrors] = useState({});
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
+  const { closeModal } = useModal()
 
 
   useEffect(() => {
@@ -50,6 +53,7 @@ function LogInFormModal() {
     if (serverResponse) {
       setErrors(serverResponse);
     } else {
+      closeModal()
       navigate("/");
     }
   };
