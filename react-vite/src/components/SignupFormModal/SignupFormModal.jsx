@@ -18,40 +18,60 @@ function SignupFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
+  const validateData = () => {
+    const err ={}
+    if(firstName.length < 2) err["first_name"] = "First name must be longer than 2 characters"
+    if(firstName.length > 50) err["first_name"] = "First name must be less than 150 characters"
+    if(lastName.length < 2) err["last_name"] = "Last name must be longer than 2 characters"
+    if(lastName.length > 50) err["last_name"] = "Last name must be less than 150 characters"
+    if(shopName.length < 2) err["shop_name"] = "Shop name must be longer than 2 characters"
+    if(shopName.length > 50) err["shop_name"] = "Shop name must be less than 150 characters"
+    if(address.length < 2) err["address"] = "Address must be longer than 2 characters"
+    if(email.length == 0) err["email"] = "Email is required"
+    if(!(email.endsWith('.com') || email.endsWith('.net') || email.endsWith('.org') || email.endsWith('.io') || email.includes('@'))) err["email"] = "must be a valid email"
+    if(username.length < 5) err["username"] = "Username must be longer than 5 characters"
+    if(username.length > 50) err["username"] = "Username must be less than 150 characters"
+    if(password.length < 5) err["password"] = "Password must be longer than 5 characters"
+    if(password.length > 50) err["password"] = "Password must be less than 150 characters"
+    if(confirmPassword != password) err['confirmPassword'] = "Password and Confirm Password must match"
+    setErrors(err)
+    if(Object.values(err).length){
+        return false
+    } else return true
+  }
+
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
 
-    if (password !== confirmPassword) {
-      return setErrors({
-        confirmPassword:
-          "Confirm Password field must be the same as the Password field",
-      });
-    }
+    if (validateData()) {
 
-    const serverResponse = await dispatch(
-      thunkSignup({
-        first_name: firstName,
-        last_name: lastName,
-        shop_name: shopName,
-        address: address,
-        email: email,
-        username: username,
-        password: password,
-      })
-    );
+      const serverResponse = await dispatch(
+        thunkSignup({
+          first_name: firstName,
+          last_name: lastName,
+          shop_name: shopName,
+          address: address,
+          email: email,
+          username: username,
+          password: password,
+        })
+      );
 
-    if (serverResponse) {
-      setErrors(serverResponse);
-    } else {
-      closeModal();
-    }
-  };
+      if (serverResponse) {
+        setErrors(...errors, ...serverResponse);
+      } else {
+        closeModal();
+      }
+    };
+  }
 
   return (
     <>
       <h1>Sign Up</h1>
-      {errors.server && <p>{errors.server}</p>}
+      {errors.server && <p className='error'>{errors.server}</p>}
       <form onSubmit={handleSubmit}>
         <label>
           First Name
@@ -62,7 +82,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.first_name && <p>{errors.first_name}</p>}
+        {errors.first_name && <p className='error'>{errors.first_name}</p>}
 
         <label>
           Last Name
@@ -73,7 +93,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.last_name && <p>{errors.last_name}</p>}
+        {errors.last_name && <p className='error'>{errors.last_name}</p>}
 
         <label>
           Shop Name
@@ -84,7 +104,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.shop_name && <p>{errors.shop_name}</p>}
+        {errors.shop_name && <p className='error'>{errors.shop_name}</p>}
 
         <label>
           Address
@@ -95,7 +115,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.address && <p>{errors.address}</p>}
+        {errors.address && <p className='error'>{errors.address}</p>}
 
         <label>
           Email
@@ -106,7 +126,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.email && <p>{errors.email}</p>}
+        {errors.email && <p className='error'>{errors.email}</p>}
 
         <label>
           Username
@@ -117,7 +137,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.username && <p>{errors.username}</p>}
+        {errors.username && <p className='error'>{errors.username}</p>}
 
         <label>
           Password
@@ -128,7 +148,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.password && <p>{errors.password}</p>}
+        {errors.password && <p className='error'>{errors.password}</p>}
 
         <label>
           Confirm Password
@@ -139,7 +159,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+        {errors.confirmPassword && <p className='error'>{errors.confirmPassword}</p>}
 
         <button type="submit">Sign Up</button>
       </form>
