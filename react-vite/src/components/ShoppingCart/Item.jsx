@@ -31,7 +31,12 @@ const ItemCard = ({ id, shopName, name, price, preview, quantity}) => {
 
     const SubClick = (e, id, quant) => {
         e.preventDefault();
-        dispatch(subQuantThunk(id, quant))
+
+        if(quantity > 1){
+            dispatch(subQuantThunk(id, quant))
+        } else {
+            dispatch(removeItemThunk(id))
+        }
     }
 
   return (
@@ -53,14 +58,17 @@ const ItemCard = ({ id, shopName, name, price, preview, quantity}) => {
             >
             Remove
         </button>
-        <button onClick={(e) => AddClick(e, id, quant)}>
-            +
-        </button>
-        <span>
-            {quantity}
-        </span>
+
         <button onClick={(e) => SubClick(e, id, quant)}>
             -
+        </button>
+
+        <span id='quantity'>
+            {quantity}
+        </span>
+
+        <button onClick={(e) => AddClick(e, id, quant)}>
+            +
         </button>
     </div>
   );

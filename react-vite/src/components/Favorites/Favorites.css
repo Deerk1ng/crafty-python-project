@@ -1,22 +1,16 @@
-.cart-empty h2 {
+.fav-empty h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-top: 100px;
     padding-bottom: 20px
 }
-.cart-empty div {
+.fav-empty div {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.to-favorites {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 50px
-}
 .please-sign-in {
     display: flex;
     flex-direction: column;
@@ -25,8 +19,5 @@
 }
 
 .card-holder {
-    padding: 30px;
-}
-.items-container {
-    padding: 20px;
+    padding-top: 35px;
 }

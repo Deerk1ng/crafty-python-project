@@ -65,7 +65,7 @@ function Navigation() {
       </li>
 
       <li>
-          <NavLink to={'/products/current'} ><FaShop className="shop-icn"/> </NavLink>
+              <NavLink to={'/products/current'} ><FaShop className="shop-icn"/> </NavLink>
       </li>
 
       <li>

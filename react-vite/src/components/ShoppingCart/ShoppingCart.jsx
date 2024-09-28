@@ -23,10 +23,11 @@ const ShoppingCart = () => {
     }, [])
 
     useEffect(() => {
-        if(items){
+        if(Object.keys(items).length){
             setCartEmpty(false)
+        } else {
+            setCartEmpty(true)
         }
-
     }, [items])
 
 
@@ -40,35 +41,39 @@ const ShoppingCart = () => {
                     <NavLink to={'/favorites/current'} className="to-favorites">View your favorites</NavLink>
             </div>
             :
-            <div className='items-container'>
-                {itemsArr.map((item) => {
-                    totalCart = totalCart + (item.product.price * item.quantity)
-                    return (
-                        <div key={`${item.id}-${item.product_id}`} className='card-holder'>
-                            <span>
-                                <ItemCard
-                                id={item.id}
-                                shopName={item.owner.shop_name}
-                                name={item.product.name}
-                                price={item.product.price}
-                                preview={item.images[0].url}
-                                quantity={item.quantity}
-                                />
-                            </span>
+            <div className='cart-holder'>
+                <div className='items-container'>
+                    {itemsArr.map((item) => {
+                        totalCart = totalCart + (item.product.price * item.quantity)
+                        return (
+                            <div key={`${item.id}-${item.product_id}`} className='card-holder'>
+                                <span>
+                                    <ItemCard
+                                    id={item.id}
+                                    shopName={item.owner.shop_name}
+                                    name={item.product.name}
+                                    price={item.product.price}
+                                    preview={item.images[0].url}
+                                    quantity={item.quantity}
+                                    />
+                                </span>
 
-                        </div>
-                    )
-                })}
+                            </div>
+                        )
+                    })}
+                </div>
+
+                <div>
+                    ${totalCart.toFixed(2)}
+                </div>
+                <button>
+                    Proceed to checkout
+                </button>
             </div>
          :
             <h2 className='please-sign-in'>Please sign in to use Shopping Cart</h2>
          }
-        <div>
-            ${totalCart.toFixed(2)}
-        </div>
-         <button>
-            Proceed to checkout
-         </button>
+
     </div>
     )
 
