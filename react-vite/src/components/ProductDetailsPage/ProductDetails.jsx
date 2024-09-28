@@ -138,7 +138,6 @@ const ProductDetailsPage = () => {
                             <div className="user-reviews">{product.owner.shop_name}</div>
                             {Number(revRating) ? <div className="user-rev-rating">({revRating} <IoMdStar className="stars" />)</div> : <div className="user-rev-rating">No reviews!</div> }
                             {/* <button className="buy-button">Buy it Now</button> */}
-                            <p></p>
 
                             {user && user.id ?
                                 <>
