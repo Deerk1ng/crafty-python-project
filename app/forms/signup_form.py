@@ -30,9 +30,9 @@ def shopname_exists(form, field):
 
 
 class SignUpForm(FlaskForm):
-    firstName = StringField('firstname', validators=[DataRequired()])
-    lastName = StringField('lastname', validators=[DataRequired()])
-    shopName = StringField('shopname', validators=[DataRequired(), shopname_exists])
+    first_name = StringField('first_name', validators=[DataRequired()])
+    last_name = StringField('last_name', validators=[DataRequired()])
+    shop_name = StringField('shop_name', validators=[DataRequired(), shopname_exists])
     address = StringField('address', validators=[DataRequired()])
     username = StringField('username', validators=[DataRequired(), username_exists])
     email = StringField('email',  validators=[DataRequired(), user_exists])
