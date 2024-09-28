@@ -53,11 +53,11 @@ const Favorites = () => {
 
                             <span>
                                 <FavCard
-                                id={favorite.id}
-                                shopName={favorite.owner.shop_name}
-                                name={favorite.name}
-                                price={favorite.price}
-                                preview={favorite.images[0].url}
+                                id={favorite.product_id}
+                                shopName={favorite.product.owner.shop_name}
+                                name={favorite.product.name}
+                                price={favorite.product.price}
+                                preview={favorite.product.images[0].url}
                                 />
                             </span>
                             {user && user.id ?
