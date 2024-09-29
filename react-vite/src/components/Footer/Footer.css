@@ -45,7 +45,7 @@
 
 /* Social Media Icons */
 .social {
-    font-size: 30px;
+    font-size: 20px;
     color: black;
 }
 
@@ -55,9 +55,10 @@
 
 /* Social Media Section */
 .social-media {
-    margin: 10px 0 0 0;
+    margin: 5px 0 0 0;
     display: flex;
-    gap: 7px;
+    gap: 3px;
     justify-content: start;
+    flex-direction: column;
     padding: 0;
 }
