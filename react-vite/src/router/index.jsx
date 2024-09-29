@@ -45,13 +45,13 @@ export const router = createBrowserRouter([
             path: 'current',
             element: <UserListings  />
           },
+          {
+            path: 'new',
+            element: <CreateProduct />
+          },
         ]
       }
     ],
-  },
-  {
-    path: '/products/new',
-    element: <CreateProduct />
   },
   {
     path: '/products/:product_id/edit',

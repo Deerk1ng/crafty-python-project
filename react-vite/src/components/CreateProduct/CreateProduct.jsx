@@ -3,14 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { createProduct } from "../../redux/products";
 import { thunkAuthenticate, thunkLogout } from "../../redux/session";
 import { NavLink, useNavigate } from "react-router-dom";
-import { IoMdHome } from "react-icons/io";
-import { IoSettings } from "react-icons/io5";
-import { TfiAnnouncement, TfiHelpAlt } from "react-icons/tfi";
-import { FaMoneyBillTrendUp } from "react-icons/fa6";
-import { MdFavoriteBorder, MdReviews, MdQueryStats } from "react-icons/md";
+import { FaArrowLeftLong } from "react-icons/fa6";
+
 import './CreateProduct.css'
 
-const fileArr = ['.png', '.jpg', '.jpeg'];
+
 
 const CreateProduct = () => {
     const dispatch = useDispatch();
@@ -25,6 +22,8 @@ const CreateProduct = () => {
     const [errors, setErrors] = useState({});
 
     const [isLoaded, setIsLoaded] = useState(false);
+
+    const [activeSection, setActiveSection] = useState('about');
 
     useEffect(() => {
         dispatch(thunkAuthenticate()).then(() => setIsLoaded(true));
@@ -113,42 +112,72 @@ const CreateProduct = () => {
         navigate('/products/current');
     };
 
+    const scrollToSection = (id) => {
+        const section = document.getElementById(id);
+        if (section) {
+            section.scrollIntoView({ behavior: "smooth", block: "start" });
+            setActiveSection(id);
+        }
+    };
+    const handleScroll = () => {
+        const sections = ['about', 'description', 'price', 'details', 'category'];
+        const scrollY = window.scrollY;
+
+        sections.forEach(section => {
+            const sectionElement = document.getElementById(section);
+            if (sectionElement) {
+                const { offsetTop, clientHeight } = sectionElement;
+                if (scrollY >= offsetTop - 50 && scrollY < offsetTop + clientHeight) {
+                    setActiveSection(section);
+                }
+            }
+        });
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     return (
-        <div>
-            <div className='side-nav'>
-                <ul>
-                    <li style={{ fontWeight: '800' }}>Shop Manager</li>
-                    <NavLink to={'/'}><IoMdHome /> Home</NavLink>
-                    <NavLink to={'/favorites/current'}><MdFavoriteBorder />Favorites</NavLink>
-                    <NavLink onClick={''}><MdReviews />Shop Reviews</NavLink>
-                    <NavLink onClick={''}><MdQueryStats />Stats</NavLink>
-                    <NavLink onClick={''}><TfiAnnouncement />Marketing</NavLink>
-                    <NavLink onClick={''}><FaMoneyBillTrendUp />Finances</NavLink>
-                    <NavLink onClick={''}><TfiHelpAlt />Help</NavLink>
-                    <NavLink onClick={''}><IoSettings />Settings</NavLink>
-                    <button onClick={logout}>Log Out</button>
-                </ul>
+        <div id="create_prod">
+
+            <div className="create-listing-top" >
+                <button onClick={handleGoBack}><FaArrowLeftLong style={{marginRight: '5px'}}/> Back to Listings</button>
+                <h2 style={{margin: '13px'}}>New Listing</h2>
+
+                <ul className="sections-scroll">
+    <li
+        className={`sections-form ${activeSection === 'about' ? 'active' : ''}`}
+        onClick={() => scrollToSection('about')}
+    >
+        About
+    </li>
+    <li
+        className={`sections-form ${activeSection === 'price' ? 'active' : ''}`}
+        onClick={() => scrollToSection('price')}
+    >
+        Price
+    </li>
+    <li
+        className={`sections-form ${activeSection === 'details' ? 'active' : ''}`}
+        onClick={() => scrollToSection('details')}
+    >
+        Details
+    </li>
+</ul>
+
+
             </div>
 
-            <div className="create-listing-top">
-                <button onClick={handleGoBack}>Back to Listings</button>
-                <h2>New Listing</h2>
-                <ul>
-                    <li>About</li>
-                    <li>Price</li>
-                    <li>Details</li>
-                </ul>
-            </div>
-
-            <div>
+            <div id="about" className="form-prod" >
                 <form onSubmit={handleSubmit}>
-                    <section>
-                        <h2>About</h2>
+                    <section >
+                        <h2 >About</h2>
                         <p>Tell the world about your item and why they will love it.</p>
-                    </section>
-
-                    <section>
-                        <h2>Title<span className="required">*</span></h2>
+                        <h2 style={{marginTop: '30px'}}>Title<span className="required">*</span></h2>
                         <p>Include keywords that buyers would use to search for this item.</p>
                         <input
                             type="text"
@@ -161,7 +190,7 @@ const CreateProduct = () => {
 
                     <section>
                         <h2>
-                            Photos <span className="required">*</span>
+                            Photos<span className="required">*</span>
                         </h2>
                         <p>Add up to 5 photos</p>
                         {images.map((image, index) => (
@@ -191,7 +220,7 @@ const CreateProduct = () => {
                         {errors.image && <p className='errors-msgs'>{errors.image}</p>}
                     </section>
 
-                    <section>
+                    <section id='price'>
                         <h2>Description<span className="required">*</span></h2>
                         <p>What makes your product special? Buyers will only be able to see the first few lines unless they view the product.</p>
                         <textarea
@@ -203,11 +232,12 @@ const CreateProduct = () => {
                         {errors.description && <p className='errors-msgs'>{errors.description}</p>}
                     </section>
 
-                    <section>
+                    <section id="price">
                         <h2>Price<span className="required">*</span></h2>
                         <p>Set a price for your item.</p>
                         $<input
                             className="price-input"
+                            id="details"
                             type="text"
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
@@ -216,13 +246,10 @@ const CreateProduct = () => {
                         {errors.price && <p className='errors-msgs'>{errors.price}</p>}
                     </section>
 
-                    <section>
+                    <section id="details">
                         <h2>Details</h2>
                         <p>Share with us the category that your product falls in.</p>
-                    </section>
-
-                    <section>
-                        <h2>Category<span className="required">*</span></h2>
+                        <h2 style={{marginTop: '30px'}}>Category<span className="required">*</span></h2>
                         <select id="category" name="category" value={category} onChange={handleCategoryChange}>
                             <option value="">--Please choose an option--</option>
                             <option value="Mens">Mens</option>
@@ -234,8 +261,8 @@ const CreateProduct = () => {
                         {errors.category && <p className='errors-msgs'>{errors.category}</p>}
                     </section>
 
-                    <section>
-                        <button onClick={handleGoBack}>cancel</button>
+                    <section className="form-bttm">
+                        <button id="cancel-btn" onClick={handleGoBack}>cancel</button>
                         <button type="submit" className="submit-product">Publish</button>
                     </section>
                 </form>
