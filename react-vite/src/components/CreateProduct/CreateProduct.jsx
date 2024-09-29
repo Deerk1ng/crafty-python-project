@@ -101,12 +101,7 @@ const CreateProduct = () => {
         setCategory(e.target.value);
     };
 
-    const logout = (e) => {
-        e.preventDefault();
-        dispatch(thunkLogout()).then(() => {
-            navigate('/');
-        });
-    };
+    
 
     const handleGoBack = () => {
         navigate('/products/current');
@@ -149,25 +144,25 @@ const CreateProduct = () => {
                 <h2 style={{margin: '13px'}}>New Listing</h2>
 
                 <ul className="sections-scroll">
-    <li
-        className={`sections-form ${activeSection === 'about' ? 'active' : ''}`}
-        onClick={() => scrollToSection('about')}
-    >
-        About
-    </li>
-    <li
-        className={`sections-form ${activeSection === 'price' ? 'active' : ''}`}
-        onClick={() => scrollToSection('price')}
-    >
-        Price
-    </li>
-    <li
-        className={`sections-form ${activeSection === 'details' ? 'active' : ''}`}
-        onClick={() => scrollToSection('details')}
-    >
-        Details
-    </li>
-</ul>
+                    <li
+                        className={`sections-form ${activeSection === 'about' ? 'active' : ''}`}
+                        onClick={() => scrollToSection('about')}
+                    >
+                        About
+                    </li>
+                    <li
+                        className={`sections-form ${activeSection === 'price' ? 'active' : ''}`}
+                        onClick={() => scrollToSection('price')}
+                    >
+                        Price
+                    </li>
+                    <li
+                        className={`sections-form ${activeSection === 'details' ? 'active' : ''}`}
+                        onClick={() => scrollToSection('details')}
+                    >
+                        Details
+                    </li>
+                </ul>
 
 
             </div>
