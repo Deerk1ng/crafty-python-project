@@ -62,7 +62,9 @@
 /* User Listing Styles */
 .user-listing {
     width: 220px;
+    justify-content: flex-end;
     display: flex;
+    justify-content: space-between;
     flex-flow: column wrap;
     gap: 8px;
     padding: 9px;

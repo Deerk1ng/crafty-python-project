@@ -69,101 +69,102 @@ function SignupFormModal() {
   }
 
   return (
-    <>
+    <div className="sign-up-modal">
       <h1>Sign Up</h1>
       {errors.server && <p className='error'>{errors.server}</p>}
-      <form onSubmit={handleSubmit}>
-        <label>
+      <form onSubmit={handleSubmit} className="signup-form">
+        <div>
           First Name
+        </div>
+        {errors.first_name && <p className='error'>{errors.first_name}</p>}
           <input
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             required
           />
-        </label>
-        {errors.first_name && <p className='error'>{errors.first_name}</p>}
 
-        <label>
+        <div>
           Last Name
+        </div>
+        {errors.last_name && <p className='error'>{errors.last_name}</p>}
           <input
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             required
           />
-        </label>
-        {errors.last_name && <p className='error'>{errors.last_name}</p>}
 
-        <label>
+        <div>
           Shop Name
+        </div>
+        {errors.shop_name && <p className='error'>{errors.shop_name}</p>}
           <input
             type="text"
             value={shopName}
             onChange={(e) => setShopName(e.target.value)}
             required
           />
-        </label>
-        {errors.shop_name && <p className='error'>{errors.shop_name}</p>}
 
-        <label>
+        <div>
           Address
+        </div>
+        {errors.address && <p className='error'>{errors.address}</p>}
           <input
             type="text"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             required
           />
-        </label>
-        {errors.address && <p className='error'>{errors.address}</p>}
 
-        <label>
+        <div>
           Email
+        </div>
+        {errors.email && <p className='error'>{errors.email}</p>}
           <input
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </label>
-        {errors.email && <p className='error'>{errors.email}</p>}
 
-        <label>
+        <div>
           Username
+        </div>
+        {errors.username && <p className='error'>{errors.username}</p>}
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
-        </label>
-        {errors.username && <p className='error'>{errors.username}</p>}
 
-        <label>
+        <div>
           Password
+        </div>
+        {errors.password && <p className='error'>{errors.password}</p>}
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
-        {errors.password && <p className='error'>{errors.password}</p>}
 
-        <label>
+        <div>
           Confirm Password
+        </div>
+        {errors.confirmPassword && <p className='error'>{errors.confirmPassword}</p>}
           <input
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-        </label>
-        {errors.confirmPassword && <p className='error'>{errors.confirmPassword}</p>}
-
-        <button type="submit">Sign Up</button>
+        <div>
+          <button type="submit">Sign Up</button>
+        </div>
       </form>
-    </>
+    </div>
   );
 }
 

@@ -81,31 +81,32 @@ function LogInFormModal() {
         onItemClick={closeMenu}
         modalComponent={<SignupFormModal />}/></button>
     </div>
-      {errors.length > 0 &&
-        errors.map((message) => <p key={message}>{message}</p>)}
+      {/* {errors.length > 0 &&
+        errors.map((message) => <p key={message} className="errors">{message}</p>)} */}
       <form className='form-login' onSubmit={handleSubmit}>
-        <label>
+        <div>
           Email
+        </div>
+        {errors.email && <span className="errors-msgs">{errors.email}</span>}
           <input
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </label>
-        {errors.email && <p>{errors.email}</p>}
-        <label>
+        <div>
           Password
-          <input
+         </div>
+         {errors.password && <span className="errors-msgs">{errors.password}</span>}
+        <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
-        {errors.password && <p>{errors.password}</p>}
-        <button type="submit">Log In</button>
-        <button onClick={DemoSignIn}>Log in as Demo User</button>
+
+        <button type="submit" className="login-button">Log In</button>
+        <button onClick={DemoSignIn} className="demo-button">Log in as Demo User</button>
       </form>
     </div>
   );

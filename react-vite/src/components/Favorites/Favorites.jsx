@@ -44,7 +44,7 @@ const Favorites = () => {
         navigate('/shopping-cart/current')
     }
 
-    return isLoaded && (
+    return isLoaded ? (
     <div>
         { user ?
             favEmpty ?
@@ -97,6 +97,8 @@ const Favorites = () => {
             <h2 className='please-sign-in'>Please sign in to use Favorites</h2>
          }
     </div>
+    ) : (
+        <h1 className='loading'>Loading...</h1>
     )
 
 }

@@ -74,7 +74,7 @@ const EditProduct = () => {
                 setErrors((error) => ({ ...error, ...serverResponse.errors }));
             } else {
                 dispatch(updateProductDetails(serverResponse, product_id))
-                navigate(`/products/${product_id}`);
+                navigate(`/products/current`);
             }
         }
     };
@@ -124,7 +124,7 @@ const EditProduct = () => {
         };
     }, []);
 
-    return (
+    return isLoaded ? (
         <div id="create_prod">
 
             <div className="create-listing-top">
@@ -215,6 +215,9 @@ const EditProduct = () => {
                 </form>
             </div>
         </div>
+    ) :
+    (
+            <h1 className="loading">loading...</h1>
     );
 };
 
