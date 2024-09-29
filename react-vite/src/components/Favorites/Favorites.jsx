@@ -2,7 +2,8 @@ import './Favorites.css'
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FavCard from './FavCard';
-import { getFavoritesThunk } from '../../redux/favorites';
+import {IoMdHeart} from "react-icons/io";
+import { getFavoritesThunk, deleteFavorite } from '../../redux/favorites';
 import { addItemThunk } from '../../redux/cart';
 import { useNavigate } from 'react-router-dom';
 
@@ -28,6 +29,13 @@ const Favorites = () => {
         }
     }, [favorites])
 
+    //onClicks
+
+    const handleDelete = (e, product_id) => {
+        e.preventDefault();
+
+        dispatch(deleteFavorite(favorites[product_id].id,product_id))
+    }
 
     const AddItemClick = (e, user_id, product_id) => {
         e.preventDefault();
@@ -45,7 +53,7 @@ const Favorites = () => {
                     <div>Start favoriting items to compare, shop, and keep track of things you love</div>
             </div>
             :
-            <div className='favs-container'>
+            <div id='favs-container'>
                 {favArr.map((favorite) => {
 
                     return (
@@ -62,10 +70,22 @@ const Favorites = () => {
                             </span>
                             {user && user.id ?
                             (
-                                <button
-                                    className="cart-button"
-                                    onClick={(e) => AddItemClick(e, user.id, favorite.id)}
-                                >Add to Cart</button>
+                                <div
+                                    id='fav-button-box'
+                                >
+                                    <button
+                                        className="cart-button"
+                                        onClick={(e) => AddItemClick(e, user.id, favorite.id)}
+                                        >Add to Cart
+                                    </button>
+                                    <button
+                                        onClick={(e) => handleDelete(e, favorite.product.id)}
+                                    >
+                                    <IoMdHeart />
+                                    Remove
+                                    </button>
+
+                                </div>
                             )
                                 : null
                             }

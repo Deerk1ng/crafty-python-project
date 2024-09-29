@@ -2,7 +2,7 @@ import './ShoppingCart.css'
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { getCartThunk, deleteCartThunk } from '../../redux/cart';
+import { getCartThunk} from '../../redux/cart';
 import ItemCard from './Item';
 import OrderModalButton from './OrderModalButton';
 import OrderPlacedModal from './OrderPlacedModal';
