@@ -5,9 +5,8 @@ const ALL_PRODUCTS = 'products/allProducts';
 const ONE_PRODUCT = "products/oneProduct"
 const ADD_PRODUCT = 'session/ADDPRODUCT';
 const ALL_USER_PRODUCTS = 'session/allUserProducts';
-
-
 const UPDATE_PRODUCT = 'session/updateProduct'
+const DELETE_PRODUCT = 'session/deleteProduct';
 
 
 
@@ -39,6 +38,11 @@ const updateAProduct = (product) => ({
     type: UPDATE_PRODUCT,
     product,
 });
+
+const removeProduct = (product_id) => ({
+    type: DELETE_PRODUCT,
+    product_id
+})
 
 // Thunk to fetch all products
 export const getProducts = () => async (dispatch) => {
@@ -155,7 +159,20 @@ export const updateProductDetails = (product, product_id) => async (dispatch) =>
     }
 };
 
+// delete a product
+export const deleteProduct = (product_id) => async (dispatch) => {
+    const res = await csrfFetch(`/api/products/${product_id}`, {
+        method: 'DELETE'
+    });
 
+    if (res.ok) {
+        dispatch(removeProduct(product_id))
+
+
+        await dispatch(getUserProducts())
+        return res
+    }
+}
 
 
 // Initial state
@@ -210,6 +227,11 @@ function productsReducer(state = initialState, action) {
                 },
                 currProduct: updatedProduct,  // Update current product if necessary
             };
+        }
+        case DELETE_PRODUCT: {
+            const new_state = structuredClone(state)
+            delete new_state.allProducts[action.product_id]
+            return new_state
         }
         default:
             return state;
