@@ -76,10 +76,12 @@ const ProductDetailsPage = () => {
     useEffect(() => {
         dispatch(getOneProduct(product_id))
             .then(() => dispatch(getReviews(product_id)))
-            .then(() => dispatch(getFavoritesThunk()))
             .then(() => setIsLoaded(true));
     }, [product_id, dispatch]);
 
+    useEffect(() => {
+        if(user && user.id) dispatch(getFavoritesThunk())
+    }, [user, dispatch])
 
     const AddItemClick = (e, user_id, product_id) => {
         e.preventDefault();
