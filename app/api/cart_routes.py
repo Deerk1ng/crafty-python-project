@@ -22,10 +22,11 @@ def getShoppingCart():
 
     # calculate cart total
         total = 0
-
+        print('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww',items_dict)
     #get product info and images
         for item in items_dict:
             product = db.session.query(Product).filter(Product.id == item['product_id']).first()
+            print('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww',product)
             images = db.session.query(ProductImage).filter(ProductImage.product_id == item['product_id'])
             owner = db.session.query(User).filter(User.id == product.owner_id).first()
 
