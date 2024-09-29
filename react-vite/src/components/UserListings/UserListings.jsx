@@ -8,9 +8,9 @@ import { IoMdHome, IoMdAdd } from "react-icons/io";
 import { IoSettings } from "react-icons/io5";
 import { TfiAnnouncement, TfiHelpAlt } from "react-icons/tfi";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
-import { FaChevronDown } from "react-icons/fa";
 import { MdFavoriteBorder, MdReviews, MdQueryStats } from "react-icons/md";
-
+import DeleteProduct from '../DeleteProductModal/DeleteProductModal';
+import OpenModalButton from '../OpenModalButton/OpenModalButton';
 
 
 const UserListings = () => {
@@ -83,49 +83,34 @@ const UserListings = () => {
 
     return allProducts.length > 0 ? (
         <>
-        <div className='side-nav'>
-            <ul>
-                <li style={{fontWeight: '800'}}>Shop Manager</li>
-                <NavLink to={'/'}><IoMdHome /> Home</NavLink>
-                <NavLink to={'/favorites/current'}><MdFavoriteBorder />Favorites</NavLink>
-                <NavLink onClick={''}><MdReviews />Shop Reviews</NavLink>
-                <NavLink onClick={''}><MdQueryStats />Stats</NavLink>
-                <NavLink onClick={''}><TfiAnnouncement />Marketing</NavLink>
-                <NavLink onClick={''}><FaMoneyBillTrendUp />Finances</NavLink>
-                <NavLink onClick={''}><TfiHelpAlt />Help</NavLink>
-                <NavLink onClick={''}><IoSettings />Settings</NavLink>
-                <button onClick={logout}>Log Out</button>
-
-            </ul>
-        </div>
-        <div>
-            <div className='right-top'>
-                <h3>Listings</h3>
+        <div id='listings'>
+            <div className='listings-top'>
+                <h2>Listings</h2>
                 <NavLink className={'listing-bttn'} to={'/products/new'}><IoMdAdd />Add Listing</NavLink>
             </div>
             <div>
-            <div>
+            <div className='all-listings'>
     {allProducts.map(product => (
-        <div key={product.id}>
+        <div className='user-listing' key={product.id}>
             {product.images && product.images.length > 0 ? (
                 <img className='user-product-img' src={product.images[0].url} alt='' />
             ) : (
-                <div className='no-image'>No image available</div>
+                <div className='user-product-img'>No image available</div>
             )}
-            <p>{product.name}</p>
-            <p style={{ fontWeight: '700' }}>${product.price.toFixed(2)}</p>
-            <p>Auto renews on {getDateTwoMonthsFromNow()}</p>
+            <p style={{margin: '0', padding: '0'}}>{product.name}</p>
+            <p style={{ fontWeight: '600', margin: '0', padding: '0' }}>${product.price.toFixed(2)}</p>
+            <p style={{fontSize: '.75rem', margin: '0', padding: '0'}}>Auto renews on {getDateTwoMonthsFromNow()}</p>
             <div className='list-btm'>
-                <input type="checkbox" id="agree" name="agree" />
-                <button className='settings' onClick={toggleMenu}><IoSettings /><FaChevronDown /></button>
-                {showMenu && (
-                    <ul>
-                        <NavLink to={`/products/${product.id}`}>View Product</NavLink>
-                        <NavLink to={`/products/${product.id}/edit`}>Edit</NavLink>
-                        {/* needs to be modal for delete product */}
-                        <button className='delete_product'>Delete</button>
-                    </ul>
-                )}
+                <NavLink className='listing-navs' to={`/products/${product.id}/edit`}>Edit</NavLink>
+                <NavLink className='listing-navs' to={`/products/${product.id}`}>View</NavLink>
+                <div >
+                <OpenModalButton
+                    buttonText="Remove"
+                    id='delete-button'
+                    modalComponent={<DeleteProduct product_id={product.id} />}
+                />
+                </div>
+
             </div>
         </div>
     ))}

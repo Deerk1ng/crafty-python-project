@@ -97,7 +97,6 @@ export const addQuantThunk = (item_id, quantity) => async(dispatch) => {
     if(res.ok){
         const data = await res.json();
         dispatch(addQuant(data))
-        console.log(data)
         return data;
     }
     return res;
