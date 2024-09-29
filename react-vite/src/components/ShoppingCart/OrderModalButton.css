@@ -1,0 +1,14 @@
+#place-order-button {
+    width: 400px;
+    height: 40px;
+    position: relative;
+    top: 20px;
+    color: white;
+    font-weight: bold;
+    background-color: black;
+    text-align: center;
+    cursor: pointer;
+    border-color: #cccccc;
+    border-radius: 25px;
+    box-shadow: none;
+}

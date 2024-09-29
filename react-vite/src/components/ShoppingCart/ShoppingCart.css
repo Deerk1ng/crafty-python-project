@@ -49,10 +49,13 @@
 
 #order-summary{
     width: 400px;
-    left: 850px;
-    bottom: 400px;
-    position: fixed;
 
+}
+
+.cart-holder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #place-order-button {
@@ -63,4 +66,9 @@
     color: white;
     font-weight: bold;
     background-color: black;
+    text-align: center;
+    cursor: pointer;
+    border-color: #cccccc;
+    border-radius: 25px;
+    box-shadow: none;
 }

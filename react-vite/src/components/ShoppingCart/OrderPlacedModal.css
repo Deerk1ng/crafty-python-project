@@ -1,0 +1,12 @@
+#order-placed-box {
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column
+}
+#ok-button {
+    width: 100px;
+    height: 40px;
+}

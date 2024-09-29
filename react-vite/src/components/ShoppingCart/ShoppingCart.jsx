@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { getCartThunk, deleteCartThunk } from '../../redux/cart';
 import ItemCard from './Item';
-
+import OrderModalButton from './OrderModalButton';
+import OrderPlacedModal from './OrderPlacedModal';
 
 const ShoppingCart = () => {
 
@@ -27,10 +28,6 @@ const ShoppingCart = () => {
         }})
     }, [])
 
-    const submitOrder = (e, cart_id ) => {
-        e.preventDefault()
-        dispatch(deleteCartThunk(cart_id))
-    }
 
     return isLoaded && (
     <div>
@@ -102,13 +99,13 @@ const ShoppingCart = () => {
                             ${(totalCart + totalItems * 3.99 + totalCart * 0.06).toFixed(2)}
                         </span>
                     </div>
-                    <div>
-                    <button
-                        id='place-order-button'
-                        onClick={(e) => submitOrder(e, cart.id)}>
-                        Place Your Order
-                    </button>
-                    </div>
+
+                    <OrderModalButton
+                        cart_id={cart.id}
+                        buttonText='Place Your Order'
+                        modalComponent={<OrderPlacedModal/>}
+                    />
+
                 </div>
 
                         :
@@ -117,9 +114,11 @@ const ShoppingCart = () => {
                         <h2>Your cart is empty</h2>
                             <div>Discover items to fill up your cart</div>
                             <NavLink to={'/favorites/current'} className="to-favorites">View your favorites</NavLink>
-                            </div>
+                        </div>
                     </div>
                 }
+
+
             </div>
          :
             <h2 className='please-sign-in'>Please sign in to use Shopping Cart</h2>
