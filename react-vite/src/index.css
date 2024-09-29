@@ -46,3 +46,13 @@ ul {
 li {
     list-style: none;
 }
+
+
+
+/* error messages */
+.errors-msgs {
+    color: red;
+    font-size: .74rem;
+    font-weight: 500;
+
+}
