@@ -6,6 +6,7 @@
     overflow: hidden;
     display: flex;
     justify-content: center;
+    border: solid lightgray 1px;
 }
 
 .favcard {
@@ -14,10 +15,14 @@
     background-color: white;
     padding-top: 25px;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
 }
 
 .location-box{
-    width: 275px;
     display: flex;
     justify-content: space-between;
     padding-top: 7px;
