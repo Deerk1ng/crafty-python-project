@@ -2,7 +2,7 @@
 .footer {
     display: flex;
     margin-top: 75px;
-    padding: 30px;
+    padding: 30px auto;
     width: 100vw;
     position: relative;
     bottom: 0;
