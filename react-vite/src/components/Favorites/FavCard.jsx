@@ -8,12 +8,12 @@ const FavCard = ({id, shopName, name, price, preview}) => {
     const navigate = useNavigate();
     price = price.toFixed(2) //adds two decimal places
 
-    const goToSpotDetails = (e, id) => {
+    const goToProductDetails = (e, id) => {
         e.stopPropagation();
         navigate(`/products/${id}`)
     }
   return (
-    <div className='favcard' onClick={(e)=> goToSpotDetails(e, id)}>
+    <div className='favcard' onClick={(e)=> goToProductDetails(e, id)}>
         <div className='fav-preview-box'>
             <img src={preview} alt={name} />
         </div>

@@ -21,3 +21,17 @@
 .card-holder {
     padding-top: 35px;
 }
+#fav-button-box {
+    width: 290px;
+    display: flex;
+    justify-content: space-around;
+    position: relative;
+    top: 10px
+}
+#favs-container{
+    display: flex;
+    justify-content: space-evenly;
+    width: 100vw;
+    max-width: 100%;
+    flex-wrap: wrap
+}

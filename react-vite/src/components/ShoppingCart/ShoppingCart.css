@@ -30,3 +30,45 @@
 .items-container {
     padding: 20px;
 }
+
+.tally-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+#total-text {
+    font-weight: bold;
+}
+#total-price {
+    font-weight: bold;
+}
+.tally-row {
+    padding-bottom: 15px;
+    padding-top: 15px
+}
+
+#order-summary{
+    width: 400px;
+
+}
+
+.cart-holder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#place-order-button {
+    width: 400px;
+    height: 40px;
+    position: relative;
+    top: 20px;
+    color: white;
+    font-weight: bold;
+    background-color: black;
+    text-align: center;
+    cursor: pointer;
+    border-color: #cccccc;
+    border-radius: 25px;
+    box-shadow: none;
+}

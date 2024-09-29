@@ -135,6 +135,19 @@ export const addItemThunk = (cart_id, product_id) => async(dispatch) => {
     return res;
 }
 
+//Thunk delete cart
+export const deleteCartThunk = (cart_id) => async(dispatch) => {
+    const res = await csrfFetch(`/api/shopping-cart/current/${cart_id}`,
+        {
+            method:'DELETE'
+        }
+    )
+    if(res.ok){
+        dispatch(deleteCart(cart_id))
+    }
+}
+
+
 // Initial state
 const initialState = {
     cart: {},
@@ -171,6 +184,11 @@ function cartReducer(state = initialState, action) {
         case NEW_ITEM:
             newState = structuredClone(state)
             newState.items[action.payload.item.id] = action.payload.item
+            return newState
+        case DELETE_CART:
+            newState = structuredClone(state)
+            delete newState.items
+            newState.items = {}
             return newState
         default:
             return state;
