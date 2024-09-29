@@ -1,6 +1,6 @@
 import { Link, NavLink } from 'react-router-dom';
 import './Footer.css'
-import { FaInstagram, FaPinterest, FaYoutube } from "react-icons/fa";
+import { FaInstagram, FaYoutube } from "react-icons/fa";
 import { RiFacebookBoxFill } from "react-icons/ri";
 import { BsTwitterX } from "react-icons/bs";
 
@@ -49,7 +49,7 @@ const Footer = () => {
                     </li>
                 </ul>
                 <ul>
-                
+
                     <ul className='social-media'>
                         <NavLink to={'https://www.instagram.com/appacademyio/'}><FaInstagram className='social'/></NavLink>
                         <NavLink to={'https://www.facebook.com/appacademyio'}><RiFacebookBoxFill className='social'/></NavLink>

@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
 import './Navigation.css'
 import { useEffect, useState, ulRef } from "react";
-import { RiMenu4Line } from "react-icons/ri";
+// import { RiMenu4Line } from "react-icons/ri";
 import { MdFavoriteBorder } from "react-icons/md";
 import { BsCart2 } from "react-icons/bs";
 import { FaShop } from "react-icons/fa6";
@@ -14,10 +14,10 @@ function Navigation() {
   const [showMenu, setShowMenu] = useState(false);
   const user = useSelector(state => state.session.user)
 
-  const toggleMenu = (e) => {
-    e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
-    setShowMenu(!showMenu);
-  };
+  // const toggleMenu = (e) => {
+  //   e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
+  //   setShowMenu(!showMenu);
+  // };
 
   useEffect(() => {
     if (!showMenu) return;

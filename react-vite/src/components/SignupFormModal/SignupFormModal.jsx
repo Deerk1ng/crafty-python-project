@@ -65,7 +65,7 @@ function SignupFormModal() {
       } else {
         closeModal();
       }
-    };
+    }
   }
 
   return (
