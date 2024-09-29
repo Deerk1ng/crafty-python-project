@@ -49,13 +49,13 @@ export const router = createBrowserRouter([
             path: 'new',
             element: <CreateProduct />
           },
+          {
+            path: ':product_id/edit',
+            element: <EditProduct />
+          },
         ]
       }
     ],
-  },
-  {
-    path: '/products/:product_id/edit',
-    element: <EditProduct />
   },
   {
     path: '/shopping-cart/checkout',
