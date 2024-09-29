@@ -4,8 +4,24 @@
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
   cursor: default;
+  width: auto;
+  text-wrap: none;
+  text-align: left;
+  border-radius: 5px;
 }
 
+.profile-dropdown > * {
+  margin: 5px;
+}
+.profile-items {
+  display: flex;
+  flex-direction: column;
+  padding: 3px;
+}
+.profile-items > * {
+  margin: 3px 0px;
+  padding-bottom: 3px
+}
 .categories-dropdown {
   position: absolute;
   padding: 5px 0;
@@ -86,4 +102,12 @@
 .pfp {
   font-size: 25px;
   margin: 5px;
+}
+
+.user-name {
+  font-weight: bold;
+}
+
+.button {
+  justify-self: center;
 }
