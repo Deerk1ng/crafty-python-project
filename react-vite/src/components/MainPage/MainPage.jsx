@@ -34,7 +34,7 @@ const MainPage = () => {
         dispatch(getProducts());
     }, [dispatch]);
 
-    if (!allProducts.length) return <div>Loading...</div>;
+    if (!allProducts.length) return <h1 className='loading'>Loading...</h1>;
 
     return (
         <div className='main-div'>

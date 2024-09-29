@@ -102,7 +102,7 @@ const ProductDetailsPage = () => {
 
     }
 
-    return (
+    return isLoaded ? (
         <>
             {isLoaded ? (
                 <div className="prod-container">
@@ -181,6 +181,9 @@ const ProductDetailsPage = () => {
                 </div>
             ) : null}
         </>
+    ) :
+    (
+            <h1 className="loading">loading...</h1>
     );
 }
 

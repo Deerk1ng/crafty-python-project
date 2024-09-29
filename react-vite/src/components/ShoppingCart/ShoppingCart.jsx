@@ -29,7 +29,7 @@ const ShoppingCart = () => {
     }, [])
 
 
-    return isLoaded && (
+    return isLoaded ? (
     <div>
         { user ?
             cartEmpty ?
@@ -125,6 +125,8 @@ const ShoppingCart = () => {
          }
 
     </div>
+    ) : (
+        <h1 className='loading'>Loading...</h1>
     )
 
 }

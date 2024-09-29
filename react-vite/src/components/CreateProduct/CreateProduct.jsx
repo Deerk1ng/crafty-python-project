@@ -5,7 +5,7 @@ import { thunkAuthenticate, thunkLogout } from "../../redux/session";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FaArrowLeftLong } from "react-icons/fa6";
 
-import './CreateProduct.css'
+import './CreateProduct.css';
 
 
 
@@ -51,6 +51,9 @@ const CreateProduct = () => {
             }
         });
 
+        // if images length is 0 throw error as it is required to add an image
+        if (images.length === 0) error['images'] = "Add at least one image please."
+
         setErrors(error);
         return Object.keys(error).length === 0;
     };
@@ -73,7 +76,7 @@ const CreateProduct = () => {
             if (serverResponse.errors) {
                 setErrors((error) => ({ ...error, ...serverResponse.errors }));
             } else {
-                navigate(`/products/${serverResponse.id}`);
+                navigate(`/products/current`);
             }
         }
     };
@@ -101,7 +104,7 @@ const CreateProduct = () => {
         setCategory(e.target.value);
     };
 
-    
+
 
     const handleGoBack = () => {
         navigate('/products/current');
@@ -136,7 +139,7 @@ const CreateProduct = () => {
         };
     }, []);
 
-    return (
+    return isLoaded ? (
         <div id="create_prod">
 
             <div className="create-listing-top" >
@@ -213,6 +216,7 @@ const CreateProduct = () => {
                             </button>
                         )}
                         {errors.image && <p className='errors-msgs'>{errors.image}</p>}
+                        {errors.images && <p className='errors-msgs'>{errors.images}</p>}
                     </section>
 
                     <section id='price'>
@@ -263,6 +267,8 @@ const CreateProduct = () => {
                 </form>
             </div>
         </div>
+    ) : (
+            <h1 className="loading">loading...</h1>
     );
 };
 
