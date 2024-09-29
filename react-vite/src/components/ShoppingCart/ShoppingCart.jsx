@@ -20,20 +20,10 @@ const ShoppingCart = () => {
     useEffect(() => {
         dispatch(getCartThunk())
         .then(() => setIsLoaded(true))
-    }, [])
-
-    useEffect(() => {
-
-        if(items){
+        .then(() => {if(items) {
             setCartEmpty(false)
-        } else {
-            setCartEmpty(true)
-        }
-
-        if (Object.values(items).length === 0){
-            setCartEmpty(true)
-        }
-    }, [items])
+        }})
+    }, [])
 
 
     return isLoaded && (
@@ -55,6 +45,7 @@ const ShoppingCart = () => {
                                 <span>
                                     <ItemCard
                                     id={item.id}
+                                    product_id={item.product_id}
                                     shopName={item.owner.shop_name}
                                     name={item.product.name}
                                     price={item.product.price}
@@ -68,12 +59,24 @@ const ShoppingCart = () => {
                     })}
                 </div>
 
-                <div>
-                    ${totalCart.toFixed(2)}
-                </div>
-                <button>
-                    Proceed to checkout
-                </button>
+                {totalCart ?
+                    <div>
+                        <div>
+                            ${totalCart.toFixed(2)}
+                        </div>
+                        <button>
+                            Proceed to checkout
+                        </button>
+                    </div>
+                        :
+                    <div>
+                        <div className='cart-empty'>
+                        <h2>Your cart is empty</h2>
+                            <div>Discover items to fill up your cart</div>
+                            <NavLink to={'/favorites/current'} className="to-favorites">View your favorites</NavLink>
+                            </div>
+                    </div>
+                }
             </div>
          :
             <h2 className='please-sign-in'>Please sign in to use Shopping Cart</h2>

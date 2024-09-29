@@ -22,3 +22,11 @@
 #quantity {
     padding: 10px;
 }
+
+.price-box {
+    position: relative;
+    left: 590px;
+    bottom: 120px;
+    font-weight: bolder;
+    color: green
+}
