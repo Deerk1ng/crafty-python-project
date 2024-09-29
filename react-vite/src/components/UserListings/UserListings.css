@@ -1,0 +1,94 @@
+/* All Listings Container */
+.all-listings {
+    display: flex;
+    flex-flow: wrap;
+    gap: 20px;
+}
+
+/* Button Styles */
+.listing-bttn {
+    display: flex;
+    align-items: center;
+    color: black;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 7px;
+}
+
+.listing-bttn:hover {
+    background-color: orange;
+}
+
+/* Listing Bottom Section */
+.list-btm {
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid rgb(206, 206, 206);
+    margin-top: 5px;
+    padding-top: 7px;
+    align-items: center;
+}
+
+.list-btm button {
+    background-color: rgb(255, 255, 255);
+    border: none;
+    padding: 5px 7px;
+    border-radius: 7px;
+}
+
+.list-btm button:hover {
+    background-color: rgb(106, 106, 106);
+    color: white;
+}
+
+/* Listings Container */
+#listings {
+    min-width: 500px;
+    max-width: 1030px;
+    margin: auto;
+}
+
+/* Listings Top Section */
+.listings-top {
+    display: flex;
+    margin: 40px 0;
+    padding-bottom: 20px;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgb(206, 206, 206);
+    width: 1010px;
+}
+
+/* User Listing Styles */
+.user-listing {
+    width: 220px;
+    display: flex;
+    flex-flow: column wrap;
+    gap: 8px;
+    padding: 9px;
+    margin-bottom: 8px;
+    border-radius: 7px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset;
+}
+
+/* User Product Image */
+.user-product-img {
+    height: 190px;
+    width: 220px;
+    object-fit: cover;
+    margin-bottom: 5px;
+    border-radius: 7px;
+}
+
+/* Listing Navigation Styles */
+.listing-navs {
+    color: black;
+    padding: 5px 7px;
+    text-decoration: none;
+    border-radius: 7px;
+}
+
+.listing-navs:hover {
+    background-color: rgb(106, 106, 106);
+    color: white;
+}
