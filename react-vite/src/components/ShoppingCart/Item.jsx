@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { removeItemThunk, addQuantThunk, subQuantThunk} from '../../redux/cart';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import {IoMdHeart, IoMdHeartEmpty, IoMdPerson } from "react-icons/io";
+import {IoMdHeart, IoMdHeartEmpty} from "react-icons/io";
 import { createFavorite, deleteFavorite, getFavoritesThunk } from "../../redux/favorites";
-import { getOneProduct } from '../../redux/products';
+import { FaUserCircle } from 'react-icons/fa';
 
 
 const ItemCard = ({ id, product_id, shopName, name, price, preview, quantity}) => {
@@ -66,40 +66,45 @@ const ItemCard = ({ id, product_id, shopName, name, price, preview, quantity}) =
     }, [product_id, dispatch]);
 
   return (
-    <div className='card'>
-        <div className='shop-name'>{shopName}</div>
-        <div className='preview-box' onClick={(e)=> goToSpotDetails(e, id)}>
+    <div className='item-card'>
+        <FaUserCircle className='shop-user-logo'/>
+        <div  className='item-shop-name'>{shopName}</div>
+        <div className='item-preview-box' onClick={(e)=> goToSpotDetails(e, id)}>
             <img src={preview} alt={name} />
         </div>
-
-        <div className='price-box'>
+        <div className='item-price-box'>
             <span>${priceTimesQuant}</span>
         </div>
 
         {favorites[product.id] ?
 
-        <button className="favorites-button" onClick={(e) => handleDelete(e)}><IoMdHeart /> Delete from Favorites</button>
+        <button className="item-favorites-button" onClick={(e) => handleDelete(e)}><IoMdHeart /> Delete from Favorites</button>
         :
-        <button className="favorites-button" onClick={(e) => handleAdd(e)}><IoMdHeartEmpty /> Add to Favorites</button>}
+        <button className="item-favorites-button" onClick={(e) => handleAdd(e)}><IoMdHeartEmpty /> Add item to Favorites</button>}
 
         <button
             id='remove-button'
-            onClick={(e) => RemoveClick(e, id)}
-            >
+            onClick={(e) => RemoveClick(e, id)}>
             Remove
         </button>
+        <div id='quant-box'>
+            <div id='quant-text'>Quantity</div>
+            <button onClick={(e) => SubClick(e, id, quant)}>
+                -
+            </button>
 
-        <button onClick={(e) => SubClick(e, id, quant)}>
-            -
-        </button>
+            <span id='item-quantity'>
+                {quantity}
+            </span>
 
-        <span id='quantity'>
-            {quantity}
-        </span>
+            <button
+                id='add-button'
+                onClick={(e) => AddClick(e, id, quant)}>
+                +
+            </button>
+        </div>
 
-        <button onClick={(e) => AddClick(e, id, quant)}>
-            +
-        </button>
+        <div id='item-name'>{name}</div>
     </div>
   );
 }
