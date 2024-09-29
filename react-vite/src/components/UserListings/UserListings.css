@@ -92,3 +92,13 @@
     background-color: rgb(106, 106, 106);
     color: white;
 }
+
+
+/* if user has no listings */
+
+.right-top-none {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 150px auto 270px auto;
+}

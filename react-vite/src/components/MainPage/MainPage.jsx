@@ -39,7 +39,7 @@ const MainPage = () => {
     return (
         <div className='main-div'>
             <div className='cat-bubbles'>
-                <h3>Top products that are trending....</h3>
+                <h3 style={{fontWeight: '600'}}>Top products that are trending....</h3>
                 <ul>
                     {randomProducts.map(successfulProduct => (
                         <NavLink key={successfulProduct.id} to={`/products/${successfulProduct.id}`} className={'bubbles'}>

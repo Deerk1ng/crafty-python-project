@@ -4,11 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState, ulRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { thunkLogout } from "../../redux/session";
-import { IoMdHome, IoMdAdd } from "react-icons/io";
-import { IoSettings } from "react-icons/io5";
-import { TfiAnnouncement, TfiHelpAlt } from "react-icons/tfi";
-import { FaMoneyBillTrendUp } from "react-icons/fa6";
-import { MdFavoriteBorder, MdReviews, MdQueryStats } from "react-icons/md";
+import { IoMdAdd } from "react-icons/io";
+
 import DeleteProduct from '../DeleteProductModal/DeleteProductModal';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 
@@ -17,25 +14,8 @@ const UserListings = () => {
     const navigate = useNavigate();
 
     const [showMenu, setShowMenu] = useState(false);
-    const toggleMenu = (e) => {
-        e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
-        setShowMenu(!showMenu);
-      };
 
-    useEffect(() => {
-        if (!showMenu) return;
 
-        const closeMenu = (e) => {
-          if (ulRef.current && !ulRef.current.contains(e.target)) {
-            setShowMenu(false);
-          }
-        };
-        document.addEventListener("click", closeMenu);
-
-        return () => document.removeEventListener("click", closeMenu);
-    }, [showMenu]);
-
-    const closeMenu = () => setShowMenu(false);
 
     const products = useSelector(state => state.productsReducer.userProducts)
 
@@ -65,14 +45,6 @@ const UserListings = () => {
     }
 
 
-    const logout = (e) => {
-        e.preventDefault();
-        dispatch(thunkLogout()).then(() => {
-            // Redirect to home
-            navigate('/');
-            closeMenu();
-        });
-    };
 
 
 
@@ -123,24 +95,10 @@ const UserListings = () => {
     ) :
     (
         <div>
-            <div className='side-nav'>
-                <ul>
-                    <li style={{fontWeight: '800'}}>Shop Manager</li>
-                    <NavLink to={'/'}><IoMdHome /> Home</NavLink>
-                    <NavLink to={'/favorites/current'}><MdFavoriteBorder />Favorites</NavLink>
-                    <NavLink onClick={''}><MdReviews />Shop Reviews</NavLink>
-                    <NavLink onClick={''}><MdQueryStats />Stats</NavLink>
-                    <NavLink onClick={''}><TfiAnnouncement />Marketing</NavLink>
-                    <NavLink onClick={''}><FaMoneyBillTrendUp />Finances</NavLink>
-                    <NavLink onClick={''}><TfiHelpAlt />Help</NavLink>
-                    <NavLink onClick={''}><IoSettings />Settings</NavLink>
-                    <button onClick={logout}>Log Out</button>
 
-                </ul>
-            </div>
             <div className='right-top-none'>
-                <h3>You currently have no listings</h3>
-                <NavLink className={'listing-bttn-none'} to={'/products/new'}><IoMdAdd />Add Listing</NavLink>
+                <h3 style={{fontWeight: '700'}}>You currently have no listings</h3>
+                <NavLink className={'listing-bttn'} to={'/products/new'}><IoMdAdd />Add Listing</NavLink>
             </div>
         </div>
     )
