@@ -73,7 +73,7 @@ const ItemCard = ({ id, product_id, shopName, name, price, preview, quantity}) =
             <img src={preview} alt={name} />
         </div>
         <div className='item-price-box'>
-            <span>${priceTimesQuant}</span>
+            <span id='item-price'>${priceTimesQuant}</span>
         </div>
 
         {favorites[product.id] ?

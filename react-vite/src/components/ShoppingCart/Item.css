@@ -28,8 +28,10 @@
     position: relative;
     left: 590px;
     bottom: 200px;
-    font-weight: bolder;
     color: green
+}
+#item-price{
+    font-weight: bold;
 }
 
 .item-shop-name {
