@@ -62,7 +62,6 @@ def getShoppingCart():
 @login_required
 def deleteShoppingCart(cart_id):
     cart = db.session.query(ShoppingCart).filter(ShoppingCart.id == cart_id).first()
-    items = db.session.query(CartItem).filter(CartItem.cart_id == cart_id)
     user_id = current_user.id
 
     if (user_id == cart.user_id):
@@ -70,7 +69,7 @@ def deleteShoppingCart(cart_id):
         db.session.commit()
         return {'message': 'Shopping cart successfuly deleted'}, 200
     else:
-        return {'errors': {'message': 'There was an error deleting shopping cart'}}
+        return {'errors': {'message': 'There was an error deleting shopping cart'}}, 400
 
 #Get items for Shopping Cart with cart id, sets total of cart
 @cart_route.route('/<int:cart_id>')
