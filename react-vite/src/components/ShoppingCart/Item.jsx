@@ -69,7 +69,7 @@ const ItemCard = ({ id, product_id, shopName, name, price, preview, quantity}) =
     <div className='item-card'>
         <FaUserCircle className='shop-user-logo'/>
         <div  className='item-shop-name'>{shopName}</div>
-        <div className='item-preview-box' onClick={(e)=> goToSpotDetails(e, id)}>
+        <div className='item-preview-box' onClick={(e)=> goToSpotDetails(e, product.id)}>
             <img src={preview} alt={name} />
         </div>
         <div className='item-price-box'>
