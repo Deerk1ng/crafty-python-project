@@ -1,9 +1,15 @@
+.fav-empty {
+
+    margin: 100px 50px 228px 50px;
+}
+
+
 .fav-empty h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-top: 100px;
-    padding-bottom: 20px
+    padding-bottom: 20px;
 }
 .fav-empty div {
     display: flex;
