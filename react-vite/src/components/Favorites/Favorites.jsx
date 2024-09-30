@@ -23,11 +23,16 @@ const Favorites = () => {
         .then(() => setIsLoaded(true))
     }, [])
 
+
     useEffect(() => {
-        if(favorites){
-            setFavEmpty(false)
+        // checking if favorites Array is empty or not
+        if (favArr.length > 0) {
+            setFavEmpty(false);
+        } else {
+            setFavEmpty(true); // If there are no favorites, mark it as empty
         }
-    }, [favorites])
+    }, [favArr])
+
 
     //onClicks
 
@@ -44,7 +49,7 @@ const Favorites = () => {
         navigate('/shopping-cart/current')
     }
 
-    return isLoaded ? (
+    return isLoaded && (
     <div>
         { user ?
             favEmpty ?
@@ -75,7 +80,7 @@ const Favorites = () => {
                                 >
                                     <button
                                         className="cart-button"
-                                        onClick={(e) => AddItemClick(e, user.id, favorite.id)}
+                                        onClick={(e) => AddItemClick(e, user.id, favorite.product.id)}
                                         >Add to Cart
                                     </button>
                                     <button
@@ -97,8 +102,6 @@ const Favorites = () => {
             <h2 className='please-sign-in'>Please sign in to use Favorites</h2>
          }
     </div>
-    ) : (
-        <h1 className='loading'>Loading...</h1>
     )
 
 }
