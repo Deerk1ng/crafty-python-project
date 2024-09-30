@@ -80,7 +80,7 @@ const Favorites = () => {
                                 >
                                     <button
                                         className="cart-button"
-                                        onClick={(e) => AddItemClick(e, user.id, favorite.id)}
+                                        onClick={(e) => AddItemClick(e, user.id, favorite.product.id)}
                                         >Add to Cart
                                     </button>
                                     <button

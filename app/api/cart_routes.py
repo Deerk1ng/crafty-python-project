@@ -65,7 +65,7 @@ def deleteShoppingCart(cart_id):
     items = db.session.query(CartItem).filter(CartItem.cart_id == cart_id)
     user_id = current_user.id
 
-    if (user_id == cart.user_id and not items):
+    if (user_id == cart.user_id):
         db.session.delete(cart)
         db.session.commit()
         return {'message': 'Shopping cart successfuly deleted'}, 200
