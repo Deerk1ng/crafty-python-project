@@ -157,9 +157,9 @@ const ProductDetailsPage = () => {
                                         {rev.user_id === user?.id ? (
                                             <div>
                                                 <OpenModalButton
-                                                buttonText="Delete"
-                                                className='delete-button'
-                                                modalComponent={<DeleteReviewModal review_id={rev.id} />}
+                                                    buttonText="Delete"
+                                                    className='delete-button'
+                                                    modalComponent={<DeleteReviewModal review_id={rev.id} />}
                                                 />
                                                 <OpenModalButton
                                                 buttonText="Update"
