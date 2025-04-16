@@ -1,6 +1,16 @@
-# Flask React Project
+# Crafty
+This is a website prototype for our e-commerce website Crafty. Crafty is a website for users to sell and buy custom made clothing, accessories, and props with an emphasis on cosplay. The website features a number of ways to interact with products including a shopping cart, a review option, and a favorites list. Users are able to list any items they'd like to sell and those items will be immediately available for users to interact with.
 
-This is the starter for the Flask React project.
+[Live Link](https://crafty-reze.onrender.com/)
+
+## Technologies
+This website uses a combination of many languages, frameworks, and packages to create a working backend API and frontend website. Some of these technologies include
+* Python
+* Flask
+* SQL Alchemy
+* React
+* Redux
+* AWS
 
 ## Getting started
 
@@ -52,80 +62,64 @@ This is the starter for the Flask React project.
    folder whenever you change your code, keeping the production version up to
    date.
 
-## Deployment through Render.com
+## Features
+### Product Details
+![image](https://github.com/user-attachments/assets/997e02fc-7e50-48bf-9472-4a4debae562e)
+Our Product details page features a connection to every other page on the website. It displays the information of an individual product including:
+* Information about the User who created it
+* Any images associated with the product
+* Reviews that have been made for the product as well as the ability for a user to write their own review
+* Buttons allowing the user to add the product to their favorites or to their cart
 
-First, recall that Vite is a development dependency, so it will not be used in
-production. This means that you must already have the __dist__ folder located in
-the root of your __react-vite__ folder when you push to GitHub. This __dist__
-folder contains your React code and all necessary dependencies minified and
-bundled into a smaller footprint, ready to be served from your Python API.
+This page required API calls to every feature in our backend and multiple separate updates to the Redux store when any of these features experienced a change.
 
-Begin deployment by running `npm run build` in your __react-vite__ folder and
-pushing any changes to GitHub.
+The following code is how we implemented the display of a products images. It takes an array of the images and sets one as the main image on display. If any of the other images are clicked, that image becomes the new image on display. This code felt clever in its implementation especially because none of us had ever worked with images in this way before
 
-Refer to your Render.com deployment articles for more detailed instructions
-about getting started with [Render.com], creating a production database, and
-deployment debugging tips.
+![image](https://github.com/user-attachments/assets/49cef475-f142-4994-9dae-b03daf506b31)
 
-From the Render [Dashboard], click on the "New +" button in the navigation bar,
-and click on "Web Service" to create the application that will be deployed.
+### Reviews
+![image](https://github.com/user-attachments/assets/06534007-bf78-4df3-b3e0-f80486b66a04)
 
-Select that you want to "Build and deploy from a Git repository" and click
-"Next". On the next page, find the name of the application repo you want to
-deploy and click the "Connect" button to the right of the name.
+Our reviews are listed under each product along side additional product details. If a user is logged in, they have the option of posting a review as well as adding an image to the review, presumably since they had purchased the product. Once a user has posted a review, they have the option to delete or update it
+![image](https://github.com/user-attachments/assets/b2a147d5-c6fa-41bc-bf96-ab3b120dde31)
+---
+![image](https://github.com/user-attachments/assets/06580a77-2740-4d13-b07a-c5a56804338f)
 
-Now you need to fill out the form to configure your app. Most of the setup will
-be handled by the __Dockerfile__, but you do need to fill in a few fields.
+Create a Review:
+Our create review thunk makes a fetch request to our backend route to add a review's details into the system and then uses that review's systems to both add functional date information to the response object as well as taking image data and adding it to the newly created review all in one go. The date information allowed us to easily implement a sorting system for the reviews so that new reviews always end up at the top of the reviews page. The image is an optional feature for any customers who want to send examples of what their received product looks like
 
-Start by giving your application a name.
+![image](https://github.com/user-attachments/assets/7257b642-4cf9-41e5-a58d-885473ef79f1)
+---
+![image](https://github.com/user-attachments/assets/e181ad01-fb66-43e0-8212-c11639d82bb7)
 
-Make sure the Region is set to the location closest to you, the Branch is set to
-"main", and Runtime is set to "Docker". You can leave the Root Directory field
-blank. (By default, Render will run commands from the root directory.)
+### Listings
+The Current Listings page is similarly intertwined with multiple routes and provided a challenge when implementing. This page allows for a user to manage their own listings. They are able to create a listing which, after the data is validated, will appear immediately in the listings page and will be easy to interact with by other users
+![image](https://github.com/user-attachments/assets/9657fb25-b3f2-4ccd-91f4-1a816ce4fe79)
 
-Select "Free" as your Instance Type.
+The top bar randomly picks out a few listings, taking them off the list and preventing those 5 from showing up in the normal products page. Users are able to create their own listings for a product as well through their current listings tab.
+![image](https://github.com/user-attachments/assets/143884ad-be9f-40d6-853a-ff6b09b15cba)
 
-### Add environment variables
+The create a product page has a neat nav bar that will scroll you down to the three sections of the form.
 
-In the development environment, you have been securing your environment
-variables in a __.env__ file, which has been removed from source control (i.e.,
-the file is gitignored). In this step, you will need to input the keys and
-values for the environment variables you need for production into the Render
-GUI.
+### Shopping Cart
+![image](https://github.com/user-attachments/assets/1497d9f7-2ca2-4180-b71b-a61cc53c2835)
 
-Add the following keys and values in the Render GUI form:
+Adding a product to the shopping cart lists it in the shopping cart page where you can modify quantity as well as delete a product from the cart or add a product to your favorites. There is currently no payment pages available on live but they could be easily added using whatever credit card API a client would prefer. Clicking the Place your Order button will simply clear the cart currently.
 
-- SECRET_KEY (click "Generate" to generate a secure secret for production)
-- FLASK_ENV production
-- FLASK_APP app
-- SCHEMA (your unique schema name, in snake_case)
+### Favorites
+The favorites page is a simple product display page with the options to add the product to your cart or to remove it from your favorites
 
-In a new tab, navigate to your dashboard and click on your Postgres database
-instance.
+![image](https://github.com/user-attachments/assets/31826304-30f0-46fd-9daf-de0e6e62d0e1)
 
-Add the following keys and values:
 
-- DATABASE_URL (copy value from the **External Database URL** field)
+## Challenges faced in development
+We faced quite a few challenges during this project as a group such as time management, incredibly obscure bugs, and unfortunate typos.
 
-**Note:** Add any other keys and values that may be present in your local
-__.env__ file. As you work to further develop your project, you may need to add
-more environment variables to your local __.env__ file. Make sure you add these
-environment variables to the Render GUI as well for the next deployment.
+This project was put together both backend and frontend by the three of us in the span of two weeks. There was a lot of anxiety during daily stand ups which we shared with the other group in our cohort. Our progress felt steady but slower and had us questioning our original plan to finish the backend before beginning work on the frontend. We considered working on both the frontend and backends simultaneously but sticking to our timelines and working methodically, we were able to finish the backend in time with very minimal bugs, which made our front end work much smoother after.
 
-### Deploy
+We also had two particularly nasty bugs in our code that set us back in our deadlines occasionally. Thankfully we were able to pair program as a team and look through our code using debugging tools and console logs to pinpoint where our code was going wrong as well as a little help from our instructor from time to time. The first bug ended up being a mistake in our destructuring of our Redux state. Because it was a nested object, rest (...) destructuring was still only creating a shallow clone. We fixed that by creating a structured clone of our redux state instead and then modifying that. Our second similar bug was a slight typo in one of our fetch requests where we had an extra backslash (/) at the end which was leading to a failed request.
 
-Now you are finally ready to deploy! Click "Create Web Service" to deploy your
-project. The deployment process will likely take about 10-15 minutes if
-everything works as expected. You can monitor the logs to see your Dockerfile
-commands being executed and any errors that occur.
-
-When deployment is complete, open your deployed site and check to see that you
-have successfully deployed your Flask application to Render! You can find the
-URL for your site just below the name of the Web Service at the top of the page.
-
-**Note:** By default, Render will set Auto-Deploy for your project to true. This
-setting will cause Render to re-deploy your application every time you push to
-main, always keeping it up to date.
-
-[Render.com]: https://render.com/
-[Dashboard]: https://dashboard.render.com/
+## Future Features
+- Order History page where shopping cart orders are saved and can be reordered
+- Preventing Reviews from accounts who have not purchased the product
+- Google Maps API to calculate the tax and shipping info for cart items

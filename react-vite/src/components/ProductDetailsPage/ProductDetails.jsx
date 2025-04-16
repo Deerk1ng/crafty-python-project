@@ -51,7 +51,6 @@ const ProductDetailsPage = () => {
 
     useEffect(() => {
         if(product.images) {
-
             const images = product.images
             const newImgArr = [];
             for (let i = 0; i < 5; i++) {
@@ -67,12 +66,6 @@ const ProductDetailsPage = () => {
         }
     }, [product])
 
-    const checkCritics = (reviews) => {
-        const idLog = [];
-        Object.values(reviews).forEach(review => idLog.push(review.user_id));
-        return idLog.includes(user?.id);
-    };
-
     useEffect(() => {
         dispatch(getOneProduct(product_id))
             .then(() => dispatch(getReviews(product_id)))
@@ -82,6 +75,13 @@ const ProductDetailsPage = () => {
     useEffect(() => {
         if(user && user.id) dispatch(getFavoritesThunk())
     }, [user, dispatch])
+
+    const checkCritics = (reviews) => {
+        const idLog = [];
+        Object.values(reviews).forEach(review => idLog.push(review.user_id));
+        return idLog.includes(user?.id);
+    };
+
 
     const AddItemClick = (e, user_id, product_id) => {
         e.preventDefault();
@@ -144,7 +144,6 @@ const ProductDetailsPage = () => {
                             ))}<span style={{ marginLeft: '6px', fontWeight: '100' }}></span></div>
 
                             <div className="review-container">
-                                {/* {revArr.length ? revArr: <></>} */}
                                 {reviews_list.length ? reviews_list.map((rev) => {
                                     return (<div className={`review`} key={rev.id}>
                                         <p>{Array.from({ length: getStarRating(rev.item_rating) }, (_, index) => (<IoMdStar key={index} className="stars" />))}</p>
@@ -157,9 +156,9 @@ const ProductDetailsPage = () => {
                                         {rev.user_id === user?.id ? (
                                             <div>
                                                 <OpenModalButton
-                                                buttonText="Delete"
-                                                className='delete-button'
-                                                modalComponent={<DeleteReviewModal review_id={rev.id} />}
+                                                    buttonText="Delete"
+                                                    className='delete-button'
+                                                    modalComponent={<DeleteReviewModal review_id={rev.id} />}
                                                 />
                                                 <OpenModalButton
                                                 buttonText="Update"
